@@ -1,9 +1,7 @@
 services:
-
   postgres:
     image: pgvector/pgvector:pg17
     container_name: maple-postgres
-
     restart: unless-stopped
 
     environment:
@@ -22,7 +20,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
 
 
   backend:
@@ -50,7 +47,6 @@ services:
       - "8080:8080"
 
 
-
   frontend:
     image: maple-info-frontend:latest
 
@@ -59,7 +55,6 @@ services:
       dockerfile: Dockerfile
 
     container_name: maple-frontend
-
     restart: unless-stopped
 
     depends_on:
@@ -67,37 +62,6 @@ services:
 
     ports:
       - "3000:80"
-
-
-
-#  ai:
-#    image: maple-info-ai:latest
-#
-#    build:
-#      context: ./maple-info-ai
-#      dockerfile: Dockerfile
-#
-#    container_name: maple-ai
-#
-#    restart: unless-stopped
-#
-#    depends_on:
-#      postgres:
-#        condition: service_healthy
-#
-#    environment:
-#      GEMINI_API_KEY: ${GEMINI_API_KEY}
-#
-#      DB_HOST: postgres
-#      DB_PORT: 5432
-#
-#      DB_NAME: ${DB_NAME}
-#      DB_USER: ${DB_USER}
-#      DB_PASSWORD: ${DB_PASSWORD}
-#
-#    ports:
-#      - "8000:8000"
-
 
 
 volumes:
