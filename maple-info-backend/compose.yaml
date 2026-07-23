@@ -1,0 +1,104 @@
+services:
+
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: maple-postgres
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+
+  backend:
+    image: maple-info-backend:latest
+
+    build:
+      context: ./maple-info-backend
+      dockerfile: Dockerfile
+
+    container_name: maple-backend
+    restart: unless-stopped
+
+    env_file:
+      - .env.local
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+
+    ports:
+      - "8080:8080"
+
+
+
+  frontend:
+    image: maple-info-frontend:latest
+
+    build:
+      context: ./maple-info-frontend
+      dockerfile: Dockerfile
+
+    container_name: maple-frontend
+
+    restart: unless-stopped
+
+    depends_on:
+      - backend
+
+    ports:
+      - "3000:80"
+
+
+
+#  ai:
+#    image: maple-info-ai:latest
+#
+#    build:
+#      context: ./maple-info-ai
+#      dockerfile: Dockerfile
+#
+#    container_name: maple-ai
+#
+#    restart: unless-stopped
+#
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
+#
+#    environment:
+#      GEMINI_API_KEY: ${GEMINI_API_KEY}
+#
+#      DB_HOST: postgres
+#      DB_PORT: 5432
+#
+#      DB_NAME: ${DB_NAME}
+#      DB_USER: ${DB_USER}
+#      DB_PASSWORD: ${DB_PASSWORD}
+#
+#    ports:
+#      - "8000:8000"
+
+
+
+volumes:
+  postgres-data:
