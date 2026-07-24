@@ -1,0 +1,132 @@
+.device-stage {
+    width: 100%;
+    min-height: 100vh;
+    padding: 14px 24px 24px;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    background:
+            radial-gradient(
+                    circle at 50% 0%,
+                    rgba(108, 132, 255, 0.12),
+                    transparent 38%
+            ),
+            #f2f4f8;
+}
+
+.tablet-device {
+    position: relative;
+
+    width: min(1500px, 100%);
+    height: calc(100vh - 38px);
+    min-height: 720px;
+
+    padding: 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 40px;
+
+    background:
+            linear-gradient(
+                    145deg,
+                    #e4e7eb 0%,
+                    #bcc1c9 18%,
+                    #888f99 48%,
+                    #b7bdc5 78%,
+                    #e7e9ec 100%
+            );
+
+    box-shadow:
+            0 34px 90px rgba(28, 36, 55, 0.2),
+            0 10px 28px rgba(28, 36, 55, 0.12),
+            inset 0 2px 2px rgba(255, 255, 255, 0.95),
+            inset 0 -3px 4px rgba(54, 60, 69, 0.32);
+}
+
+.tablet-screen {
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    border: 2px solid rgba(38, 42, 48, 0.72);
+    border-radius: 25px;
+
+    background: #f7f8fc;
+
+    box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.35),
+            inset 0 0 18px rgba(30, 42, 70, 0.06);
+}
+
+.tablet-camera {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    z-index: 30;
+
+    width: 8px;
+    height: 8px;
+
+    transform: translateX(-50%);
+
+    border: 1px solid rgba(80, 86, 96, 0.75);
+    border-radius: 50%;
+
+    background:
+            radial-gradient(
+                    circle at 35% 35%,
+                    #3b5a85 0%,
+                    #121820 45%,
+                    #050608 100%
+            );
+
+    box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.18),
+            inset 0 0 2px rgba(91, 139, 205, 0.8);
+}
+
+.tablet-button {
+    position: absolute;
+    z-index: 5;
+
+    border: 1px solid rgba(68, 74, 84, 0.42);
+    border-radius: 999px;
+
+    background:
+            linear-gradient(
+                    180deg,
+                    #d1d4d9,
+                    #858b94
+            );
+
+    box-shadow:
+            inset 0 1px 1px rgba(255, 255, 255, 0.72),
+            0 1px 2px rgba(24, 30, 40, 0.26);
+}
+
+.tablet-button--volume-up {
+    top: 150px;
+    left: -4px;
+
+    width: 5px;
+    height: 48px;
+}
+
+.tablet-button--volume-down {
+    top: 208px;
+    left: -4px;
+
+    width: 5px;
+    height: 48px;
+}
+
+.tablet-button--power {
+    top: 142px;
+    right: -4px;
+
+    width: 5px;
+    height: 82px;
+}

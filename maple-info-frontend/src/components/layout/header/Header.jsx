@@ -6,7 +6,7 @@ export default function Header() {
             <strong className="site-logo">MapleInfo</strong>
 
             <nav className="site-nav">
-                <a href="/">홈</a>
+                <a href="/public">홈</a>
                 <a href="/character">캐릭터</a>
                 <a href="/ranking">랭킹</a>
                 <a href="/community">커뮤니티</a>
