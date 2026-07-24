@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CubeProbabilityRepository {
 
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/maple_info_db";
+    private static final String DB_URL = "jdbc:postgresql://localhost:5433/maple_info_db";
     private static final String DB_USER = "postgres";
     private static final String DB_PASSWORD = "1234";
 
