@@ -1,0 +1,56 @@
+.app-screen {
+    .app-screen {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+
+        color: var(--color-text);
+        background: var(--color-background);
+    }
+}
+
+.app-scroll-area {
+    flex: 1;
+    min-height: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.app-scroll-area::-webkit-scrollbar {
+    width: 10px;
+}
+
+.app-scroll-area::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.app-scroll-area::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: var(--color-text-secondary);
+    background-clip: padding-box;
+    opacity: 0.38;
+}
+
+.app-scroll-area::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+    background-clip: padding-box;
+}
+
+@supports (scrollbar-color: auto) {
+    .app-scroll-area {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(82, 92, 116, 0.38) transparent;
+    }
+}

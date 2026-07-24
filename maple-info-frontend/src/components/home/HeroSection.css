@@ -7,36 +7,31 @@
     align-items: center;
     gap: 30px;
 
-    border: 1px solid rgba(45, 65, 110, 0.07);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
     border-radius: 28px;
-
-    background:
-            radial-gradient(
-                    circle at 75% 40%,
-                    rgba(102, 126, 255, 0.18),
-                    transparent 34%
-            ),
-            linear-gradient(135deg, #ffffff, #f3f6ff);
+    background: var(--gradient-hero);
 }
 
 .hero-label {
-    color: #5470e8;
+    color: var(--color-primary);
     font-size: 14px;
     font-weight: 700;
 }
 
 .hero-content h1 {
     margin: 18px 0;
+    color: var(--color-text);
     font-size: clamp(36px, 4vw, 62px);
     line-height: 1.15;
 }
 
 .hero-content h1 strong {
-    color: #4d6fff;
+    color: var(--color-primary);
 }
 
 .hero-content p {
-    color: #70798d;
+    color: var(--color-text-secondary);
     line-height: 1.7;
 }
 
@@ -47,10 +42,9 @@
 
     display: flex;
 
-    border: 1px solid rgba(40, 60, 100, 0.1);
+    border: 1px solid var(--color-border);
     border-radius: 18px;
-
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--color-surface);
 }
 
 .hero-search input {
@@ -58,19 +52,23 @@
     min-width: 0;
     padding: 0 16px;
 
+    color: var(--color-text);
     border: 0;
     outline: none;
     background: transparent;
 }
 
+.hero-search input::placeholder {
+    color: var(--color-placeholder);
+}
+
 .hero-search button {
     padding: 14px 24px;
 
+    color: #ffffff;
     border: 0;
     border-radius: 13px;
-
-    color: white;
-    background: #4d6fff;
+    background: var(--color-primary);
 }
 
 .hero-visual {
@@ -79,22 +77,8 @@
     display: grid;
     place-items: center;
 
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
     border-radius: 24px;
-    color: #8b94aa;
-    background: rgba(255, 255, 255, 0.35);
-}
-
-@media (max-width: 800px) {
-    .site-nav {
-        display: none;
-    }
-
-    .hero-section {
-        grid-template-columns: 1fr;
-        padding: 28px;
-    }
-
-    .hero-visual {
-        min-height: 200px;
-    }
+    background: var(--color-primary-soft);
 }
