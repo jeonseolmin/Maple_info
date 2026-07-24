@@ -9,7 +9,9 @@ spring:
     password: ${DB_PASSWORD:postgres}
 
 nexon:
-  api-key: ${NEXON_API_KEY}
+  api:
+    url: https://open.api.nexon.com
+    key: test_e1cea6e7b4e7c3790fdb7f901aa4459945925c3884c1026b7b5349b283717b29efe8d04e6d233bd35cf2fabdeb93fb0d
 
 gemini:
   api-key: ${GEMINI_API_KEY}
