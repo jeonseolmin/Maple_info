@@ -1,6 +1,7 @@
 .device-stage {
+    width: 100%;
     min-height: 100vh;
-    padding: 8px 20px 20px;
+    padding: 14px 24px 24px;
 
     display: flex;
     justify-content: center;
@@ -19,28 +20,29 @@
     position: relative;
 
     width: min(1500px, 100%);
-    height: calc(100vh - 28px);
+    height: calc(100vh - 38px);
     min-height: 720px;
 
-    padding: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.76);
-    border-radius: 38px;
+    padding: 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 40px;
 
     background:
             linear-gradient(
                     145deg,
-                    #d8dbe0 0%,
-                    #aeb4bd 22%,
-                    #858c96 55%,
-                    #bfc4cb 82%,
-                    #e2e4e8 100%
+                    #e4e7eb 0%,
+                    #bcc1c9 18%,
+                    #888f99 48%,
+                    #b7bdc5 78%,
+                    #e7e9ec 100%
             );
 
     box-shadow:
             0 34px 90px rgba(28, 36, 55, 0.2),
-            0 10px 28px rgba(28, 36, 55, 0.11),
-            inset 0 1px 1px rgba(255, 255, 255, 0.95),
-            inset 0 -2px 3px rgba(54, 60, 69, 0.34);
+            0 10px 28px rgba(28, 36, 55, 0.12),
+            inset 0 2px 2px rgba(255, 255, 255, 0.95),
+            inset 0 -3px 4px rgba(54, 60, 69, 0.32);
 }
 
 .tablet-screen {
@@ -49,27 +51,29 @@
 
     overflow: hidden;
 
-    border-radius: 27px;
+    border: 2px solid rgba(38, 42, 48, 0.72);
+    border-radius: 25px;
+
     background: #f7f8fc;
 
     box-shadow:
-            inset 0 0 0 1px rgba(255, 255, 255, 0.75),
-            inset 0 0 18px rgba(30, 42, 70, 0.05);
+            0 0 0 1px rgba(255, 255, 255, 0.35),
+            inset 0 0 18px rgba(30, 42, 70, 0.06);
 }
 
 .tablet-camera {
     position: absolute;
-    top: 4px;
+    top: 5px;
     left: 50%;
     z-index: 30;
 
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
+
+    transform: translateX(-50%);
 
     border: 1px solid rgba(80, 86, 96, 0.75);
     border-radius: 50%;
-
-    transform: translateX(-50%);
 
     background:
             radial-gradient(
@@ -80,7 +84,7 @@
             );
 
     box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.15),
+            0 0 0 1px rgba(255, 255, 255, 0.18),
             inset 0 0 2px rgba(91, 139, 205, 0.8);
 }
 
@@ -94,8 +98,8 @@
     background:
             linear-gradient(
                     180deg,
-                    #c8ccd2,
-                    #8c929b
+                    #d1d4d9,
+                    #858b94
             );
 
     box-shadow:
