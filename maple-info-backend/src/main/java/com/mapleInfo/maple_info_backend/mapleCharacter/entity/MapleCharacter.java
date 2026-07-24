@@ -58,11 +58,7 @@ public class MapleCharacter extends BaseEntity {
     @Column(length = 50)
     private String guildName;
 
-    private Integer unionLevel;
-
-    private Long combatPower;
-
-    @Column(length = 500)
+    @Column(columnDefinition = "TEXT")
     private String characterImage;
 
     private LocalDateTime syncedAt;

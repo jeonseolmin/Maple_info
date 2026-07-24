@@ -15,7 +15,7 @@ public class NexonApiConfig {
     ) {
         return RestClient.builder()
                 .baseUrl(baseUrl)
-                .defaultHeader("x-nxopen-api-key", apiKey)
+                .defaultHeader("x-nxopen-api-key", apiKey.trim())
                 .build();
     }
 }

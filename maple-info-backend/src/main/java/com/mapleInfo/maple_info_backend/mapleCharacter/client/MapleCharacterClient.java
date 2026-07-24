@@ -16,7 +16,7 @@ public class MapleCharacterClient {
     public NexonOcidResponse getOcid(String characterName){
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
-                                .path("maplestory/v1/id")
+                                .path("/maplestory/v1/id")
                                 .queryParam("character_name",characterName)
                                 .build()
                         ).retrieve()
@@ -29,7 +29,7 @@ public class MapleCharacterClient {
                     .uri(
                             urlBuilder -> urlBuilder
                                     .path("/maplestory/v1/character/basic")
-                                    .queryParam("ocid",ocid)
+                                    .queryParam("ocid",ocid.trim())
                                     .build()
                     ).retrieve()
                     .body(NexonCharacterBasicResponse.class);

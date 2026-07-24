@@ -29,8 +29,6 @@ public class MapleCharacterService {
         NexonCharacterBasicResponse basicResponse =
                 mapleCharacterClient.getBasic(mapleCharacter.getOcid());
 
-
-
         mapleCharacter.updateBasicInfo(basicResponse);
 
         return CharacterSearchResponse.from(

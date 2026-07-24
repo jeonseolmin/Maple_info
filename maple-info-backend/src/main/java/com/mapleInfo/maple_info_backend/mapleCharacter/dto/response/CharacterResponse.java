@@ -16,8 +16,6 @@ public record CharacterResponse(
         Long exp,
         Double expRate,
         String guildName,
-        Integer unionLevel,
-        Long combatPower,
         String characterImage,
         LocalDateTime syncedAt
 ) {
