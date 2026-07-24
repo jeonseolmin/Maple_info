@@ -16,29 +16,8 @@ public record CharacterResponse(
         Long exp,
         Double expRate,
         String guildName,
-        Integer unionLevel,
-        Long combatPower,
         String characterImage,
         LocalDateTime syncedAt
-
 ) {
 
-    public static CharacterResponse from(MapleCharacter character) {
-        return new CharacterResponse(
-                character.getId(),
-                character.getOcid(),
-                character.getCharacterName(),
-                character.getWorldName(),
-                character.getCharacterClass(),
-                character.getSubClass(),
-                character.getLevel(),
-                character.getExp(),
-                character.getExpRate(),
-                character.getGuildName(),
-                character.getUnionLevel(),
-                character.getCombatPower(),
-                character.getCharacterImage(),
-                character.getSyncedAt()
-        );
-    }
 }
