@@ -1,0 +1,128 @@
+.device-stage {
+    min-height: 100vh;
+    padding: 8px 20px 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    background:
+            radial-gradient(
+                    circle at 50% 0%,
+                    rgba(108, 132, 255, 0.12),
+                    transparent 38%
+            ),
+            #f2f4f8;
+}
+
+.tablet-device {
+    position: relative;
+
+    width: min(1500px, 100%);
+    height: calc(100vh - 28px);
+    min-height: 720px;
+
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.76);
+    border-radius: 38px;
+
+    background:
+            linear-gradient(
+                    145deg,
+                    #d8dbe0 0%,
+                    #aeb4bd 22%,
+                    #858c96 55%,
+                    #bfc4cb 82%,
+                    #e2e4e8 100%
+            );
+
+    box-shadow:
+            0 34px 90px rgba(28, 36, 55, 0.2),
+            0 10px 28px rgba(28, 36, 55, 0.11),
+            inset 0 1px 1px rgba(255, 255, 255, 0.95),
+            inset 0 -2px 3px rgba(54, 60, 69, 0.34);
+}
+
+.tablet-screen {
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    border-radius: 27px;
+    background: #f7f8fc;
+
+    box-shadow:
+            inset 0 0 0 1px rgba(255, 255, 255, 0.75),
+            inset 0 0 18px rgba(30, 42, 70, 0.05);
+}
+
+.tablet-camera {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    z-index: 30;
+
+    width: 7px;
+    height: 7px;
+
+    border: 1px solid rgba(80, 86, 96, 0.75);
+    border-radius: 50%;
+
+    transform: translateX(-50%);
+
+    background:
+            radial-gradient(
+                    circle at 35% 35%,
+                    #3b5a85 0%,
+                    #121820 45%,
+                    #050608 100%
+            );
+
+    box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.15),
+            inset 0 0 2px rgba(91, 139, 205, 0.8);
+}
+
+.tablet-button {
+    position: absolute;
+    z-index: 5;
+
+    border: 1px solid rgba(68, 74, 84, 0.42);
+    border-radius: 999px;
+
+    background:
+            linear-gradient(
+                    180deg,
+                    #c8ccd2,
+                    #8c929b
+            );
+
+    box-shadow:
+            inset 0 1px 1px rgba(255, 255, 255, 0.72),
+            0 1px 2px rgba(24, 30, 40, 0.26);
+}
+
+.tablet-button--volume-up {
+    top: 150px;
+    left: -4px;
+
+    width: 5px;
+    height: 48px;
+}
+
+.tablet-button--volume-down {
+    top: 208px;
+    left: -4px;
+
+    width: 5px;
+    height: 48px;
+}
+
+.tablet-button--power {
+    top: 142px;
+    right: -4px;
+
+    width: 5px;
+    height: 82px;
+}
