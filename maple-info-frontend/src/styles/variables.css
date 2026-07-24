@@ -1,13 +1,21 @@
 :root {
+    color-scheme: light;
+
     --color-primary: #4d6fff;
     --color-primary-dark: #3457ef;
+    --color-primary-soft: rgba(77, 111, 255, 0.1);
 
     --color-background: #f7f8fc;
     --color-surface: #ffffff;
+    --color-surface-soft: #f2f4f9;
+    --color-surface-glass: rgba(255, 255, 255, 0.84);
 
     --color-text: #151922;
     --color-text-secondary: #747d91;
-    --color-border: rgba(35, 50, 85, 0.08);
+    --color-placeholder: #969daf;
+
+    --color-border: rgba(35, 50, 85, 0.1);
+    --color-icon: #41495b;
 
     --radius-small: 12px;
     --radius-medium: 18px;
@@ -15,4 +23,88 @@
 
     --shadow-card:
             0 12px 32px rgba(50, 65, 105, 0.07);
+
+    --shadow-focus:
+            0 0 0 4px rgba(77, 111, 255, 0.12);
+
+    --color-stage: #f2f4f8;
+    --color-card-glass: rgba(255, 255, 255, 0.82);
+    --color-card-highlight: rgba(255, 255, 255, 0.92);
+
+    --gradient-hero:
+            radial-gradient(
+                    circle at 75% 40%,
+                    rgba(102, 126, 255, 0.18),
+                    transparent 34%
+            ),
+            linear-gradient(135deg, #ffffff, #f3f6ff);
+
+    --gradient-stage:
+            radial-gradient(
+                    circle at 50% 0%,
+                    rgba(108, 132, 255, 0.12),
+                    transparent 38%
+            ),
+            var(--color-stage);
+
+    --frame-metal-start: #eef1f4;
+    --frame-metal-middle: #aeb4bc;
+    --frame-metal-end: #727982;
+
+    --frame-edge: rgba(37, 42, 49, 0.75);
+    --frame-highlight: rgba(255, 255, 255, 0.82);
+    --frame-shadow: rgba(27, 34, 48, 0.26);
+}
+
+html.dark {
+    color-scheme: dark;
+
+    --color-primary: #7788ff;
+    --color-primary-dark: #6678f3;
+    --color-primary-soft: rgba(119, 136, 255, 0.15);
+
+    --color-background: #14161d;
+    --color-surface: #20232d;
+    --color-surface-soft: #292d38;
+    --color-surface-glass: rgba(27, 30, 39, 0.88);
+
+    --color-text: #f4f6fb;
+    --color-text-secondary: #adb5c6;
+    --color-placeholder: #868e9f;
+
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-icon: #e5e9f2;
+
+    --shadow-card:
+            0 12px 32px rgba(0, 0, 0, 0.28);
+
+    --shadow-focus:
+            0 0 0 4px rgba(119, 136, 255, 0.15);
+    --color-stage: #0e1016;
+    --color-card-glass: rgba(32, 35, 45, 0.9);
+    --color-card-highlight: rgba(255, 255, 255, 0.05);
+
+    --frame-metal-start: #626872;
+    --frame-metal-middle: #363b44;
+    --frame-metal-end: #1f232a;
+
+    --frame-edge: rgba(0, 0, 0, 0.88);
+    --frame-highlight: rgba(255, 255, 255, 0.16);
+    --frame-shadow: rgba(0, 0, 0, 0.65);
+
+    --gradient-hero:
+            radial-gradient(
+                    circle at 75% 40%,
+                    rgba(119, 136, 255, 0.18),
+                    transparent 34%
+            ),
+            linear-gradient(135deg, #20232d, #181b24);
+
+    --gradient-stage:
+            radial-gradient(
+                    circle at 50% 0%,
+                    rgba(119, 136, 255, 0.12),
+                    transparent 38%
+            ),
+            var(--color-stage);
 }
