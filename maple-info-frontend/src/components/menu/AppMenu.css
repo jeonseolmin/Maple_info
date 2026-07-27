@@ -99,6 +99,13 @@
     cursor: pointer;
 }
 
+.app-menu-close-button {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-10%);
+}
+
 .app-menu-icon {
     display: grid;
     width: clamp(58px, 7vw, 76px);
@@ -153,7 +160,7 @@
 }
 
 /* 다크 모드 */
-[data-theme="dark"] .app-menu-panel {
+.dark .app-menu-panel {
     border-color: rgba(255, 255, 255, 0.12);
     background: rgba(20, 26, 39, 0.84);
     box-shadow:
@@ -161,11 +168,11 @@
             inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-[data-theme="dark"] .app-menu-item {
+.dark .app-menu-item {
     color: #f2f5fa;
 }
 
-[data-theme="dark"] .app-menu-handle {
+.dark .app-menu-handle {
     background: rgba(255, 255, 255, 0.3);
 }
 
