@@ -5,26 +5,42 @@ import com.mapleInfo.maple_info_backend.user.entity.enums.Provider;
 import com.mapleInfo.maple_info_backend.user.entity.enums.Role;
 import com.mapleInfo.maple_info_backend.userCharacter.entity.UserCharacter;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity @Table(name = "users")
+@Entity
+@Table(
+        name = "users",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uk_user_provider_id",
+                columnNames = {"provider", "provider_user_id"}
+        )
+)
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String mainCharacterName;
-
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Provider provider;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "provider_user_id", nullable = false)
     private String providerUserId;
 
+    private String email;
+
+    private String displayName;
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     @OneToMany(mappedBy = "user")
