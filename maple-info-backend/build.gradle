@@ -25,6 +25,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 //	크롤링 implementation
 	implementation 'org.jsoup:jsoup:1.17.2'
+// 캐시
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	implementation 'com.github.ben-manes.caffeine:caffeine'
 //	셀레니움
 	implementation 'org.seleniumhq.selenium:selenium-java:4.16.1'
 	implementation 'org.postgresql:postgresql:42.7.1'
