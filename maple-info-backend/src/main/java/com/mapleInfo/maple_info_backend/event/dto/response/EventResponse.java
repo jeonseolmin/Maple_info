@@ -1,21 +1,27 @@
 package com.mapleInfo.maple_info_backend.event.dto.response;
 
+import com.mapleInfo.maple_info_backend.event.dto.NexonEventNoticeItem;
+
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public record EventResponse(
-        Long id,
+        Long noticeId,
         String title,
-        String imageUrl,
         String linkUrl,
-        LocalDateTime startAt,
-        LocalDateTime endAt
+        String imageUrl,
+        OffsetDateTime startAt,
+        OffsetDateTime endAt
 ) {
-    public static EventResponse from(NexonEventResponse event) {
+    public static EventResponse from(
+            NexonEventResponse event,
+            String imageUrl
+    ) {
         return new EventResponse(
                 event.noticeId(),
                 event.title(),
-                event.thumbnailUrl(),
                 event.url(),
+                imageUrl,
                 event.dateEventStart(),
                 event.dateEventEnd()
         );

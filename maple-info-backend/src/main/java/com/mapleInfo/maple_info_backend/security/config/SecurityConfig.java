@@ -24,16 +24,6 @@ public class SecurityConfig {
     ) throws Exception {
 
         return http
-                .cors(Customizer.withDefaults())
-
-                .csrf(csrf -> csrf.disable())
-
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        )
-                )
-
                 .authorizeHttpRequests(auth -> auth
 
                         // 요청 방식과 관계없이 공개
@@ -54,6 +44,16 @@ public class SecurityConfig {
 
                         // 위에서 허용하지 않은 모든 요청은 로그인 필요
                         .anyRequest().authenticated()
+                )
+
+                .cors(Customizer.withDefaults())
+
+                .csrf(csrf -> csrf.disable())
+
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
                 )
 
                 .exceptionHandling(exception -> exception

@@ -1,16 +1,13 @@
-package com.mapleInfo.maple_info_backend.event.dto.response;
+package com.mapleInfo.maple_info_backend.event.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
-public record NexonEventResponse(
+public record NexonEventNoticeItem(
+
         String title,
         String url,
-
-        @JsonProperty("thumbnail_url")
-        String thumbnailUrl,
 
         @JsonProperty("notice_id")
         Long noticeId,
@@ -18,9 +15,10 @@ public record NexonEventResponse(
         OffsetDateTime date,
 
         @JsonProperty("date_event_start")
-        OffsetDateTime dateEventStart,
+        OffsetDateTime eventStartAt,
 
         @JsonProperty("date_event_end")
-        OffsetDateTime dateEventEnd
+        OffsetDateTime eventEndAt
+
 ) {
 }

@@ -1,8 +1,6 @@
 spring:
-  # application-prod.yaml
-  app:
-    frontend-url: ${FRONTEND_URL:http://3.105.109.229:3000}
-    
+
+
   docker:
     compose:
       enabled: false
@@ -13,6 +11,7 @@ spring:
     password: ${DB_PASSWORD:postgres}
 
 nexon:
+  url: https://open.api.nexon.com
   api-key: ${NEXON_API_KEY}
 
 gemini:
@@ -20,3 +19,7 @@ gemini:
 
 jwt:
   secret: ${JWT_SECRET}
+
+# application-prod.yaml
+app:
+  frontend-url: ${FRONTEND_URL:http://3.105.109.229:3000}
