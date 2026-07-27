@@ -6,6 +6,13 @@ spring:
     compose:
       enabled: false
 
+  cache:
+    type: caffeine
+    cache-names:
+      - activeEvents
+    caffeine:
+      spec: maximumSize=100,expireAfterWrite=1
+
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:maple_info_db}
     username: ${DB_USER:postgres}
@@ -22,10 +29,13 @@ spring:
 nexon:
   api:
     url: https://open.api.nexon.com
-    key: test_e1cea6e7b4e7c3790fdb7f901aa4459945925c3884c1026b7b5349b283717b29efe8d04e6d233bd35cf2fabdeb93fb0d
+    key: ${NEXON_API_KEY}
 
 gemini:
   api-key: ${GEMINI_API_KEY}
 
 jwt:
   secret: ${JWT_SECRET}
+
+app:
+  frontend-url: ${FRONTEND_URL:http://localhost:5173}

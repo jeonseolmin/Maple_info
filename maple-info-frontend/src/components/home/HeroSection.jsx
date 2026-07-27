@@ -1,4 +1,5 @@
 import "./HeroSection.css";
+import EventBanner from "./event/eventBanner/EventBanner.jsx";
 
 export default function HeroSection() {
     return (
@@ -16,19 +17,10 @@ export default function HeroSection() {
                     캐릭터 정보, 랭킹, 장비, 유니온 정보를
                     빠르고 편하게 확인해보세요.
                 </p>
-
-                <div className="hero-search">
-                    <input
-                        type="text"
-                        placeholder="캐릭터명을 입력하세요"
-                    />
-
-                    <button type="button">검색</button>
-                </div>
             </div>
 
             <div className="hero-visual">
-                이미지 영역
+                <EventBanner/>
             </div>
         </section>
     );
