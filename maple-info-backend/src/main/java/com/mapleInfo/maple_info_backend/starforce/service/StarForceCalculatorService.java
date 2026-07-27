@@ -1,6 +1,6 @@
 package com.mapleInfo.maple_info_backend.starforce.service;
 
-import com.mapleInfo.maple_info_backend.starforce.StarForceLevel;
+import com.mapleInfo.maple_info_backend.starforce.entity.StarForceLevel;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,4 +1,4 @@
-package com.mapleInfo.maple_info_backend.potentialAbility;
+package com.mapleInfo.maple_info_backend.potentialAbility.entity;
 
 public enum CubeType {
     RED("레드 큐브"),
