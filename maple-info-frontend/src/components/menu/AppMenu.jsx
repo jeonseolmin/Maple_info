@@ -128,6 +128,14 @@ export default function AppMenu({ isOpen, onClose }) {
                         : "전체 메뉴"
                 }
             >
+                <button
+                    type="button"
+                    className="app-menu-close-button"
+                    aria-label="메뉴 닫기"
+                    onClick={handleClose}
+                >
+                    ×
+                </button>
                 <div
                     className="app-menu-handle"
                     aria-hidden="true"
@@ -151,14 +159,7 @@ export default function AppMenu({ isOpen, onClose }) {
                             : "전체 메뉴"}
                     </h2>
 
-                    <button
-                        type="button"
-                        className="app-menu-close-button"
-                        aria-label="메뉴 닫기"
-                        onClick={handleClose}
-                    >
-                        ×
-                    </button>
+
                 </header>
 
                 <div className="app-menu-content">
