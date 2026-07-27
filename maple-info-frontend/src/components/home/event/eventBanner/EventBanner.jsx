@@ -105,7 +105,7 @@ export default function EventBanner() {
     }
 
     const safeIndex = currentIndex % events.length;
-    const currentEvent = events[currentIndex];
+    const currentEvent = events[safeIndex];
     const startDate = formatDate(currentEvent.startAt);
     const endDate = formatDate(currentEvent.endAt);
 
@@ -117,11 +117,15 @@ export default function EventBanner() {
                 rel="noopener noreferrer"
                 className="event-banner-link"
             >
-                <img
-                    src={currentEvent.imageUrl}
-                    alt={`${currentEvent.title} 이벤트 배너`}
-                    className="event-banner-image"
-                />
+                {currentEvent.imageUrl ? (
+                    <img
+                        src={currentEvent.imageUrl}
+                        alt={`${currentEvent.title} 이벤트 배너`}
+                        className="event-banner-image"
+                    />
+                ) : (
+                    <div className="event-banner-image event-banner-image--fallback" />
+                )}
 
                 <div
                     className="event-banner-overlay"
@@ -174,7 +178,7 @@ export default function EventBanner() {
                     <div className="event-banner-pagination">
                         {events.map((event, index) => (
                             <button
-                                key={event.id}
+                                key={event.noticeId}
                                 type="button"
                                 className={index === safeIndex ? "is-active" : ""}
                                 onClick={() => setCurrentIndex(index)}

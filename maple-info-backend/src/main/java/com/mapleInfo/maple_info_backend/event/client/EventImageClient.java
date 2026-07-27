@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class EventImageClient {
-
     private static final String EVENT_LIST_URL =
             "https://maplestory.nexon.com/News/Event";
 
@@ -26,10 +26,13 @@ public class EventImageClient {
             Map<Long, String> images = new HashMap<>();
 
             for (Element link : document.select(
-                    "a[href*='/News/Event/Ongoing/']:has(img)"
+                    "a[href*='/News/Event/']:has(img)"
             )) {
                 String href = link.attr("href");
-                Element image = link.selectFirst("img[src]");
+
+                Element image = link.selectFirst(
+                        "img[alt*='이벤트'][alt*='섬네일']"
+                );
 
                 if (image == null) {
                     continue;
@@ -40,7 +43,7 @@ public class EventImageClient {
                 if (noticeId != null) {
                     images.putIfAbsent(
                             noticeId,
-                            image.absUrl("src")
+                            getImageUrl(image)
                     );
                 }
             }
@@ -61,5 +64,21 @@ public class EventImageClient {
         }
 
         return Long.valueOf(matcher.group(1));
+    }
+
+    private String getImageUrl(Element image) {
+        String imageUrl = image.absUrl("src");
+
+        if (!imageUrl.isBlank()) {
+            return imageUrl;
+        }
+
+        imageUrl = image.absUrl("data-src");
+
+        if (!imageUrl.isBlank()) {
+            return imageUrl;
+        }
+
+        return null;
     }
 }
