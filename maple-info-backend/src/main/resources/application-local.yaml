@@ -1,4 +1,8 @@
 spring:
+  # application-local.yaml
+  app:
+    frontend-url: http://localhost:5173
+
   docker:
     compose:
       enabled: false
