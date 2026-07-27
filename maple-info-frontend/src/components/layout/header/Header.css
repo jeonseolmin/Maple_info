@@ -242,10 +242,6 @@
     }
 
     .header-search input::placeholder {
-        font-size: 0;
-    }
-
-    .header-search input::placeholder::after {
         content: "캐릭터 검색";
         font-size: 13px;
     }
