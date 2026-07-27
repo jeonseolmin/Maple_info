@@ -1,6 +1,7 @@
 package com.mapleInfo.maple_info_backend.potentialAbility;
 
 import com.mapleInfo.maple_info_backend.potentialAbility.dto.CubeProbabilityDto;
+import com.mapleInfo.maple_info_backend.potentialAbility.entity.CubeType;
 import com.mapleInfo.maple_info_backend.potentialAbility.repository.CubeProbabilityRepository;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
