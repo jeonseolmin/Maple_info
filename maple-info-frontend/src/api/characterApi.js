@@ -2,7 +2,7 @@ import axiosInstance from "./axiosInstance";
 
 export const getCharacter = async (characterName) => {
     const response = await axiosInstance.get(
-        "/api/characters/search/",
+        "/characters/search",
         {
             params: {
                 characterName,
