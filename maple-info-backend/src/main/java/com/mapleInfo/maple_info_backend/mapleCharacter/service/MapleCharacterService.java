@@ -265,8 +265,9 @@ public class MapleCharacterService {
         );
 
 
+
         Integer unionArtifactLevel =
-                extractUnionArtifactLevel(artifact);
+                extractUnionArtifactLevel(union);
 
         Integer dojangFloor =
                 dojang != null
@@ -411,13 +412,13 @@ public class MapleCharacterService {
     }
 
     private Integer extractUnionArtifactLevel(
-            NexonUnionArtifactResponse artifact
+            NexonUnionResponse union
     ) {
-        if (artifact == null) {
+        if (union == null) {
             return null;
         }
 
-        return artifact.unionArtifactLevel();
+        return union.unionArtifactLevel();
     }
 
     private Double parseExpRate(String expRate) {
