@@ -45,7 +45,6 @@ export default function CharacterPage() {
 
     return (
         <main className="character-page">
-            <h1>{characterName} 캐릭터 페이지</h1>
             <CharacterProfile character={character} />
         </main>
     );
