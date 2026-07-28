@@ -1,27 +1,41 @@
 package com.mapleInfo.maple_info_backend.potentialAbility.service;
 
+import com.mapleInfo.maple_info_backend.potentialAbility.entity.CubeType;
+import com.mapleInfo.maple_info_backend.potentialAbility.dto.CubeProbabilityDto;
+import com.mapleInfo.maple_info_backend.potentialAbility.entity.CubeProbability;
 import com.mapleInfo.maple_info_backend.potentialAbility.repository.CubeProbabilityRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CubeProbabilityService {
 
-    private final CubeProbabilityRepository repository = new CubeProbabilityRepository();
+    private final CubeProbabilityRepository repository;
 
-    public Map<String, Object> getProbabilityResult(String cubeType, String itemPart, String potentialTier, String optionName) {
-        Double probability = repository.findProbability(cubeType, itemPart, potentialTier, optionName);
+    // 크롤러에서 수집한 Dto 리스트를 DB Entity로 변환하여 저장
+    @Transactional
+    public void saveAllCrawledData(List<CubeProbabilityDto> dtoList) {
+        List<CubeProbability> entities = dtoList.stream()
+                .map(dto -> CubeProbability.builder()
+                        .cubeType(dto.getCubeType())
+                        .itemPart(dto.getItemPart())
+                        .potentialTier(dto.getPotentialTier())
+                        .optionName(dto.getOptionName())
+                        .probability(dto.getProbability())
+                        .build())
+                .collect(Collectors.toList());
 
-        Map<String, Object> result = new HashMap<>();
-        if (probability != null) {
-            result.put("success", true);
-            result.put("probability", probability);
-        } else {
-            result.put("success", false);
-            result.put("message", "해당 조건의 옵션 확률을 찾을 수 없습니다.");
-        }
-        return result;
+        repository.saveAll(entities);
+        System.out.println("✅ JPA 저장 완료! " + entities.size() + "건 추가됨");
+    }
+
+    // 리액트로 옵션 목록 전달
+    public List<String> getAvailableOptions(CubeType cubeType, String itemPart, String tier) {
+        return repository.findAvailableOptions(cubeType, itemPart, tier);
     }
 }

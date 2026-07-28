@@ -1,8 +1,8 @@
-package com.mapleInfo.maple_info_backend.potentialAbility;
+package com.mapleInfo.maple_info_backend.potentialAbility.crawler;
 
 import com.mapleInfo.maple_info_backend.potentialAbility.dto.CubeProbabilityDto;
 import com.mapleInfo.maple_info_backend.potentialAbility.entity.CubeType;
-import com.mapleInfo.maple_info_backend.potentialAbility.repository.CubeProbabilityRepository;
+import com.mapleInfo.maple_info_backend.potentialAbility.service.CubeProbabilityService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -168,8 +168,10 @@ public class CubeCrawler {
                             // 부위별 수집 완료 시 즉시 DB 중간 저장
                             if (groupedDataMap.containsKey(partName)) {
                                 List<CubeProbabilityDto> chunkToSave = groupedDataMap.get(partName);
-                                CubeProbabilityRepository repository = new CubeProbabilityRepository();
-                                repository.saveAll(chunkToSave);
+
+                                CrawlerJdbcRepository jdbcRepository = new CrawlerJdbcRepository();
+                                jdbcRepository.saveAll(chunkToSave);
+
                                 System.out.println("💾 [" + currentCubeType.name() + " - " + tierName + " - " + partName + "] 데이터 " + chunkToSave.size() + "건 DB 중간 저장 완료!");
                                 groupedDataMap.remove(partName);
                             }
