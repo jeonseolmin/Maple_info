@@ -2,6 +2,7 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi;
 
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record CharacterSearchResponse(
@@ -22,16 +23,19 @@ public record CharacterSearchResponse(
 
         Integer unionArtifactLevel,
         Integer dojangFloor,
+
         Integer overallRanking,
+        Integer worldRanking,
+        Integer classRanking,
+        LocalDate rankingDate,
 
         LocalDateTime syncedAt
-)  {
+) {
 
     public static CharacterSearchResponse from(
             MapleCharacter character,
             Integer unionArtifactLevel,
-            Integer dojangFloor,
-            Integer overallRanking
+            Integer dojangFloor
     ) {
         return new CharacterSearchResponse(
                 character.getOcid(),
@@ -51,7 +55,11 @@ public record CharacterSearchResponse(
 
                 unionArtifactLevel,
                 dojangFloor,
-                overallRanking,
+
+                character.getOverallRanking(),
+                character.getWorldRanking(),
+                character.getClassRanking(),
+                character.getRankingDate(),
 
                 character.getSyncedAt()
         );

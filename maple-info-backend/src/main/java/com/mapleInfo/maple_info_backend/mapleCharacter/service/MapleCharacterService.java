@@ -2,7 +2,6 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.service;
 
 import com.mapleInfo.maple_info_backend.mapleCharacter.client.MapleCharacterClient;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.*;
-import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
 import com.mapleInfo.maple_info_backend.mapleCharacter.repository.MapleCharacterRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,55 +9,260 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
-@Service @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 @Slf4j
 public class MapleCharacterService {
+
+    private static final ZoneId KOREA_ZONE =
+            ZoneId.of("Asia/Seoul");
+
     private final MapleCharacterRepository mapleCharacterRepository;
     private final MapleCharacterClient mapleCharacterClient;
 
-
     @Transactional
-    public CharacterSearchResponse searchCharacter(String characterName) {
-        MapleCharacter character = mapleCharacterRepository
-                .findByCharacterName(characterName)
-                .orElseGet(() -> createCharacter(characterName));
+    public CharacterSearchResponse searchCharacter(
+            String characterName
+    ) {
+        Optional<MapleCharacter> savedCharacter =
+                mapleCharacterRepository.findByCharacterName(
+                        characterName
+                );
+
+        MapleCharacter character;
+        NexonCharacterBasicResponse basic;
+
+        /*
+         * 1. 캐릭터 기본정보 조회
+         */
+        if (savedCharacter.isPresent()) {
+            character = savedCharacter.get();
+
+            log.info(
+                    "기존 캐릭터 기본정보 API 호출 - characterName={}",
+                    characterName
+            );
+
+            basic = mapleCharacterClient.getBasic(
+                    character.getOcid()
+            );
+
+            character.updateBasicInfo(basic);
+        } else {
+            log.info(
+                    "신규 캐릭터 OCID API 호출 - characterName={}",
+                    characterName
+            );
+
+            NexonOcidResponse ocidResponse =
+                    mapleCharacterClient.getOcid(characterName);
+
+            waitForNextCall();
+
+            log.info(
+                    "신규 캐릭터 기본정보 API 호출 - characterName={}",
+                    characterName
+            );
+
+            basic = mapleCharacterClient.getBasic(
+                    ocidResponse.ocid()
+            );
+
+            character = createCharacter(
+                    ocidResponse.ocid(),
+                    basic
+            );
+        }
 
         String ocid = character.getOcid();
 
-        log.info("기본정보 API 호출");
-        NexonCharacterBasicResponse basic =
-                mapleCharacterClient.getBasic(ocid);
+        /*
+         * 2. 유니온 정보 조회
+         */
+        waitForNextCall();
 
-        log.info("유니온 API 호출");
+        log.info(
+                "유니온 API 호출 - characterName={}",
+                character.getCharacterName()
+        );
+
         NexonUnionResponse union =
                 mapleCharacterClient.getUnion(ocid);
 
-        log.info("인기도 API 호출");
+        character.updateUnionInfo(union);
+
+        /*
+         * 3. 인기도 조회
+         */
+        waitForNextCall();
+
+        log.info(
+                "인기도 API 호출 - characterName={}",
+                character.getCharacterName()
+        );
+
         NexonCharacterPopularityResponse popularity =
                 mapleCharacterClient.getPopularity(ocid);
 
-        log.info("아티팩트 API 호출");
+        character.updatePopularity(popularity);
+
+        /*
+         * 4. 유니온 아티팩트 조회
+         */
+        waitForNextCall();
+
+        log.info(
+                "아티팩트 API 호출 - characterName={}",
+                character.getCharacterName()
+        );
+
         NexonUnionArtifactResponse artifact =
                 mapleCharacterClient.getUnionArtifact(ocid);
 
-        log.info("무릉 API 호출");
+        /*
+         * 5. 무릉도장 정보 조회
+         */
+        waitForNextCall();
+
+        log.info(
+                "무릉 API 호출 - characterName={}",
+                character.getCharacterName()
+        );
+
         NexonCharacterDojangResponse dojang =
                 mapleCharacterClient.getDojang(ocid);
 
+        /*
+         * 랭킹 조회 기준일입니다.
+         * 전날 랭킹을 조회합니다.
+         */
+        LocalDate rankingLocalDate =
+                LocalDate.now(KOREA_ZONE).minusDays(1);
+
+        String rankingDate =
+                rankingLocalDate.format(
+                        DateTimeFormatter.ISO_LOCAL_DATE
+                );
+
+        /*
+         * 6. 종합 랭킹 조회
+         */
         waitForNextCall();
 
-        log.info("랭크 API 호출");
-        NexonOverallRankingResponse overallRankingResponse =
-                mapleCharacterClient.getOverallRanking(ocid);
+        log.info(
+                "종합 랭킹 API 호출 - characterName={}, date={}",
+                character.getCharacterName(),
+                rankingDate
+        );
+
+        NexonOverallRankingResponse overallResponse =
+                mapleCharacterClient.getOverallRanking(
+                        rankingDate,
+                        ocid,
+                        null,
+                        null
+                );
 
         Integer overallRanking =
-                extractOverallRanking(overallRankingResponse);
+                extractRanking(
+                        overallResponse,
+                        character.getCharacterName()
+                );
 
-        character.updateBasicInfo(basic);
-        character.updateUnionInfo(union);
-        character.updatePopularity(popularity);
+
+        OverallClassInfo overallClassInfo =
+                extractOverallClassInfo(
+                        overallResponse,
+                        character.getCharacterName()
+                );
+
+        /*
+         * 7. 월드 랭킹 조회
+         */
+        waitForNextCall();
+
+        log.info(
+                "월드 랭킹 API 호출 - characterName={}, worldName={}",
+                character.getCharacterName(),
+                basic.worldName()
+        );
+
+        NexonOverallRankingResponse worldResponse =
+                mapleCharacterClient.getOverallRanking(
+                        rankingDate,
+                        ocid,
+                        basic.worldName(),
+                        null
+                );
+
+        Integer worldRanking =
+                extractRanking(
+                        worldResponse,
+                        character.getCharacterName()
+                );
+
+        /*
+         * 8. 직업 랭킹 조회
+         */
+        Integer classRanking = null;
+
+        String rankingClass =
+                makeRankingClass(overallClassInfo);
+
+        if (rankingClass != null) {
+            waitForNextCall();
+
+            log.info(
+                    "직업 랭킹 API 호출 - characterName={}, class={}",
+                    character.getCharacterName(),
+                    rankingClass
+            );
+
+            NexonOverallRankingResponse classResponse =
+                    mapleCharacterClient.getOverallRanking(
+                            rankingDate,
+                            ocid,
+                            null,
+                            rankingClass
+                    );
+
+            classRanking =
+                    extractRanking(
+                            classResponse,
+                            character.getCharacterName()
+                    );
+        } else {
+            log.warn(
+                    "직업 랭킹 class 값을 생성하지 못했습니다. "
+                            + "characterName={}",
+                    character.getCharacterName()
+            );
+        }
+
+        log.info(
+                "랭킹 조회 완료 - characterName={}, "
+                        + "overallRanking={}, worldRanking={}, "
+                        + "classRanking={}",
+                character.getCharacterName(),
+                overallRanking,
+                worldRanking,
+                classRanking
+        );
+
+
+        character.updateRanking(
+                overallRanking,
+                worldRanking,
+                classRanking,
+                rankingLocalDate
+        );
+
 
         Integer unionArtifactLevel =
                 extractUnionArtifactLevel(artifact);
@@ -68,61 +272,210 @@ public class MapleCharacterService {
                         ? dojang.dojangBestFloor()
                         : null;
 
+
         return CharacterSearchResponse.from(
                 character,
                 unionArtifactLevel,
-                dojangFloor,
-                overallRanking
+                dojangFloor
         );
     }
 
-    private MapleCharacter createCharacter(String characterName) {
-
-        NexonOcidResponse ocidResponse =
-                mapleCharacterClient.getOcid(characterName);
-
-        NexonCharacterBasicResponse nexonCharacterBasicResponse =
-                mapleCharacterClient.getBasic(ocidResponse.ocid());
-
-        MapleCharacter mapleCharacter =MapleCharacter.builder()
-                .ocid(ocidResponse.ocid())
-                .characterName(nexonCharacterBasicResponse.characterName())
-                .worldName(nexonCharacterBasicResponse.worldName())
-                .characterClass(nexonCharacterBasicResponse.characterClass())
-                .level(nexonCharacterBasicResponse.characterLevel())
-                .exp(nexonCharacterBasicResponse.characterExp())
-                .expRate(Double.valueOf(nexonCharacterBasicResponse.characterExpRate()))
-                .guildName(nexonCharacterBasicResponse.characterGuildName())
-                .characterImage(nexonCharacterBasicResponse.characterImage())
-                .syncedAt(LocalDateTime.now())
-                .build();
-
-        return mapleCharacterRepository.save(mapleCharacter);
-    }
-    private Integer extractUnionArtifactLevel(
-            NexonUnionArtifactResponse artifact
+    private MapleCharacter createCharacter(
+            String ocid,
+            NexonCharacterBasicResponse basic
     ) {
-        if (artifact == null || artifact.effects() == null) {
-            return null;
-        }
+        MapleCharacter mapleCharacter =
+                MapleCharacter.builder()
+                        .ocid(ocid)
+                        .characterName(
+                                basic.characterName()
+                        )
+                        .worldName(
+                                basic.worldName()
+                        )
+                        .characterClass(
+                                basic.characterClass()
+                        )
+                        .characterClassLevel(
+                                basic.characterClassLevel()
+                        )
+                        .level(
+                                basic.characterLevel()
+                        )
+                        .exp(
+                                basic.characterExp()
+                        )
+                        .expRate(
+                                parseExpRate(
+                                        basic.characterExpRate()
+                                )
+                        )
+                        .guildName(
+                                basic.characterGuildName()
+                        )
+                        .characterImage(
+                                basic.characterImage()
+                        )
+                        .syncedAt(
+                                LocalDateTime.now()
+                        )
+                        .build();
 
-        return artifact.effects().stream()
-                .filter(effect -> effect != null && effect.level() != null)
-                .map(NexonUnionArtifactEffectResponse::level)
-                .max(Integer::compareTo)
-                .orElse(null);
+        return mapleCharacterRepository.save(
+                mapleCharacter
+        );
     }
 
-    private Integer extractOverallRanking(
-            NexonOverallRankingResponse response
+    /**
+     * 랭킹 API 응답에서 현재 캐릭터를 찾습니다.
+     *
+     * get(0)으로 첫 번째 항목을 사용하는 대신
+     * 캐릭터명이 일치하는 항목을 찾습니다.
+     */
+    private Optional<NexonOverallRankingItemResponse>
+    findCharacterRanking(
+            NexonOverallRankingResponse response,
+            String characterName
     ) {
         if (response == null
                 || response.ranking() == null
                 || response.ranking().isEmpty()) {
+            return Optional.empty();
+        }
+
+        return response.ranking()
+                .stream()
+                .filter(item -> item != null)
+                .filter(item ->
+                        item.characterName() != null
+                )
+                .filter(item ->
+                        item.characterName()
+                                .equals(characterName)
+                )
+                .findFirst();
+    }
+
+    /**
+     * 랭킹 응답에서 순위 숫자를 추출합니다.
+     */
+    private Integer extractRanking(
+            NexonOverallRankingResponse response,
+            String characterName
+    ) {
+        return findCharacterRanking(
+                response,
+                characterName
+        )
+                .map(
+                        NexonOverallRankingItemResponse::ranking
+                )
+                .orElse(null);
+    }
+
+    /**
+     * 종합 랭킹 응답에서 직업 대분류와 세부 직업을 추출합니다.
+     *
+     * 예:
+     * className = "전사"
+     * subClassName = "히어로"
+     */
+    private OverallClassInfo extractOverallClassInfo(
+            NexonOverallRankingResponse response,
+            String characterName
+    ) {
+        return findCharacterRanking(
+                response,
+                characterName
+        )
+                .map(item ->
+                        new OverallClassInfo(
+                                item.className(),
+                                item.subClassName()
+                        )
+                )
+                .orElse(null);
+    }
+
+    /**
+     * 넥슨 랭킹 API에 전달할 class 문자열을 만듭니다.
+     *
+     * 예:
+     * 전사 + 히어로
+     * → 전사-히어로
+     */
+    private String makeRankingClass(
+            OverallClassInfo classInfo
+    ) {
+        if (classInfo == null
+                || classInfo.className() == null
+                || classInfo.className().isBlank()) {
             return null;
         }
 
-        return response.ranking().get(0).ranking();
+        String className =
+                classInfo.className().trim();
+
+        String subClassName =
+                classInfo.subClassName();
+
+        if (subClassName == null
+                || subClassName.isBlank()) {
+            return className + "-전체 전직";
+        }
+
+        return className
+                + "-"
+                + subClassName.trim();
+    }
+
+    /**
+     * 유니온 아티팩트 효과 중 가장 높은 레벨을 반환합니다.
+     *
+     * 현재는 임시 계산이며, 아티팩트 값의 의미는
+     * 이후 별도 단계에서 수정할 예정입니다.
+     */
+    private Integer extractUnionArtifactLevel(
+            NexonUnionArtifactResponse artifact
+    ) {
+        if (artifact == null
+                || artifact.effects() == null) {
+            return null;
+        }
+
+        return artifact.effects()
+                .stream()
+                .filter(effect ->
+                        effect != null
+                                && effect.level() != null
+                )
+                .map(
+                        NexonUnionArtifactEffectResponse::level
+                )
+                .max(Integer::compareTo)
+                .orElse(null);
+    }
+
+    private Double parseExpRate(String expRate) {
+        if (expRate == null || expRate.isBlank()) {
+            return null;
+        }
+
+        return Double.parseDouble(
+                expRate.replace("%", "")
+        );
+    }
+
+    /**
+     * 직업 랭킹 필터 생성에 필요한 내부 데이터입니다.
+     *
+     * 별도 Java 파일을 만들 필요 없이
+     * MapleCharacterService 내부에서만 사용합니다.
+     */
+    private record OverallClassInfo(
+            String className,
+            String subClassName
+    ) {
     }
 
     private void waitForNextCall() {
@@ -130,7 +483,11 @@ public class MapleCharacterService {
             Thread.sleep(200);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new IllegalStateException("API 호출 대기 중 중단되었습니다.", e);
+
+            throw new IllegalStateException(
+                    "API 호출 대기 중 중단되었습니다.",
+                    e
+            );
         }
     }
 }

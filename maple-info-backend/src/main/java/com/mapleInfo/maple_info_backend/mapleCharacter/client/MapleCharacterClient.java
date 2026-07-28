@@ -7,9 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.util.UriBuilder;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
@@ -17,89 +17,237 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 @Slf4j
 public class MapleCharacterClient {
+
+    private static final ZoneId KOREA_ZONE =
+            ZoneId.of("Asia/Seoul");
+
     private final RestClient restClient;
 
-    public NexonOcidResponse getOcid(String characterName){
+    public NexonOcidResponse getOcid(String characterName) {
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
-                                .path("/maplestory/v1/id")
-                                .queryParam("character_name",characterName)
-                                .build()
-                        ).retrieve()
+                        .path("/maplestory/v1/id")
+                        .queryParam(
+                                "character_name",
+                                characterName
+                        )
+                        .build()
+                )
+                .retrieve()
                 .body(NexonOcidResponse.class);
     }
 
-    public NexonCharacterBasicResponse getBasic(String ocid){
-        try{
+    public NexonCharacterBasicResponse getBasic(String ocid) {
+        try {
             return restClient.get()
-                    .uri(
-                            urlBuilder -> urlBuilder
-                                    .path("/maplestory/v1/character/basic")
-                                    .queryParam("ocid",ocid.trim())
-                                    .build()
-                    ).retrieve()
-                    .body(NexonCharacterBasicResponse.class);
-        }
-        catch (RestClientException e){
-            throw  new NexonApiException("넥슨 API 호출에 실패했습니다.",e);
-        }
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/basic"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterBasicResponse.class
+                    );
 
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 기본정보 API 호출에 실패했습니다.",
+                    e
+            );
+        }
     }
 
-    public NexonCharacterPopularityResponse getPopularity(String ocid) {
+    public NexonCharacterPopularityResponse getPopularity(
+            String ocid
+    ) {
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/maplestory/v1/character/popularity")
-                        .queryParam("ocid", ocid)
-                        .build())
+                        .path(
+                                "/maplestory/v1/character/popularity"
+                        )
+                        .queryParam(
+                                "ocid",
+                                normalizeOcid(ocid)
+                        )
+                        .build()
+                )
                 .retrieve()
-                .body(NexonCharacterPopularityResponse.class);
+                .body(
+                        NexonCharacterPopularityResponse.class
+                );
     }
 
     public NexonUnionResponse getUnion(String ocid) {
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/maplestory/v1/user/union")
-                        .queryParam("ocid", ocid)
-                        .build())
+                        .queryParam(
+                                "ocid",
+                                normalizeOcid(ocid)
+                        )
+                        .build()
+                )
                 .retrieve()
                 .body(NexonUnionResponse.class);
     }
 
-    public NexonUnionArtifactResponse getUnionArtifact(String ocid) {
+    public NexonUnionArtifactResponse getUnionArtifact(
+            String ocid
+    ) {
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/maplestory/v1/user/union-artifact")
-                        .queryParam("ocid", ocid)
-                        .build())
+                        .path(
+                                "/maplestory/v1/user/union-artifact"
+                        )
+                        .queryParam(
+                                "ocid",
+                                normalizeOcid(ocid)
+                        )
+                        .build()
+                )
                 .retrieve()
-                .body(NexonUnionArtifactResponse.class);
+                .body(
+                        NexonUnionArtifactResponse.class
+                );
     }
 
-    public NexonCharacterDojangResponse getDojang(String ocid) {
+    public NexonCharacterDojangResponse getDojang(
+            String ocid
+    ) {
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/maplestory/v1/character/dojang")
-                        .queryParam("ocid", ocid)
-                        .build())
+                        .path(
+                                "/maplestory/v1/character/dojang"
+                        )
+                        .queryParam(
+                                "ocid",
+                                normalizeOcid(ocid)
+                        )
+                        .build()
+                )
                 .retrieve()
-                .body(NexonCharacterDojangResponse.class);
+                .body(
+                        NexonCharacterDojangResponse.class
+                );
     }
 
-    public NexonOverallRankingResponse getOverallRanking(String ocid) {
-        String date = LocalDate.now(ZoneId.of("Asia/Seoul"))
+    /**
+     * 기존 서비스와의 호환성을 위한 메서드입니다.
+     *
+     * 전날 기준 종합 랭킹을 조회하며,
+     * 월드와 직업 필터는 적용하지 않습니다.
+     */
+    public NexonOverallRankingResponse getOverallRanking(
+            String ocid
+    ) {
+        String rankingDate = LocalDate.now(KOREA_ZONE)
                 .minusDays(1)
                 .format(DateTimeFormatter.ISO_LOCAL_DATE);
 
-        log.info("랭킹 요청 date=[{}], ocid=[{}], ocidLength={}",
-                date, ocid, ocid == null ? null : ocid.length());
-        return restClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/maplestory/v1/ranking/overall")
-                        .queryParam("date", date)
-                        .queryParam("ocid", ocid)
-                        .build())
-                .retrieve()
-                .body(NexonOverallRankingResponse.class);
+        return getOverallRanking(
+                rankingDate,
+                ocid,
+                null,
+                null
+        );
+    }
+
+    /**
+     * 종합 랭킹 API를 조회합니다.
+     *
+     * worldName이 있으면 해당 월드 내 순위를 조회하고,
+     * rankingClass가 있으면 해당 직업 내 순위를 조회합니다.
+     */
+    public NexonOverallRankingResponse getOverallRanking(
+            String date,
+            String ocid,
+            String worldName,
+            String rankingClass
+    ) {
+        if (date == null || date.isBlank()) {
+            throw new IllegalArgumentException(
+                    "랭킹 기준일이 비어 있습니다."
+            );
+        }
+
+        String normalizedOcid = normalizeOcid(ocid);
+
+        log.info(
+                "랭킹 요청 - date={}, ocidLength={}, worldName={}, class={}",
+                date,
+                normalizedOcid.length(),
+                worldName,
+                rankingClass
+        );
+
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> buildOverallRankingUri(
+                            uriBuilder,
+                            date,
+                            normalizedOcid,
+                            worldName,
+                            rankingClass
+                    ))
+                    .retrieve()
+                    .body(
+                            NexonOverallRankingResponse.class
+                    );
+
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 종합 랭킹 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
+
+    /**
+     * null 또는 빈 선택값은 쿼리 파라미터에 포함하지 않습니다.
+     */
+    private java.net.URI buildOverallRankingUri(
+            UriBuilder uriBuilder,
+            String date,
+            String ocid,
+            String worldName,
+            String rankingClass
+    ) {
+        UriBuilder builder = uriBuilder
+                .path("/maplestory/v1/ranking/overall")
+                .queryParam("date", date)
+                .queryParam("ocid", ocid);
+
+        if (worldName != null && !worldName.isBlank()) {
+            builder.queryParam(
+                    "world_name",
+                    worldName.trim()
+            );
+        }
+
+        if (rankingClass != null
+                && !rankingClass.isBlank()) {
+            builder.queryParam(
+                    "class",
+                    rankingClass.trim()
+            );
+        }
+
+        return builder.build();
+    }
+
+    private String normalizeOcid(String ocid) {
+        if (ocid == null || ocid.isBlank()) {
+            throw new IllegalArgumentException(
+                    "OCID가 비어 있습니다."
+            );
+        }
+
+        return ocid.trim();
     }
 }
