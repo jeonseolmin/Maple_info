@@ -40,9 +40,7 @@ export default function Header({ isMenuOpen, onMenuClick }) {
             return;
         }
 
-        navigate(
-            `/?character=${encodeURIComponent(trimmedName)}`
-        );
+        navigate(`/character/${encodeURIComponent(trimmedName)}`);
     };
     const handleLoginClick = () => {
         /*
