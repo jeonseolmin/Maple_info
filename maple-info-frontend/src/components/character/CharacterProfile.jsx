@@ -1,6 +1,61 @@
-import "./CharacterProfile.css";
-
+import "./CharacterProfile.css"
 export default function CharacterProfile({ character }) {
+    const profileStats = [
+        {
+            label: "레벨",
+            value: character.level
+                ? `Lv. ${character.level.toLocaleString()}`
+                : "-",
+        },
+        {
+            label: "경험치",
+            value:
+                character.expRate != null
+                    ? `${character.expRate.toFixed(3)}%`
+                    : "-",
+        },
+        {
+            label: "유니온 아티팩트",
+            value:
+                character.unionArtifactLevel != null
+                    ? `LV. ${character.unionArtifactLevel.toLocaleString()}`
+                    : "-",
+        },
+        {
+            label: "유니온",
+            value:
+                character.unionLevel != null
+                    ? `${character.unionLevel.toLocaleString()}`
+                    : "-",
+        },
+        {
+            label: "길드",
+            value: character.guildName || "없음",
+        },
+        {
+            label: "무릉도장",
+            value:
+                character.dojangFloor != null
+                    ? `${character.dojangFloor}층`
+                    : "-",
+        },
+        {
+            label: "월드 랭킹",
+            value:
+                character.worldRanking != null
+                    ? `${Number(character.worldRanking).toLocaleString()}위`
+                    : "-",
+        },
+        {
+            label: "인기도",
+            value:
+                character.popularity != null
+                    ? Number(character.popularity).toLocaleString()
+                    : "-",
+        },
+    ];
+
+
     return (
         <section className="character-profile">
             {/* 왼쪽: 캐릭터 이미지 */}
@@ -12,46 +67,39 @@ export default function CharacterProfile({ character }) {
                 />
             </div>
 
-            {/* 가운데: 기본 정보 */}
-            <div className="character-profile__info">
-                <div className="character-profile__badges">
-                    <span className="character-profile__world">
-                        {character.worldName}
-                    </span>
+            <div className="character-profile__main">
+                {/* 기존 서버·이름 영역 */}
+                <div className="character-profile__identity">
+                    <div className="character-profile__badges">
+            <span className="character-profile__badge">
+                {character.worldName || "-"}
+            </span>
+                        <span className="character-profile__badge">
+                {character.characterClass || "-"}
+            </span>
+                    </div>
 
-                    <span className="character-profile__class">
-                        {character.characterClass}
-                    </span>
+                    <h1 className="character-profile__name">
+                        {character.characterName || "-"}
+                    </h1>
                 </div>
 
-                <h1 className="character-profile__name">
-                    {character.characterName}
-                </h1>
+                {/* 새로 옮긴 정보 8개 */}
+                <div className="character-profile__stats">
+                    {profileStats.map((stat) => (
+                        <article
+                            className="character-profile__stat"
+                            key={stat.label}
+                        >
+                <span className="character-profile__stat-label">
+                    {stat.label}
+                </span>
 
-                <div className="character-profile__details">
-                    <p>
-                        <span>레벨</span>
-                        <strong>Lv. {character.level}</strong>
-                    </p>
-
-                    <p>
-                        <span>전직</span>
-                        <strong>
-                            {character.characterClassLevel || "-"}
-                        </strong>
-                    </p>
-
-                    <p>
-                        <span>길드</span>
-                        <strong>
-                            {character.guildName || "가입하지 않음"}
-                        </strong>
-                    </p>
-
-                    <p>
-                        <span>경험치</span>
-                        <strong>{character.expRate ?? 0}%</strong>
-                    </p>
+                            <strong className="character-profile__stat-value">
+                                {stat.value}
+                            </strong>
+                        </article>
+                    ))}
                 </div>
             </div>
 

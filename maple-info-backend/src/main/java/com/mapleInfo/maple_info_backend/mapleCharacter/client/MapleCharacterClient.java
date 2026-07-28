@@ -137,12 +137,6 @@ public class MapleCharacterClient {
                 );
     }
 
-    /**
-     * 기존 서비스와의 호환성을 위한 메서드입니다.
-     *
-     * 전날 기준 종합 랭킹을 조회하며,
-     * 월드와 직업 필터는 적용하지 않습니다.
-     */
     public NexonOverallRankingResponse getOverallRanking(
             String ocid
     ) {
@@ -158,12 +152,6 @@ public class MapleCharacterClient {
         );
     }
 
-    /**
-     * 종합 랭킹 API를 조회합니다.
-     *
-     * worldName이 있으면 해당 월드 내 순위를 조회하고,
-     * rankingClass가 있으면 해당 직업 내 순위를 조회합니다.
-     */
     public NexonOverallRankingResponse getOverallRanking(
             String date,
             String ocid,
@@ -208,9 +196,6 @@ public class MapleCharacterClient {
         }
     }
 
-    /**
-     * null 또는 빈 선택값은 쿼리 파라미터에 포함하지 않습니다.
-     */
     private java.net.URI buildOverallRankingUri(
             UriBuilder uriBuilder,
             String date,
@@ -250,4 +235,6 @@ public class MapleCharacterClient {
 
         return ocid.trim();
     }
+
+    private
 }
