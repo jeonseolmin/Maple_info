@@ -15,6 +15,16 @@ public record NexonUnionArtifactResponse(
         List<NexonUnionArtifactCrystalResponse> crystals,
 
         @JsonProperty("union_artifact_remain_ap")
-        Integer remainAp
+        Integer remainAp,
+
+        @JsonProperty("union_artifact_level")
+        Integer unionArtifactLevel,
+
+        @JsonProperty("union_artifact_exp")
+        Long unionArtifactExp,
+
+        @JsonProperty("union_artifact_point")
+        Integer unionArtifactPoint
+
 ) {
 }

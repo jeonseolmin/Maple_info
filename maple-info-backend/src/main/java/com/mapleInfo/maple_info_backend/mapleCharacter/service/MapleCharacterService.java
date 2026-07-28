@@ -2,6 +2,7 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.service;
 
 import com.mapleInfo.maple_info_backend.mapleCharacter.client.MapleCharacterClient;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.*;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSearchResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
 import com.mapleInfo.maple_info_backend.mapleCharacter.repository.MapleCharacterRepository;
 import lombok.RequiredArgsConstructor;
@@ -326,12 +327,7 @@ public class MapleCharacterService {
         );
     }
 
-    /**
-     * 랭킹 API 응답에서 현재 캐릭터를 찾습니다.
-     *
-     * get(0)으로 첫 번째 항목을 사용하는 대신
-     * 캐릭터명이 일치하는 항목을 찾습니다.
-     */
+
     private Optional<NexonOverallRankingItemResponse>
     findCharacterRanking(
             NexonOverallRankingResponse response,
@@ -356,9 +352,7 @@ public class MapleCharacterService {
                 .findFirst();
     }
 
-    /**
-     * 랭킹 응답에서 순위 숫자를 추출합니다.
-     */
+
     private Integer extractRanking(
             NexonOverallRankingResponse response,
             String characterName
@@ -373,13 +367,7 @@ public class MapleCharacterService {
                 .orElse(null);
     }
 
-    /**
-     * 종합 랭킹 응답에서 직업 대분류와 세부 직업을 추출합니다.
-     *
-     * 예:
-     * className = "전사"
-     * subClassName = "히어로"
-     */
+
     private OverallClassInfo extractOverallClassInfo(
             NexonOverallRankingResponse response,
             String characterName
@@ -397,13 +385,6 @@ public class MapleCharacterService {
                 .orElse(null);
     }
 
-    /**
-     * 넥슨 랭킹 API에 전달할 class 문자열을 만듭니다.
-     *
-     * 예:
-     * 전사 + 히어로
-     * → 전사-히어로
-     */
     private String makeRankingClass(
             OverallClassInfo classInfo
     ) {
@@ -429,31 +410,14 @@ public class MapleCharacterService {
                 + subClassName.trim();
     }
 
-    /**
-     * 유니온 아티팩트 효과 중 가장 높은 레벨을 반환합니다.
-     *
-     * 현재는 임시 계산이며, 아티팩트 값의 의미는
-     * 이후 별도 단계에서 수정할 예정입니다.
-     */
     private Integer extractUnionArtifactLevel(
             NexonUnionArtifactResponse artifact
     ) {
-        if (artifact == null
-                || artifact.effects() == null) {
+        if (artifact == null) {
             return null;
         }
 
-        return artifact.effects()
-                .stream()
-                .filter(effect ->
-                        effect != null
-                                && effect.level() != null
-                )
-                .map(
-                        NexonUnionArtifactEffectResponse::level
-                )
-                .max(Integer::compareTo)
-                .orElse(null);
+        return artifact.unionArtifactLevel();
     }
 
     private Double parseExpRate(String expRate) {
@@ -466,12 +430,6 @@ public class MapleCharacterService {
         );
     }
 
-    /**
-     * 직업 랭킹 필터 생성에 필요한 내부 데이터입니다.
-     *
-     * 별도 Java 파일을 만들 필요 없이
-     * MapleCharacterService 내부에서만 사용합니다.
-     */
     private record OverallClassInfo(
             String className,
             String subClassName

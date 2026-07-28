@@ -1,8 +1,7 @@
 package com.mapleInfo.maple_info_backend.mapleCharacter.controller;
 
 
-import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.CharacterSearchResponse;
-import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSearchResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.service.MapleCharacterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

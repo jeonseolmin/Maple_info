@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "../pages/homePage/HomePage";
 import MainLayout from "../layouts/MainLayout";
-import CharacterPage from "../pages/character/CharcterPage.jsx";
+import CharacterPage from "../pages/character/CharacterPage.jsx";
 
 
 export default function AppRouter() {
