@@ -3,6 +3,8 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.entity;
 
 import com.mapleInfo.maple_info_backend.common.entity.BaseEntity;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.NexonCharacterBasicResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.NexonCharacterPopularityResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.NexonUnionResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -58,10 +60,38 @@ public class MapleCharacter extends BaseEntity {
     @Column(length = 50)
     private String guildName;
 
+    @Column(name = "union_level")
+    private Integer unionLevel;
+
+    @Column(name = "union_grade", length = 50)
+    private String unionGrade;
+
+    @Column(name = "popularity")
+    private Long popularity;
+
     @Column(columnDefinition = "TEXT")
     private String characterImage;
 
     private LocalDateTime syncedAt;
+
+    public void updateUnionInfo(NexonUnionResponse response) {
+        if (response == null) {
+            return;
+        }
+
+        this.unionLevel = response.unionLevel();
+        this.unionGrade = response.unionGrade();
+    }
+
+    public void updatePopularity(
+            NexonCharacterPopularityResponse response
+    ) {
+        if (response == null) {
+            return;
+        }
+
+        this.popularity = response.popularity();
+    }
 
     public void updateBasicInfo(NexonCharacterBasicResponse basic) {
         this.characterName = basic.characterName();

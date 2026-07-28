@@ -15,10 +15,16 @@ public record CharacterSearchResponse(
         Double expRate,
         String guildName,
         String characterImage,
+
+        Integer unionLevel,
+        String unionGrade,
+        Long popularity,
+
         LocalDateTime syncedAt
 ) {
-
-    public static CharacterSearchResponse from(MapleCharacter character) {
+    public static CharacterSearchResponse from(
+            MapleCharacter character
+    ) {
         return new CharacterSearchResponse(
                 character.getOcid(),
                 character.getCharacterName(),
@@ -30,6 +36,9 @@ public record CharacterSearchResponse(
                 character.getExpRate(),
                 character.getGuildName(),
                 character.getCharacterImage(),
+                character.getUnionLevel(),
+                character.getUnionGrade(),
+                character.getPopularity(),
                 character.getSyncedAt()
         );
     }

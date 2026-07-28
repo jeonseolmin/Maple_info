@@ -21,4 +21,5 @@ public class MapleCharacterController {
     ){
         return mapleCharacterService.searchCharacter(characterName);
     }
+
 }

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getCharacter } from "../../api/characterApi";
 import CharacterProfile from "../../components/character/CharacterProfile";
 import "./CharacterPage.css";
+import CharacterDetailGrid from "../../components/character/CharacterDetailGrid.jsx";
 
 export default function CharacterPage() {
     const { characterName } = useParams();
@@ -46,6 +47,7 @@ export default function CharacterPage() {
     return (
         <main className="character-page">
             <CharacterProfile character={character} />
+            <CharacterDetailGrid detail={character} />
         </main>
     );
 }

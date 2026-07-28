@@ -1,9 +1,7 @@
 package com.mapleInfo.maple_info_backend.mapleCharacter.service;
 
 import com.mapleInfo.maple_info_backend.mapleCharacter.client.MapleCharacterClient;
-import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.CharacterSearchResponse;
-import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.NexonCharacterBasicResponse;
-import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.NexonOcidResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.*;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
 import com.mapleInfo.maple_info_backend.mapleCharacter.repository.MapleCharacterRepository;
@@ -18,22 +16,29 @@ public class MapleCharacterService {
     private final MapleCharacterRepository mapleCharacterRepository;
     private final MapleCharacterClient mapleCharacterClient;
 
+
     @Transactional
     public CharacterSearchResponse searchCharacter(String characterName) {
-        MapleCharacter mapleCharacter =
-                mapleCharacterRepository.findByCharacterName(characterName)
-                        .orElseGet(()-> createCharacter(characterName));
-        System.out.println("ID 응답 = " + mapleCharacter);
-        System.out.println("OCID = " + mapleCharacter.getOcid());
+        MapleCharacter character = mapleCharacterRepository
+                .findByCharacterName(characterName)
+                .orElseGet(() -> createCharacter(characterName));
 
-        NexonCharacterBasicResponse basicResponse =
-                mapleCharacterClient.getBasic(mapleCharacter.getOcid());
+        String ocid = character.getOcid();
 
-        mapleCharacter.updateBasicInfo(basicResponse);
+        NexonCharacterBasicResponse basic =
+                mapleCharacterClient.getBasic(ocid);
 
-        return CharacterSearchResponse.from(
-                mapleCharacter
-        );
+        NexonUnionResponse union =
+                mapleCharacterClient.getUnion(ocid);
+
+        NexonCharacterPopularityResponse popularity =
+                mapleCharacterClient.getPopularity(ocid);
+
+        character.updateBasicInfo(basic);
+        character.updateUnionInfo(union);
+        character.updatePopularity(popularity);
+
+        return CharacterSearchResponse.from(character);
     }
 
     private MapleCharacter createCharacter(String characterName) {
