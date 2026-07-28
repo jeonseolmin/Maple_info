@@ -8,6 +8,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.NexonUnionRe
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -72,7 +73,36 @@ public class MapleCharacter extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String characterImage;
 
+    @Column(name = "overall_ranking")
+    private Integer overallRanking;
+
+    @Column(name = "world_ranking")
+    private Integer worldRanking;
+
+    @Column(name = "class_ranking")
+    private Integer classRanking;
+
+    @Column(name = "ranking_date")
+    private LocalDate rankingDate;
+
+    @Column(name = "ranking_synced_at")
+    private LocalDateTime rankingSyncedAt;
+
     private LocalDateTime syncedAt;
+
+
+    public void updateRanking(
+            Integer overallRanking,
+            Integer worldRanking,
+            Integer classRanking,
+            LocalDate rankingDate
+    ) {
+        this.overallRanking = overallRanking;
+        this.worldRanking = worldRanking;
+        this.classRanking = classRanking;
+        this.rankingDate = rankingDate;
+        this.rankingSyncedAt = LocalDateTime.now();
+    }
 
     public void updateUnionInfo(NexonUnionResponse response) {
         if (response == null) {
@@ -91,6 +121,10 @@ public class MapleCharacter extends BaseEntity {
         }
 
         this.popularity = response.popularity();
+    }
+
+    public void markSynced() {
+        this.syncedAt = LocalDateTime.now();
     }
 
     public void updateBasicInfo(NexonCharacterBasicResponse basic) {

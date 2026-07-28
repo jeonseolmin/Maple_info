@@ -20,10 +20,18 @@ public record CharacterSearchResponse(
         String unionGrade,
         Long popularity,
 
+        Integer unionArtifactLevel,
+        Integer dojangFloor,
+        Integer overallRanking,
+
         LocalDateTime syncedAt
-) {
+)  {
+
     public static CharacterSearchResponse from(
-            MapleCharacter character
+            MapleCharacter character,
+            Integer unionArtifactLevel,
+            Integer dojangFloor,
+            Integer overallRanking
     ) {
         return new CharacterSearchResponse(
                 character.getOcid(),
@@ -36,9 +44,15 @@ public record CharacterSearchResponse(
                 character.getExpRate(),
                 character.getGuildName(),
                 character.getCharacterImage(),
+
                 character.getUnionLevel(),
                 character.getUnionGrade(),
                 character.getPopularity(),
+
+                unionArtifactLevel,
+                dojangFloor,
+                overallRanking,
+
                 character.getSyncedAt()
         );
     }
