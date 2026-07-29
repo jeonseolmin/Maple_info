@@ -1,16 +1,17 @@
-// CharacterContentTabs.jsx
 import { useState } from "react";
-import CharacterEquipment from "./equipment/CharacterEquipment.jsx";
+import CharacterEquipment from "./equipment/CharacterEquipment";
+import CharacterCash from "./cash/CharacterCash";
+import CharacterSymbol from "./symbol/CharcterSymbol";
 import "./CharacterContentTabs.css";
+
+const TABS = [
+    { id: "equipment", label: "장착 장비" },
+    { id: "cashPet", label: "캐시 · 펫" },
+    { id: "symbol", label: "심볼" },
+];
 
 export default function CharacterContentTabs({ character }) {
     const [activeTab, setActiveTab] = useState("equipment");
-
-    const tabs = [
-        { id: "equipment", label: "장착 장비" },
-        { id: "cashPet", label: "캐시 · 펫" },
-        { id: "symbol", label: "심볼" },
-    ];
 
     return (
         <section className="character-content">
@@ -19,7 +20,7 @@ export default function CharacterContentTabs({ character }) {
                 role="tablist"
                 aria-label="캐릭터 상세 정보"
             >
-                {tabs.map((tab) => (
+                {TABS.map((tab) => (
                     <button
                         key={tab.id}
                         type="button"
@@ -35,9 +36,20 @@ export default function CharacterContentTabs({ character }) {
                 ))}
             </div>
 
-            <div className="character-content__panel" role="tabpanel">
+            <div
+                className="character-content__panel"
+                role="tabpanel"
+            >
                 {activeTab === "equipment" && (
                     <CharacterEquipment character={character} />
+                )}
+
+                {activeTab === "cashPet" && (
+                    <CharacterCash character={character} />
+                )}
+
+                {activeTab === "symbol" && (
+                    <CharacterSymbol character={character} />
                 )}
             </div>
         </section>

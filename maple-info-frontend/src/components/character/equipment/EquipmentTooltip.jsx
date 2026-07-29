@@ -120,7 +120,7 @@ export default function EquipmentTooltip({ item, onClose }) {
 
                         {item.equipmentLevelIncrease > 0 && (
                             <span>
-                                장비 레벨 증가 +{item.equipmentLevelIncrease}
+                                장비 레벨 증가 +{item.equipmentLevel}
                             </span>
                         )}
                     </div>

@@ -9,7 +9,7 @@
     --color-surface: #ffffff;
     --color-surface-soft: #f2f4f9;
     --color-surface-glass: rgba(255, 255, 255, 0.84);
-
+    --color-text-muted: #747d91;
     --color-text: #151922;
     --color-text-secondary: #747d91;
     --color-placeholder: #969daf;
@@ -67,7 +67,7 @@ html.dark {
     --color-surface: #20232d;
     --color-surface-soft: #292d38;
     --color-surface-glass: rgba(27, 30, 39, 0.88);
-
+    --color-text-muted: #adb5c6;
     --color-text: #f4f6fb;
     --color-text-secondary: #adb5c6;
     --color-placeholder: #868e9f;

@@ -11,4 +11,19 @@ export const getCharacter = async (characterName) => {
     );
 
     return response.data;
+
+
+};
+
+export const getCharacterEquipment = async (ocid) => {
+    const response = await axiosInstance.get(
+        "/characters/equipment",
+        {
+            params: {
+                ocid,
+            },
+        }
+    );
+
+    return response.data;
 };
