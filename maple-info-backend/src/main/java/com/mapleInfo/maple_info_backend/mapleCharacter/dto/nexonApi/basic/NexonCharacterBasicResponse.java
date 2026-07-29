@@ -1,4 +1,4 @@
-package com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi;
+package com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic;
 
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;

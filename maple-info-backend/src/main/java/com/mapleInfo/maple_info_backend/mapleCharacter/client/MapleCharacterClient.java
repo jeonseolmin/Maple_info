@@ -1,7 +1,13 @@
 package com.mapleInfo.maple_info_backend.mapleCharacter.client;
 
 import com.mapleInfo.maple_info_backend.common.exception.NexonApiException;
-import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.*;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.populity.NexonCharacterPopularityResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

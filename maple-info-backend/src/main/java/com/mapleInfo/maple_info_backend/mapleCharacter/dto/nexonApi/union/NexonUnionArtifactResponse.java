@@ -1,4 +1,4 @@
-package com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi;
+package com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

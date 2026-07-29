@@ -1,6 +1,6 @@
 // CharacterContentTabs.jsx
 import { useState } from "react";
-import CharacterEquipment from "./equipment/CharcterEquipment.jsx";
+import CharacterEquipment from "./equipment/CharacterEquipment.jsx";
 import CharacterCash from "./cash/CharcterCash.jsx";
 import CharacterSymbol from "./symbol/CharcterSymbol.jsx";
 import "./CharacterContentTabs.css";

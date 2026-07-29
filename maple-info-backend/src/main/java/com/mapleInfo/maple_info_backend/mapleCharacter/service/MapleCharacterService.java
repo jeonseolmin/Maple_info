@@ -1,7 +1,14 @@
 package com.mapleInfo.maple_info_backend.mapleCharacter.service;
 
 import com.mapleInfo.maple_info_backend.mapleCharacter.client.MapleCharacterClient;
-import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.*;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.populity.NexonCharacterPopularityResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingItemResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSearchResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
 import com.mapleInfo.maple_info_backend.mapleCharacter.repository.MapleCharacterRepository;
