@@ -1,8 +1,7 @@
-package com.mapleInfo.maple_info_backend.potentialAbility;
+package com.mapleInfo.maple_info_backend.potentialAbility.crawler;
 
 import com.mapleInfo.maple_info_backend.potentialAbility.dto.CubeProbabilityDto;
 import com.mapleInfo.maple_info_backend.potentialAbility.entity.CubeType;
-import com.mapleInfo.maple_info_backend.potentialAbility.repository.CubeProbabilityRepository;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -38,7 +37,7 @@ public class CubeCrawler {
         targetUrls.put(CubeType.ARTISAN, "https://maplestory.nexon.com/Guide/OtherProbability/Cube/artisan");
         targetUrls.put(CubeType.STRANGEADDI, "https://maplestory.nexon.com/Guide/OtherProbability/Cube/strangeAddi");
 
-        // 🌟 [복구 모드 설정] 레드 큐브 / 에픽 / 어깨장식부터 수집을 재개합니다.
+        //  [복구 모드 설정] 레드 큐브 / 에픽 / 어깨장식부터 수집을 재개합니다.
         boolean isResumeMode = true;
 
         try {
@@ -168,8 +167,10 @@ public class CubeCrawler {
                             // 부위별 수집 완료 시 즉시 DB 중간 저장
                             if (groupedDataMap.containsKey(partName)) {
                                 List<CubeProbabilityDto> chunkToSave = groupedDataMap.get(partName);
-                                CubeProbabilityRepository repository = new CubeProbabilityRepository();
-                                repository.saveAll(chunkToSave);
+
+                                CrawlerJdbcRepository jdbcRepository = new CrawlerJdbcRepository();
+                                jdbcRepository.saveAll(chunkToSave);
+
                                 System.out.println("💾 [" + currentCubeType.name() + " - " + tierName + " - " + partName + "] 데이터 " + chunkToSave.size() + "건 DB 중간 저장 완료!");
                                 groupedDataMap.remove(partName);
                             }

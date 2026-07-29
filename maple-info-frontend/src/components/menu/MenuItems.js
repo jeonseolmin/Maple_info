@@ -14,16 +14,16 @@ export const starforceMenu = {
     type: "app",
     label: "스타포스 효율",
     icon: "/images/menu/starforce.png",
-    path: "/efficiency/starforce",
+    path: "/starforce",
     color: "#f2b84b",
 };
 
 export const potentialMenu = {
     id: "potential-efficiency",
     type: "app",
-    label: "잠재·추옵 효율",
+    label: "잠재 효율",
     icon: "/images/menu/potential.png",
-    path: "/efficiency/potential",
+    path: "/cube",
     color: "#9b6de3",
 };
 
