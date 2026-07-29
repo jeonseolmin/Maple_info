@@ -19,7 +19,7 @@ export default function AppRouter() {
               path="character/:characterName"
               element={<CharacterPage />}
           />
-          
+
         <Route
           path="/cube"
           element={

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import EquipmentSlot from "./EquipmentSlot";
 import EquipmentTooltip from "./EquipmentTooltip.jsx";
-import { EQUIPMENT_SLOTS } from "./equipmentSlots.jsx";
+import { EQUIPMENT_SLOTS } from "./equipmentSlot";
 import "./Equipment.css";
 
 export default function EquipmentGrid({ equipment = [] }) {

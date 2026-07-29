@@ -1,8 +1,6 @@
 // CharacterContentTabs.jsx
 import { useState } from "react";
 import CharacterEquipment from "./equipment/CharacterEquipment.jsx";
-import CharacterCash from "./cash/CharcterCash.jsx";
-import CharacterSymbol from "./symbol/CharcterSymbol.jsx";
 import "./CharacterContentTabs.css";
 
 export default function CharacterContentTabs({ character }) {
@@ -40,14 +38,6 @@ export default function CharacterContentTabs({ character }) {
             <div className="character-content__panel" role="tabpanel">
                 {activeTab === "equipment" && (
                     <CharacterEquipment character={character} />
-                )}
-
-                {activeTab === "cashPet" && (
-                    <CharacterCash character={character} />
-                )}
-
-                {activeTab === "symbol" && (
-                    <CharacterSymbol character={character} />
                 )}
             </div>
         </section>
