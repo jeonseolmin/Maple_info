@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getCharacter } from "../../api/characterApi";
 import CharacterProfile from "../../components/character/CharacterProfile";
+import CharacterContentTabs from "../../components/character/CharacterContentTabs.jsx";
 import "./CharacterPage.css";
-import CharacterDetailGrid from "../../components/character/CharacterDetailGrid.jsx";
 
 export default function CharacterPage() {
     const { characterName } = useParams();
@@ -47,7 +47,7 @@ export default function CharacterPage() {
     return (
         <main className="character-page">
             <CharacterProfile character={character} />
-            <CharacterDetailGrid detail={character} />
+            <CharacterContentTabs character={character} />
         </main>
     );
 }

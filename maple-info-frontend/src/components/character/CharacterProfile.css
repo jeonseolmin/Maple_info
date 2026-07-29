@@ -10,6 +10,7 @@
     margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 25px;
     padding: 24px;
     gap: 28px;
     border-radius: 20px;
@@ -282,9 +283,7 @@ body.dark-mode .character-profile__visual {
         min-height: 190px;
     }
 
-    .character-profile__details {
-        grid-template-columns: repeat(2, 1fr);
-    }
+
 
     .character-profile__summary {
         grid-column: auto;

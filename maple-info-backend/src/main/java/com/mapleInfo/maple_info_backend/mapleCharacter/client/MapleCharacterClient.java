@@ -236,5 +236,4 @@ public class MapleCharacterClient {
         return ocid.trim();
     }
 
-    private
 }
