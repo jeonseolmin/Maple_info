@@ -117,20 +117,20 @@ export const folderMenuItems = [
         color: "#41a7a5",
         children: [
             {
-                id: "experience-calculator",
-                type: "app",
-                label: "콘텐츠 경험치",
-                icon: "/images/menu/experience-calculator.png",
-                path: "/experience/calculator",
-                color: "#41a7a5",
-            },
-            {
                 id: "hunting-experience",
                 type: "app",
                 label: "사냥 경험치",
                 icon: "/images/menu/hunting-experience.png",
                 path: "/experience/hunting",
                 color: "#55b88b",
+            },
+            {
+                id: "experience-calculator",
+                type: "app",
+                label: "상급 EXP 쿠폰 효율",
+                icon: "/images/menu/experience-coupon.png",
+                path: "/experience/coupon",
+                color: "#41a7a5",
             },
             {
                 id: "afk-experience",
