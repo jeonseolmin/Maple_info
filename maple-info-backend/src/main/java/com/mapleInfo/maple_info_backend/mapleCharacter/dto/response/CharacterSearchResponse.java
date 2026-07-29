@@ -1,7 +1,8 @@
-package com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi;
+package com.mapleInfo.maple_info_backend.mapleCharacter.dto.response;
 
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record CharacterSearchResponse(
@@ -15,10 +16,27 @@ public record CharacterSearchResponse(
         Double expRate,
         String guildName,
         String characterImage,
+
+        Integer unionLevel,
+        String unionGrade,
+        Long popularity,
+
+        Integer unionArtifactLevel,
+        Integer dojangFloor,
+
+        Integer overallRanking,
+        Integer worldRanking,
+        Integer classRanking,
+        LocalDate rankingDate,
+
         LocalDateTime syncedAt
 ) {
 
-    public static CharacterSearchResponse from(MapleCharacter character) {
+    public static CharacterSearchResponse from(
+            MapleCharacter character,
+            Integer unionArtifactLevel,
+            Integer dojangFloor
+    ) {
         return new CharacterSearchResponse(
                 character.getOcid(),
                 character.getCharacterName(),
@@ -30,6 +48,19 @@ public record CharacterSearchResponse(
                 character.getExpRate(),
                 character.getGuildName(),
                 character.getCharacterImage(),
+
+                character.getUnionLevel(),
+                character.getUnionGrade(),
+                character.getPopularity(),
+
+                unionArtifactLevel,
+                dojangFloor,
+
+                character.getOverallRanking(),
+                character.getWorldRanking(),
+                character.getClassRanking(),
+                character.getRankingDate(),
+
                 character.getSyncedAt()
         );
     }

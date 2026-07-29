@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getCharacter } from "../../api/characterApi";
 import CharacterProfile from "../../components/character/CharacterProfile";
+import CharacterContentTabs from "../../components/character/CharacterContentTabs.jsx";
 import "./CharacterPage.css";
 
 export default function CharacterPage() {
@@ -45,8 +46,8 @@ export default function CharacterPage() {
 
     return (
         <main className="character-page">
-            <h1>{characterName} 캐릭터 페이지</h1>
             <CharacterProfile character={character} />
+            <CharacterContentTabs character={character} />
         </main>
     );
 }

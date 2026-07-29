@@ -2,10 +2,13 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.entity;
 
 
 import com.mapleInfo.maple_info_backend.common.entity.BaseEntity;
-import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.NexonCharacterBasicResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -58,10 +61,71 @@ public class MapleCharacter extends BaseEntity {
     @Column(length = 50)
     private String guildName;
 
+    @Column(name = "union_level")
+    private Integer unionLevel;
+
+    @Column(name = "union_grade", length = 50)
+    private String unionGrade;
+
+    @Column(name = "popularity")
+    private Long popularity;
+
     @Column(columnDefinition = "TEXT")
     private String characterImage;
 
+    @Column(name = "overall_ranking")
+    private Integer overallRanking;
+
+    @Column(name = "world_ranking")
+    private Integer worldRanking;
+
+    @Column(name = "class_ranking")
+    private Integer classRanking;
+
+    @Column(name = "ranking_date")
+    private LocalDate rankingDate;
+
+    @Column(name = "ranking_synced_at")
+    private LocalDateTime rankingSyncedAt;
+
     private LocalDateTime syncedAt;
+
+
+    public void updateRanking(
+            Integer overallRanking,
+            Integer worldRanking,
+            Integer classRanking,
+            LocalDate rankingDate
+    ) {
+        this.overallRanking = overallRanking;
+        this.worldRanking = worldRanking;
+        this.classRanking = classRanking;
+        this.rankingDate = rankingDate;
+        this.rankingSyncedAt = LocalDateTime.now();
+    }
+
+    public void updateUnionInfo(NexonUnionResponse response) {
+        if (response == null) {
+            return;
+        }
+
+        this.unionLevel = response.unionLevel();
+        this.unionGrade = response.unionGrade();
+    }
+
+    public void updatePopularity(
+            NexonCharacterPopularityResponse response
+    ) {
+        if (response == null) {
+            return;
+        }
+
+        this.popularity = response.popularity();
+    }
+
+    public void markSynced() {
+        this.syncedAt = LocalDateTime.now();
+    }
 
     public void updateBasicInfo(NexonCharacterBasicResponse basic) {
         this.characterName = basic.characterName();
