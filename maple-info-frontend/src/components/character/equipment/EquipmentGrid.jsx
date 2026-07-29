@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import EquipmentSlot from "./EquipmentSlot";
-import EquipmentTooltip from "./EquipmentTooltip.jsx";
+import EquipmentSlot from "./EquipmentSlot.jsx";
+import EquipmentTooltip from "./EquipmentTooltip";
 import { EQUIPMENT_SLOTS } from "./equipmentSlot";
 import "./Equipment.css";
 
@@ -10,17 +10,27 @@ export default function EquipmentGrid({ equipment = [] }) {
     const equipmentBySlot = useMemo(() => {
         return Object.fromEntries(
             equipment
-                .filter(Boolean)
+                .filter((item) => item?.slot)
                 .map((item) => [item.slot, item])
         );
     }, [equipment]);
 
+    const handleSelect = (item) => {
+        setSelectedItem((currentItem) =>
+            currentItem?.slot === item.slot ? null : item
+        );
+    };
+
     return (
         <section className="equipment-panel">
-            <div className="equipment-panel__header">
-                <h2>장비</h2>
+            <header className="equipment-panel__header">
+                <div>
+                    <h2>장착 장비</h2>
+                    <p>장비를 선택하면 상세 옵션을 확인할 수 있습니다.</p>
+                </div>
+
                 <span>{equipment.length}개 장착</span>
-            </div>
+            </header>
 
             <div className="equipment-panel__body">
                 <div className="equipment-grid">
@@ -30,7 +40,7 @@ export default function EquipmentGrid({ equipment = [] }) {
                             slot={slot}
                             item={equipmentBySlot[slot]}
                             selected={selectedItem?.slot === slot}
-                            onSelect={setSelectedItem}
+                            onSelect={handleSelect}
                         />
                     ))}
                 </div>
