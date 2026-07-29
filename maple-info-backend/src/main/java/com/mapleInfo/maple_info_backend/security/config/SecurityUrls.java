@@ -10,7 +10,8 @@ public final class SecurityUrls {
             "/login/oauth2/**",
             "/api/auth/**",
             "/api/starforce/**",
-            "/api/cube/**"
+            "/api/cube/**",
+            "/api/exp/**"
 
     };
 

@@ -4,7 +4,10 @@ import MainLayout from "../layouts/MainLayout";
 import CharacterPage from "../pages/character/CharacterPage.jsx";
 import CubeExpectation from "../components/cubeCalculator/CubeExpectation";
 import StarforceExpectation from "../components/starforceCalculator/StarforceExpectation";
-// 🌟 밖으로 빼두었던 Header와 DeviceFrame import는 지워도 됩니다. (MainLayout이 알아서 처리해줍니다)
+import ExpCalculator from "../components/expCalculator/ExpCalculator.jsx";
+import ExpPointCalculator from "../components/expCalculator/ExpPointCalculator.jsx";
+import TreasureHunter from "../components/expCalculator/TreasureHunter.jsx";
+import AfkExperience from "../components/expCalculator/AfkExperience.jsx";
 
 export default function AppRouter() {
   return (
@@ -17,6 +20,10 @@ export default function AppRouter() {
           
           <Route path="cube" element={<CubeExpectation />} />
           <Route path="starforce" element={<StarforceExpectation />} />
+          <Route path="experience/hunting" element={<ExpCalculator/>} />
+          <Route path="experience/coupon" element={<ExpPointCalculator />} />
+          <Route path="experience/treasure-hunter" element={<TreasureHunter/>} />
+          <Route path="experience/afk" element={<AfkExperience/>} />
           
         </Route>
       </Routes>
