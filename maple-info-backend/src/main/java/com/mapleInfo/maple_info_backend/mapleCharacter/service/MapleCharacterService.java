@@ -476,7 +476,8 @@ public class MapleCharacterService {
                     null,
                     null,
                     null,
-                    java.util.List.of()
+                    java.util.List.of(),
+                    null
             );
         }
 

@@ -72,6 +72,9 @@ export default function CharacterEquipment({ character }) {
     }
 
     return (
-        <EquipmentGrid equipment={equipment} />
+        <EquipmentGrid
+            equipment={equipmentData?.equipment ?? []}
+            equippedTitle={equipmentData?.equippedTitle ?? null}
+        />
     );
 }

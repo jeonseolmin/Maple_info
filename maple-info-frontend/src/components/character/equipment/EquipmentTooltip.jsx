@@ -139,8 +139,8 @@ export default function EquipmentTooltip({ item, onClose }) {
             />
 
             <EquipmentOptions
-                title="기본 옵션"
-                option={item.baseOption}
+                title="주문서 강화"
+                option={item.scrollOption}
             />
 
             <EquipmentOptions
@@ -148,10 +148,7 @@ export default function EquipmentTooltip({ item, onClose }) {
                 option={item.addOption}
             />
 
-            <EquipmentOptions
-                title="주문서 강화"
-                option={item.scrollOption}
-            />
+
 
             <EquipmentOptions
                 title="스타포스 강화"
@@ -193,12 +190,13 @@ export default function EquipmentTooltip({ item, onClose }) {
                     </p>
                 )}
 
-                {item.cuttableCount !== null && (
-                    <p>가위 사용 가능 횟수: {item.cuttableCount}</p>
-                )}
-
-                {item.goldenHammerFlag && (
-                    <p>황금망치: {item.goldenHammerFlag}</p>
+                {item.tradeStatus && (
+                    <p className={item.tradeStatus === "교환 불가"
+                        ? "is-untradable"
+                        : ""
+                    }>
+                        {item.tradeStatus}
+                    </p>
                 )}
 
                 {item.soulName && <p>소울: {item.soulName}</p>}

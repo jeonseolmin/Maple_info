@@ -37,11 +37,12 @@ public record CharacterEquipmentItemResponse(
 
         Integer scrollUpgrade,
         Integer scrollUpgradeableCount,
-        Integer cuttableCount,
-        String goldenHammerFlag,
+        String tradeStatus,
 
         String soulName,
         String soulOption
+
+
 ) {
 
     public static CharacterEquipmentItemResponse from(
@@ -98,8 +99,7 @@ public record CharacterEquipmentItemResponse(
 
                 item.scrollUpgrade(),
                 item.scrollUpgradeableCount(),
-                item.cuttableCount(),
-                item.goldenHammerFlag(),
+                createTradeStatus(item.cuttableCount()),
 
                 item.soulName(),
                 item.soulOption()
@@ -127,5 +127,19 @@ public record CharacterEquipmentItemResponse(
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    private static String createTradeStatus(Integer cuttableCount) {
+        if (cuttableCount == null) {
+            return null;
+        }
+
+        if (cuttableCount >= 255) {
+            return "교환 불가";
+        }
+
+        return "가위 사용 가능 횟수: "
+                + cuttableCount
+                + "회";
     }
 }

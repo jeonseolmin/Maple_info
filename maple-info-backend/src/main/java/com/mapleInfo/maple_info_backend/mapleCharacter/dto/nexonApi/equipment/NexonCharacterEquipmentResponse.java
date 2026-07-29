@@ -1,5 +1,7 @@
 package com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterTitleResponse;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
@@ -11,6 +13,10 @@ public record NexonCharacterEquipmentResponse(
         String characterGender,
         String characterClass,
         Integer presetNo,
-        List<NexonEquipmentItemResponse> itemEquipment
+        List<NexonEquipmentItemResponse> itemEquipment,
+
+        @JsonProperty("title")
+        NexonTitleResponse equippedTitle
 ) {
+
 }
