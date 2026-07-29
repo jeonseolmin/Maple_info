@@ -4,7 +4,8 @@ import com.mapleInfo.maple_info_backend.common.exception.NexonApiException;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
-import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.populity.NexonCharacterPopularityResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment.NexonCharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
@@ -241,5 +242,34 @@ public class MapleCharacterClient {
 
         return ocid.trim();
     }
+
+    public NexonCharacterEquipmentResponse getEquipment(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/item-equipment"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterEquipmentResponse.class
+                    );
+
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 장비 정보 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
+
 
 }

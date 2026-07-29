@@ -4,12 +4,14 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.client.MapleCharacterClie
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
-import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.populity.NexonCharacterPopularityResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment.NexonCharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSearchResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
 import com.mapleInfo.maple_info_backend.mapleCharacter.repository.MapleCharacterRepository;
 import lombok.RequiredArgsConstructor;
@@ -455,5 +457,31 @@ public class MapleCharacterService {
                     e
             );
         }
+    }
+
+    public CharacterEquipmentResponse getEquipment(
+            String ocid
+    ) {
+        log.info(
+                "장비 API 호출 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
+        NexonCharacterEquipmentResponse nexonResponse =
+                mapleCharacterClient.getEquipment(ocid);
+
+        if (nexonResponse == null) {
+            return new CharacterEquipmentResponse(
+                    null,
+                    null,
+                    null,
+                    null,
+                    java.util.List.of()
+            );
+        }
+
+        return CharacterEquipmentResponse.from(
+                nexonResponse
+        );
     }
 }

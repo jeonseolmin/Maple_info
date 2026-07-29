@@ -3,7 +3,7 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.entity;
 
 import com.mapleInfo.maple_info_backend.common.entity.BaseEntity;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
-import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.populity.NexonCharacterPopularityResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
 import jakarta.persistence.*;
 import lombok.*;

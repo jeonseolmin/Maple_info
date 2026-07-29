@@ -1,4 +1,4 @@
-package com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.populity;
+package com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
