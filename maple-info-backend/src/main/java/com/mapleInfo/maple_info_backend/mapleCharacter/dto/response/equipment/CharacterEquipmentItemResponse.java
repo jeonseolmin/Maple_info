@@ -18,6 +18,7 @@ public record CharacterEquipmentItemResponse(
         String shapeIcon,
         String gender,
         Integer equipmentLevel,
+        CharacterEquipmentOptionResponse exceptionalOption,
 
         Integer starforce,
         String starforceScrollFlag,
@@ -58,6 +59,9 @@ public record CharacterEquipmentItemResponse(
                 item.itemShapeIcon(),
                 item.itemGender(),
                 item.equipmentLevelIncrease(),
+                CharacterEquipmentOptionResponse.from(
+                        item.itemExceptionalOption()
+                ),
 
                 parseInteger(item.starforce()),
                 item.starforceScrollFlag(),

@@ -17,6 +17,7 @@ public record NexonEquipmentItemResponse(
         String itemShapeIcon,
         String itemGender,
         Integer equipmentLevelIncrease,
+        NexonEquipmentOptionResponse itemExceptionalOption,
 
         String starforce,
         String starforceScrollFlag,
