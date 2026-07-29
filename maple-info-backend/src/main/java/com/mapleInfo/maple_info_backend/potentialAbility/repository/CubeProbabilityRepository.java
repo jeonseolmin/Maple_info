@@ -10,19 +10,22 @@ import java.util.List;
 
 public interface CubeProbabilityRepository extends JpaRepository<CubeProbability, Long> {
 
-    // 1. 프론트엔드에 전달할 중복 없는 옵션 목록 조회
     @Query("SELECT DISTINCT c.optionName FROM CubeProbability c " +
             "WHERE c.cubeType = :cubeType AND c.itemPart = :itemPart AND c.potentialTier = :tier " +
+            "AND c.optionName NOT LIKE '%.%' " + // 핵심: 메이플 옵션에는 소수점(.)이 절대 안 들어갑니다! 0.7000% 같은 확률 데이터 원천 차단
+            "AND c.optionName NOT LIKE '%레어%' " + // 앞뒤에 공백이나 특수문자가 섞여 있어도 무조건 차단
+            "AND c.optionName NOT LIKE '%에픽%' " +
+            "AND c.optionName NOT LIKE '%유니크%' " +
+            "AND c.optionName NOT LIKE '%레전드리%' " +
             "ORDER BY c.optionName ASC")
     List<String> findAvailableOptions(@Param("cubeType") CubeType cubeType,
                                       @Param("itemPart") String itemPart,
                                       @Param("tier") String tier);
 
-    // 2. 확률 계산 시 단일 옵션 확률 조회
     @Query("SELECT c.probability FROM CubeProbability c " +
             "WHERE c.cubeType = :cubeType AND c.itemPart = :itemPart AND c.potentialTier = :tier AND c.optionName = :optionName")
-    Double findProbability(@Param("cubeType") CubeType cubeType,
-                           @Param("itemPart") String itemPart,
-                           @Param("tier") String tier,
-                           @Param("optionName") String optionName);
+    List<Double> findProbabilities(@Param("cubeType") CubeType cubeType,
+                                   @Param("itemPart") String itemPart,
+                                   @Param("tier") String tier,
+                                   @Param("optionName") String optionName);
 }

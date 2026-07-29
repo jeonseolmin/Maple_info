@@ -6,8 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StarForceRequestDto {
-    private int itemLevel;        // 예: 160
-    private int startStar;        // 예: 15
-    private int targetStar;       // 예: 22
-    private long replacementCost; // 예: 500000000 (5억 메소, 노작값)
+    private int itemLevel;
+    private int currentStar;
+    private int targetStar;
+    private String spareCost;
+    private String mvp;
+    private boolean safeguard;
+    private String event;
 }

@@ -1,5 +1,7 @@
 package com.mapleInfo.maple_info_backend.potentialAbility.controller;
 
+import com.mapleInfo.maple_info_backend.potentialAbility.dto.CubeCalculateRequestDto;
+import com.mapleInfo.maple_info_backend.potentialAbility.dto.CubeCalculateResponseDto;
 import com.mapleInfo.maple_info_backend.potentialAbility.entity.CubeType;
 import com.mapleInfo.maple_info_backend.potentialAbility.service.CubeProbabilityService;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +31,18 @@ public class CubeProbabilityController {
 
         List<String> options = cubeService.getAvailableOptions(cubeType, partName, tier);
         return ResponseEntity.ok(options);
+    }
+
+    // 프론트엔드에서 기댓값 계산을 요청하는 API
+    @PostMapping("/calculate")
+    public ResponseEntity<CubeCalculateResponseDto> calculateCube(@RequestBody CubeCalculateRequestDto request) {
+        CubeCalculateResponseDto response = cubeService.calculateExpectedCost(
+                request.getCubeType(),
+                request.getItemPart(),
+                request.getTier(),
+                request.getSelectedOptions(),
+                request.getCubePrice()
+        );
+        return ResponseEntity.ok(response);
     }
 }

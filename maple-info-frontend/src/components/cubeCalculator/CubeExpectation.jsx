@@ -1,212 +1,300 @@
 import React, { useState, useEffect } from 'react';
-import CalculatorLayout from '../layout/calculator/CalculatorLayout';
+import axios from 'axios';
+import '../layout/calculator/CalculatorExpectation.css';
 
 const CUBE_TYPES = [
-    { id: 'RED', name: '레드 큐브' },
-    { id: 'BLACK', name: '블랙 큐브' },
-    { id: 'ADDITIONAL', name: '에디셔널 큐브' },
-    { id: 'STRANGE', name: '수상한 큐브' },
-    { id: 'ARTISAN', name: '장인의 큐브' },
-    { id: 'SILVER', name: '명장의 큐브' }
+    { value: 'RED', label: '레드 큐브 (단종/캐시)' },
+    { value: 'BLACK', label: '잠재능력 재설정 (메소)' }, 
+    { value: 'ADDITIONAL', label: '에디셔널 재설정 (메소)' },
+    { value: 'STRANGE', label: '수상한 큐브' },
+    { value: 'SILVER', label: '장인의 큐브' },
+    { value: 'ARTISAN', label: '명장의 큐브' },
+    { value: 'STRANGEADDI', label: '수상한 에디셔널 큐브' }
 ];
 
-// 💡 레벨을 떼어내고 누락된 전체 장비 부위를 추가했습니다.
 const ITEM_PARTS = [
-    "무기", "엠블렘", "보조무기", "모자", "상의", "하의", "전신옷", 
-    "장갑", "신발", "어깨장식", "얼굴장식", "눈장식", "귀고리", 
-    "반지", "펜던트", "벨트", "망토", "기계심장"
+    '무기', '모자', '상의', '하의', '한벌옷', '신발', '장갑', '망토',
+    '어깨장식', '얼굴장식', '눈장식', '귀고리', '펜던트', '벨트', '반지',
+    '엠블렘', '보조무기(포스실드, 소울링 제외)','포스실드, 소울링','방패', '기계심장'
 ];
 
-const TIERS = ["레어", "에픽", "유니크", "레전드리"];
-const STRANGE_TIERS = ["레어", "에픽"]; 
+const LEVELS = Array.from({ length: 25 }, (_, i) => (i + 1) * 10);
 
 const CubeExpectation = () => {
     const [formData, setFormData] = useState({
-        cubeType: 'RED',
+        cubeType: 'BLACK',
         itemPart: '무기',
-        level: 150, // 💡 직접 입력받을 장비 레벨 (기본값 150)
+        level: '150',
         tier: '레전드리',
         targetOption1: '',
         targetOption2: '',
-        targetOption3: ''
+        targetOption3: '',
+        cubePrice: '40000000' 
     });
 
-    const [availableTiers, setAvailableTiers] = useState(TIERS);
-    const [dbOptions, setDbOptions] = useState([]); 
-    const [result, setResult] = useState(null);
+    const [dbOptions, setDbOptions] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [resultData, setResultData] = useState(null);
 
-    const handleInputChange = (e) => {
+    // 공식 재설정 비용표 기반 자동 계산 로직
+    useEffect(() => {
+        if (formData.cubeType === 'BLACK' || formData.cubeType === 'ADDITIONAL') {
+            const level = parseInt(formData.level, 10);
+            const tier = formData.tier;
+            let calculatedPrice = 0;
+
+            // 1. 일반 잠재능력 재설정 (블랙 큐브 동일 기능)
+            if (formData.cubeType === 'BLACK') {
+                if (level >= 250) { // 구간 1 (250~300)
+                    if (tier === '레어') calculatedPrice = 5000000;
+                    else if (tier === '에픽') calculatedPrice = 20000000;
+                    else if (tier === '유니크') calculatedPrice = 42500000;
+                    else if (tier === '레전드리') calculatedPrice = 50000000;
+                } else if (level >= 200) { // 구간 2 (200~249)
+                    if (tier === '레어') calculatedPrice = 4500000;
+                    else if (tier === '에픽') calculatedPrice = 18000000;
+                    else if (tier === '유니크') calculatedPrice = 38250000;
+                    else if (tier === '레전드리') calculatedPrice = 45000000;
+                } else if (level >= 160) { // 구간 3 (160~199)
+                    if (tier === '레어') calculatedPrice = 4250000;
+                    else if (tier === '에픽') calculatedPrice = 17000000;
+                    else if (tier === '유니크') calculatedPrice = 36125000;
+                    else if (tier === '레전드리') calculatedPrice = 42500000;
+                } else { // 구간 4 (1~159)
+                    if (tier === '레어') calculatedPrice = 4000000;
+                    else if (tier === '에픽') calculatedPrice = 16000000;
+                    else if (tier === '유니크') calculatedPrice = 34000000;
+                    else if (tier === '레전드리') calculatedPrice = 40000000;
+                }
+            } 
+            // 2. 에디셔널 잠재능력 재설정 (화이트 에디셔널 동일 기능)
+            else if (formData.cubeType === 'ADDITIONAL') {
+                if (level >= 250) { // 구간 1 (250~300)
+                    if (tier === '레어') calculatedPrice = 12250000;
+                    else if (tier === '에픽') calculatedPrice = 34300000;
+                    else if (tier === '유니크') calculatedPrice = 83300000;
+                    else if (tier === '레전드리') calculatedPrice = 98000000;
+                } else if (level >= 200) { // 구간 2 (200~249)
+                    if (tier === '레어') calculatedPrice = 11000000;
+                    else if (tier === '에픽') calculatedPrice = 30800000;
+                    else if (tier === '유니크') calculatedPrice = 74800000;
+                    else if (tier === '레전드리') calculatedPrice = 88000000;
+                } else if (level >= 160) { // 구간 3 (160~199)
+                    if (tier === '레어') calculatedPrice = 10375000;
+                    else if (tier === '에픽') calculatedPrice = 29050000;
+                    else if (tier === '유니크') calculatedPrice = 70550000;
+                    else if (tier === '레전드리') calculatedPrice = 83000000;
+                } else { // 구간 4 (1~159)
+                    if (tier === '레어') calculatedPrice = 9750000;
+                    else if (tier === '에픽') calculatedPrice = 27300000;
+                    else if (tier === '유니크') calculatedPrice = 66300000;
+                    else if (tier === '레전드리') calculatedPrice = 78000000;
+                }
+            }
+            
+            // 계산된 값을 가격 input에 적용
+            setFormData(prev => ({ ...prev, cubePrice: calculatedPrice.toString() }));
+        } else if (formData.cubeType === 'RED') {
+            // 그 외 큐브는 0으로 처리 (유저가 직접 수정 가능)
+            setFormData(prev => ({ ...prev, cubePrice: '0' }));
+        }
+    }, [formData.cubeType, formData.level, formData.tier]);
+
+    // (옵션 목록 불러오기)
+    useEffect(() => {
+        const fetchRealOptions = async () => {
+            setIsLoading(true);
+            try {
+                const formattedPartName = `${formData.itemPart} (${formData.level}레벨)`;
+                
+                const response = await axios.get('http://localhost:8080/api/cube/options', {
+                    params: {
+                        cubeType: formData.cubeType,
+                        partName: formattedPartName,
+                        tier: formData.tier
+                    }
+                });
+
+                setDbOptions(response.data);
+                
+                setFormData(prev => ({
+                    ...prev,
+                    targetOption1: '',
+                    targetOption2: '',
+                    targetOption3: ''
+                }));
+            } catch (error) {
+                console.error("❌ DB 조회 실패:", error);
+                setDbOptions([]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchRealOptions();
+    }, [formData.cubeType, formData.itemPart, formData.level, formData.tier]);
+
+    const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ 
-            ...prev, 
-            [name]: name === 'level' ? Number(value) : value 
-        }));
+        
+        if (name === 'cubePrice') {
+            const numValue = value.replace(/[^0-9]/g, '');
+            setFormData(prev => ({ ...prev, [name]: numValue }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
-    // [등급 제어] 수상한 큐브 에픽 제한
-    useEffect(() => {
-        if (formData.cubeType.includes('STRANGE')) {
-            setAvailableTiers(STRANGE_TIERS);
-            if (formData.tier === '유니크' || formData.tier === '레전드리') {
-                setFormData(prev => ({ ...prev, tier: '에픽' }));
-            }
-        } else {
-            setAvailableTiers(TIERS);
-        }
-    }, [formData.cubeType, formData.tier]);
-
-    // 💡 [핵심] 레벨, 등급, 큐브 종류에 맞춰 정확한 퍼센트를 산출해 내는 모의 로직
-    useEffect(() => {
-        const isAddi = formData.cubeType === 'ADDITIONAL';
-        const level = formData.level;
-        const tier = formData.tier;
-        let options = [];
-
-        // 1. 레벨과 등급에 따른 '주요 스탯 퍼센트' 계산 로직 (71레벨 이상 기준 예시)
-        const getStatPercent = (type) => {
-            let val = 0;
-            if (isAddi) {
-                if (tier === '레전드리') val = level >= 71 ? 7 : 5;
-                else if (tier === '유니크') val = level >= 71 ? 5 : 4;
-                else if (tier === '에픽') val = level >= 71 ? 4 : 3;
-                else val = 2; // 레어
-            } else {
-                if (tier === '레전드리') val = level >= 71 ? 12 : 9;
-                else if (tier === '유니크') val = level >= 71 ? 9 : 6;
-                else if (tier === '에픽') val = level >= 71 ? 6 : 3;
-                else val = 3; // 레어
-            }
-            return `${type} : +${val}%`;
-        };
-
-        const getBossDmg = () => {
-            if (tier !== '레전드리' && tier !== '유니크') return null; // 보공은 유니크 이상
-            if (isAddi) return tier === '레전드리' ? "보스 몬스터 공격 시 데미지 : +18%" : "보스 몬스터 공격 시 데미지 : +12%";
-            return tier === '레전드리' ? "보스 몬스터 공격 시 데미지 : +40%" : "보스 몬스터 공격 시 데미지 : +30%";
-        };
-
-        // 2. 부위별 옵션 배열 생성
-        if (formData.itemPart === '무기' || formData.itemPart === '엠블렘' || formData.itemPart === '보조무기') {
-            options.push(getStatPercent("공격력"));
-            options.push(getStatPercent("마력"));
-            options.push(getStatPercent("데미지"));
+    const handleCalculate = async () => {
+        setIsLoading(true);
+        setResultData(null);
+        
+        try {
+            const optionsArray = [formData.targetOption1, formData.targetOption2, formData.targetOption3].filter(opt => opt !== '');
             
-            const bossOpt = getBossDmg();
-            if (bossOpt) options.push(bossOpt);
+            if (optionsArray.length === 0) {
+                alert("최소 1개의 목표 옵션을 선택해주세요!");
+                setIsLoading(false);
+                return;
+            }
+
+            const requestPayload = {
+                cubeType: formData.cubeType,
+                itemPart: `${formData.itemPart} (${formData.level}레벨)`,
+                tier: formData.tier,
+                selectedOptions: optionsArray,
+                cubePrice: Number(formData.cubePrice) || 0 
+            };
+
+            const response = await axios.post('http://localhost:8080/api/cube/calculate', requestPayload);
+            setResultData(response.data);
             
-            if (!isAddi && tier === '레전드리') options.push("몬스터 방어율 무시 : +40%");
-            if (!isAddi && tier === '유니크') options.push("몬스터 방어율 무시 : +30%");
-        } else {
-            // 방어구 & 장신구 공통
-            options.push(getStatPercent("STR"));
-            options.push(getStatPercent("DEX"));
-            options.push(getStatPercent("INT"));
-            options.push(getStatPercent("LUK"));
-            options.push(getStatPercent("올스탯"));
-            options.push(getStatPercent("최대 HP"));
-
-            // ⭐ [레전드리 전용 & 특수 부위] 장갑 크뎀 로직
-            if (formData.itemPart === '장갑' && tier === '레전드리') {
-                options.push(isAddi ? "크리티컬 데미지 : +3%" : "크리티컬 데미지 : +8%");
-            }
-
-            // ⭐ [레전드리 전용 & 특수 부위] 모자 쿨감 로직
-            if (formData.itemPart === '모자' && tier === '레전드리') {
-                options.push(isAddi ? "모든 스킬의 재사용 대기시간 : -1초" : "모든 스킬의 재사용 대기시간 : -2초");
-            }
+        } catch (error) {
+            console.error("큐브 계산 중 오류 발생:", error);
+            alert("서버 내부 오류(500)가 발생했습니다. 백엔드 로그를 확인해주세요.");
+        } finally {
+            setIsLoading(false);
         }
-
-        // 옵션 목록 업데이트 및 타겟 옵션 초기화
-        setDbOptions(options);
-        setFormData(prev => ({
-            ...prev,
-            targetOption1: '', targetOption2: '', targetOption3: ''
-        }));
-
-    }, [formData.cubeType, formData.itemPart, formData.tier, formData.level]); 
-
-    const handleCalculate = () => {
-        if (!formData.targetOption1 && !formData.targetOption2 && !formData.targetOption3) {
-            alert("최소 한 줄 이상의 목표 옵션을 선택해주세요!");
-            return;
-        }
-        setResult("약 230개 (2억 7천만 메소)");
     };
 
     return (
-        <CalculatorLayout title="잠재능력 기댓값 계산기" icon="💎">
-            
-            <div className="input-group">
-                <label>장비 레벨 🎯</label>
-                <input 
-                    type="number" 
-                    className="input-control" 
-                    name="level" 
-                    value={formData.level} 
-                    onChange={handleInputChange} 
-                    min="10" 
-                    max="250" 
-                    step="10"
-                />
+        <div className="modern-calc-container">
+            <h2 className="page-title">잠재능력 기댓값 계산기 🎲</h2>
+            <p className="page-subtitle">원하는 잠재능력을 띄우기 위해 필요한 횟수와 예상 메소를 확인하세요.</p>
+
+            <div className="toss-card">
+                <h3 className="card-title">장비 및 시스템 설정</h3>
+                <div className="input-grid">
+                    
+                    <div className="input-group">
+                        <label>잠재능력 설정 방식</label>
+                        <select name="cubeType" value={formData.cubeType} onChange={handleChange}>
+                            {CUBE_TYPES.map(cube => (
+                                <option key={cube.value} value={cube.value}>{cube.label}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="input-group">
+                        <label>장비 부위</label>
+                        <select name="itemPart" value={formData.itemPart} onChange={handleChange}>
+                            {ITEM_PARTS.map(part => (
+                                <option key={part} value={part}>{part}</option>
+                            ))}
+                        </select>
+                    </div>
+                    
+                    <div className="input-group">
+                        <label>착용 레벨</label>
+                        <select name="level" value={formData.level} onChange={handleChange}>
+                            {LEVELS.map(lv => (
+                                <option key={lv} value={lv}>{lv} 레벨</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="input-group">
+                        <label>현재 등급</label>
+                        <select name="tier" value={formData.tier} onChange={handleChange}>
+                            <option value="레어">레어</option>
+                            <option value="에픽">에픽</option>
+                            <option value="유니크">유니크</option>
+                            <option value="레전드리">레전드리</option>
+                        </select>
+                    </div>
+
+                    <div className="input-group">
+                        <label>1회 재설정 비용 (메소)</label>
+                        <input 
+                            type="text" 
+                            name="cubePrice" 
+                            value={Number(formData.cubePrice).toLocaleString()} 
+                            onChange={handleChange}
+                            placeholder="예: 40000000"
+                        />
+                        <small style={{ color: '#8b95a1', marginTop: '5px', display: 'block' }}>
+                            💡 레벨과 등급에 맞춰 공식 1회 재설정 비용이 자동 입력됩니다.
+                        </small>
+                    </div>
+                </div>
             </div>
 
-            <div className="input-group">
-                <label>큐브 종류</label>
-                <select className="input-control" name="cubeType" value={formData.cubeType} onChange={handleInputChange}>
-                    {CUBE_TYPES.map(cube => (
-                        <option key={cube.id} value={cube.id}>{cube.name}</option>
+            <div className="toss-card">
+                <h3 className="card-title">목표 옵션 선택</h3>
+                <div className="options-stack">
+                    {[1, 2, 3].map((num) => (
+                        <div className="option-row" key={`target-${num}`}>
+                            <span className="option-number">{num}</span>
+                            <select 
+                                name={`targetOption${num}`}
+                                value={formData[`targetOption${num}`]}
+                                onChange={handleChange}
+                                disabled={isLoading || dbOptions.length === 0}
+                                className={isLoading ? "loading-select" : ""}
+                            >
+                                <option value="">
+                                    {isLoading ? "불러오는 중..." : (dbOptions.length === 0 ? "해당 조건의 옵션이 없습니다" : `-- ${num}번째 옵션 선택 --`)}
+                                </option>
+                                {dbOptions.map((opt, idx) => (
+                                    <option key={idx} value={opt}>{opt}</option>
+                                ))}
+                            </select>
+                        </div>
                     ))}
-                </select>
-            </div>
-            
-            <div className="input-group">
-                <label>장비 부위</label>
-                <select className="input-control" name="itemPart" value={formData.itemPart} onChange={handleInputChange}>
-                    {ITEM_PARTS.map(part => (
-                        <option key={part} value={part}>{part}</option>
-                    ))}
-                </select>
+                </div>
             </div>
 
-            <div className="input-group">
-                <label>현재 등급</label>
-                <select className="input-control" name="tier" value={formData.tier} onChange={handleInputChange}>
-                    {availableTiers.map(tier => (
-                        <option key={tier} value={tier}>{tier}</option>
-                    ))}
-                </select>
-            </div>
+            <button 
+                className="primary-calc-btn" 
+                onClick={handleCalculate} 
+                disabled={isLoading}
+            >
+                {isLoading ? "계산 중..." : "기댓값 계산하기"}
+            </button>
 
-            <div className="input-group" style={{ marginTop: '10px' }}>
-                <label style={{ color: '#e74c3c' }}>🎯 목표 잠재능력 (최대 3줄)</label>
-                
-                {[1, 2, 3].map(num => (
-                    <select 
-                        key={num} 
-                        className="input-control" 
-                        name={`targetOption${num}`} 
-                        value={formData[`targetOption${num}`]} 
-                        onChange={handleInputChange} 
-                        style={{ marginBottom: num < 3 ? '5px' : '0' }}
-                    >
-                        <option value="">-- {num}번째 줄 선택 (상관없음) --</option>
-                        {dbOptions.map((opt, idx) => (
-                            <option key={`opt${num}-${idx}`} value={opt}>{opt}</option>
-                        ))}
-                    </select>
-                ))}
-            </div>
-
-            <button className="action-btn" onClick={handleCalculate} style={{ marginTop: '15px' }}>기댓값 계산하기</button>
-
-            {result && (
-                <div className="result-panel">
-                    목표 옵션 조합 등장까지 필요한 평균 기댓값
-                    <span className="result-highlight">{result}</span>
+            {resultData && (
+                <div className="toss-card result-card" style={{ marginTop: '20px', backgroundColor: '#f2f4f6' }}>
+                    <h3 className="card-title" style={{ color: '#3182f6' }}>계산 완료! 🎉</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#4e5968' }}>
+                            <span>선택한 옵션 동시 등장 확률</span>
+                            <strong>{resultData.totalProbability.toFixed(8)}%</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#4e5968' }}>
+                            <span>예상 소모 횟수 (기댓값)</span>
+                            <strong>{resultData.expectedCubeCount.toLocaleString()} 회</strong>
+                        </div>
+                        
+                        <hr style={{ borderTop: '1px solid #d1d6db', margin: '5px 0' }} />
+                        
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                            <span>최종 예상 소모 메소</span>
+                            <span style={{ color: '#e15241' }}>{resultData.expectedMeso.toLocaleString()} 메소</span>
+                        </div>
+                    </div>
                 </div>
             )}
-            
-        </CalculatorLayout>
+        </div>
     );
 };
 

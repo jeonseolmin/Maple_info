@@ -2,7 +2,6 @@ package com.mapleInfo.maple_info_backend.potentialAbility.crawler;
 
 import com.mapleInfo.maple_info_backend.potentialAbility.dto.CubeProbabilityDto;
 import com.mapleInfo.maple_info_backend.potentialAbility.entity.CubeType;
-import com.mapleInfo.maple_info_backend.potentialAbility.service.CubeProbabilityService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -38,7 +37,7 @@ public class CubeCrawler {
         targetUrls.put(CubeType.ARTISAN, "https://maplestory.nexon.com/Guide/OtherProbability/Cube/artisan");
         targetUrls.put(CubeType.STRANGEADDI, "https://maplestory.nexon.com/Guide/OtherProbability/Cube/strangeAddi");
 
-        // 🌟 [복구 모드 설정] 레드 큐브 / 에픽 / 어깨장식부터 수집을 재개합니다.
+        //  [복구 모드 설정] 레드 큐브 / 에픽 / 어깨장식부터 수집을 재개합니다.
         boolean isResumeMode = true;
 
         try {
