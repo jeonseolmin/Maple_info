@@ -10,7 +10,28 @@
     /* 바깥 CharacterContent가 이미 카드이므로 큰 그림자 제거 */
     box-shadow: none;
 }
+.starforce {
+    display: grid;
+    grid-template-columns: repeat(15, 14px);
+    gap: 3px;
+    width: max-content;
+}
 
+.starforce__star {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+}
+
+/* 5개 단위 묶음 사이를 조금 더 띄움 */
+.starforce__star:nth-child(5n) {
+    margin-right: 5px;
+}
+
+/* 15번째 별은 줄 마지막이므로 오른쪽 여백 제거 */
+.starforce__star:nth-child(15n) {
+    margin-right: 0;
+}
 .equipment-panel__header {
     display: flex;
     align-items: center;
@@ -93,7 +114,12 @@
     visibility: hidden;
     pointer-events: none;
 }
-
+.equipment-tooltip__description {
+    color: var(--equipment-tooltip-muted);
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-line;
+}
 
 .equipment-slot:disabled {
     cursor: default;

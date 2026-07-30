@@ -1,3 +1,5 @@
+
+
 const OPTION_LABELS = {
     str: "STR",
     dex: "DEX",
@@ -16,6 +18,19 @@ const OPTION_LABELS = {
     ignoreMonsterArmor: "방어율 무시",
 };
 
+function Starforce({ starforce = 0 }) {
+    const starCount = Number(starforce) || 0;
+
+    return (
+        <div className="starforce">
+            {Array.from({ length: starCount }, (_, index) => (
+                <span key={index} className="starforce__star">
+                    ★
+                </span>
+            ))}
+        </div>
+    );
+}
 function hasValue(value) {
     if (value === null || value === undefined || value === "") {
         return false;
@@ -103,10 +118,9 @@ export default function EquipmentTooltip({ item, onClose }) {
 
             <header className="equipment-tooltip__header">
                 {item.starforce > 0 && (
-                    <div className="equipment-tooltip__starforce">
-                        {"★".repeat(Math.min(item.starforce, 25))}
-                        <span>{item.starforce}성</span>
-                    </div>
+                    <section className="equipment-tooltip__starforce">
+                        <Starforce starforce={item.starforce} />
+                    </section>
                 )}
 
                 <h3>{item.name}</h3>
@@ -179,28 +193,32 @@ export default function EquipmentTooltip({ item, onClose }) {
             />
 
             <section className="equipment-tooltip__section equipment-tooltip__etc">
-                {item.scrollUpgrade !== null && (
-                    <p>업그레이드 횟수: {item.scrollUpgrade}</p>
-                )}
+                {item.type !== "TITLE" && (
+                    <>
+                        {item.scrollUpgrade != null && (
+                            <p>업그레이드 횟수: {item.scrollUpgrade}</p>
+                        )}
 
-                {item.scrollUpgradeableCount !== null && (
-                    <p>
-                        남은 업그레이드 가능 횟수:{" "}
-                        {item.scrollUpgradeableCount}
-                    </p>
+                        {item.scrollUpgradeableCount != null && (
+                            <p>
+                                남은 업그레이드 가능 횟수:{" "}
+                                {item.scrollUpgradeableCount}
+                            </p>
+                        )}
+                    </>
                 )}
 
                 {item.tradeStatus && (
-                    <p className={item.tradeStatus === "교환 불가"
-                        ? "is-untradable"
-                        : ""
-                    }>
+                    <p
+                        className={
+                            item.tradeStatus === "교환 불가"
+                                ? "is-untradable"
+                                : ""
+                        }
+                    >
                         {item.tradeStatus}
                     </p>
                 )}
-
-                {item.soulName && <p>소울: {item.soulName}</p>}
-                {item.soulOption && <p>{item.soulOption}</p>}
             </section>
         </aside>
     );

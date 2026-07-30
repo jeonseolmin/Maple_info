@@ -19,16 +19,15 @@ export default function EquipmentGrid({
 
         if (equippedTitle?.name) {
             slotMap["칭호"] = {
+                ...equippedTitle,
                 type: "TITLE",
                 slot: "칭호",
-                itemName: equippedTitle.name,
-                itemIcon: equippedTitle.icon,
-                description: equippedTitle.description,
-                expireAt: equippedTitle.expireAt,
-                optionExpireAt: equippedTitle.optionExpireAt,
-                shapeName: equippedTitle.shapeName,
-                shapeIcon: equippedTitle.shapeIcon,
-                shapeDescription: equippedTitle.shapeDescription,
+                part: "칭호",
+                name: equippedTitle.shapeName ?? equippedTitle.name,
+                icon: equippedTitle.shapeIcon ?? equippedTitle.icon,
+                description:
+                    equippedTitle.shapeDescription ??
+                    equippedTitle.description,
             };
         }
 
