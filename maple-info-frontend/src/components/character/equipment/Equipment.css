@@ -19,6 +19,7 @@
     row-gap: 4px;
     margin-inline: auto;
     margin-bottom: 15px;
+
 }
 
 .starforce__group {
@@ -98,9 +99,11 @@
     gap: 9px;
     padding: 14px;
     width: 100%;
+    height: 100%;
     background: var(--equipment-grid-bg);
     border: 1px solid var(--equipment-slot-border);
     border-radius: 18px;
+
 }
 
 .equipment-slot {
@@ -194,6 +197,7 @@
 .equipment-tooltip {
     position: relative;
     max-width: none;
+    height: 530px;
     max-height: 530px;
     overflow-y: auto;
     padding: 22px;
@@ -209,7 +213,7 @@
 }
 .equipment-tooltip--empty {
     display: flex;
-    min-height: 240px;
+    min-height: 530px;
     align-items: center;
     justify-content: center;
 

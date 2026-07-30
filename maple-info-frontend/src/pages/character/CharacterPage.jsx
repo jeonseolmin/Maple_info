@@ -37,10 +37,6 @@ export default function CharacterPage() {
         fetchCharacter();
     }, [characterName]);
 
-    if (loading) {
-        return <div>캐릭터 정보를 불러오는 중입니다.</div>;
-    }
-
     if (error) {
         return <div>{error}</div>;
     }
@@ -48,7 +44,6 @@ export default function CharacterPage() {
         return (
             <LoadingIcon
                 text="캐릭터 정보를 불러오는 중..."
-                fullScreen
             />
         );
     }

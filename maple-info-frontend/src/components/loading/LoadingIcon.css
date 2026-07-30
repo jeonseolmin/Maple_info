@@ -5,6 +5,11 @@
     justify-content: center;
     gap: 12px;
     padding: 32px;
+
+    width: 100%;
+    min-height: 100%;
+    padding: 32px;
+    box-sizing: border-box;
 }
 
 .loading-container--fullscreen {
@@ -29,8 +34,8 @@
     display: block;
     inset: 0;
 
-    -webkit-mask: url("public/loading-mask-512.png") center / contain no-repeat;
-    mask: url("public/loading-mask-512.png") center / contain no-repeat;
+    -webkit-mask: url("/loading-mask-512.png") center / contain no-repeat;
+    mask: url("/loading-mask-512.png") center / contain no-repeat;
 
     mask-mode: luminance;
 }
