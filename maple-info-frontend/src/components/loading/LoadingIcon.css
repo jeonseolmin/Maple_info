@@ -19,25 +19,20 @@
 .loading-icon {
     position: relative;
     width: 88px;
-    aspect-ratio: 1;
+    height: 88px;
+    flex-shrink: 0;
 }
 
 .loading-icon__base,
 .loading-icon__fill {
     position: absolute;
+    display: block;
     inset: 0;
 
-    -webkit-mask-image: url("/loading-mask-512.png");
-    mask-image: url("/loading-mask-512.png");
+    -webkit-mask: url("public/loading-mask-512.png") center / contain no-repeat;
+    mask: url("public/loading-mask-512.png") center / contain no-repeat;
 
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-
-    -webkit-mask-position: center;
-    mask-position: center;
-
-    -webkit-mask-size: contain;
-    mask-size: contain;
+    mask-mode: luminance;
 }
 
 .loading-icon__base {

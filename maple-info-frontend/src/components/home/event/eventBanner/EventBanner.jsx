@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import axiosInstance from "../../../../api/axiosInstance";
 import "./EventBanner.css";
-
+import LoadingIcon from "../../../../components/loading/LoadingIcon.jsx";
 const SLIDE_INTERVAL = 5000;
 
 export default function EventBanner() {
@@ -103,7 +103,14 @@ export default function EventBanner() {
             </article>
         );
     }
-
+    if (loading) {
+        return (
+            <LoadingIcon
+                text="이벤트 정보를 불러오는 중"
+                fullScreen
+            />
+        );
+    }
     const safeIndex = currentIndex % events.length;
     const currentEvent = events[safeIndex];
     const startDate = formatDate(currentEvent.startAt);
