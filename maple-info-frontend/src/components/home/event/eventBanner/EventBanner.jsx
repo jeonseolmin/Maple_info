@@ -81,7 +81,6 @@ export default function EventBanner() {
         return (
             <LoadingIcon
                 text="이벤트 정보를 불러오는 중"
-                fullScreen
             />
         );
     }
