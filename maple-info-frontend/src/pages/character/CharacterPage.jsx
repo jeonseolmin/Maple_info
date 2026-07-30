@@ -4,6 +4,7 @@ import { getCharacter } from "../../api/characterApi";
 import CharacterProfile from "../../components/character/CharacterProfile";
 import CharacterContentTabs from "../../components/character/CharacterContentTabs.jsx";
 import "./CharacterPage.css";
+import LoadingIcon from "../../components/loading/LoadingIcon.jsx";
 
 export default function CharacterPage() {
     const { characterName } = useParams();
@@ -36,14 +37,16 @@ export default function CharacterPage() {
         fetchCharacter();
     }, [characterName]);
 
-    if (loading) {
-        return <div>캐릭터 정보를 불러오는 중입니다.</div>;
-    }
-
     if (error) {
         return <div>{error}</div>;
     }
-
+    if (loading) {
+        return (
+            <LoadingIcon
+                text="캐릭터 정보를 불러오는 중..."
+            />
+        );
+    }
     return (
         <main className="character-page">
             <CharacterProfile character={character} />
