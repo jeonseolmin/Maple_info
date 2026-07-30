@@ -79,12 +79,10 @@ export default function EventBanner() {
 
     if (loading) {
         return (
-            <article
-                className="event-banner event-banner--loading"
-                aria-busy="true"
-            >
-                <p>이벤트를 불러오는 중입니다.</p>
-            </article>
+            <LoadingIcon
+                text="이벤트 정보를 불러오는 중"
+                fullScreen
+            />
         );
     }
 
@@ -103,14 +101,7 @@ export default function EventBanner() {
             </article>
         );
     }
-    if (loading) {
-        return (
-            <LoadingIcon
-                text="이벤트 정보를 불러오는 중"
-                fullScreen
-            />
-        );
-    }
+
     const safeIndex = currentIndex % events.length;
     const currentEvent = events[safeIndex];
     const startDate = formatDate(currentEvent.startAt);
