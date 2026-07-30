@@ -12,10 +12,18 @@
 }
 .starforce {
     display: grid;
-    grid-template-columns: repeat(15, 14px);
+    grid-template-columns: repeat(3, max-content);
     justify-content: center;
-    gap: 3px;
-    width: max-content;
+
+    column-gap: 10px;
+    row-gap: 4px;
+    margin-inline: auto;
+    margin-bottom: 15px;
+}
+
+.starforce__group {
+    display: flex;
+    gap: 2px;
 }
 
 .starforce__star {
@@ -26,8 +34,8 @@
     font-size: 12px;
     line-height: 12px;
     text-align: center;
-    margin-inline: auto;
 }
+
 /* 채워진 별 */
 .starforce__star--filled {
     color: var(--equipment-starforce);
@@ -38,19 +46,7 @@
     color: #3f4652;
 }
 
-/* 5개 단위 간격 */
-.starforce__star:nth-child(5n):not(:nth-child(15n)) {
-    margin-right: 5px;
-}
-/* 5개 단위 묶음 사이를 조금 더 띄움 */
-.starforce__star:nth-child(5n) {
-    margin-right: 5px;
-}
 
-/* 15번째 별은 줄 마지막이므로 오른쪽 여백 제거 */
-.starforce__star:nth-child(15n) {
-    margin-right: 0;
-}
 .equipment-panel__header {
     display: flex;
     align-items: center;
@@ -246,12 +242,9 @@
 }
 
 .equipment-tooltip__starforce {
-    color: var(--equipment-starforce);
-    font-size: 10px;
-    text-align: center;
-    word-break: break-all;
+    width: 100%;
+    margin-bottom: 8px;
 }
-
 
 
 .equipment-tooltip__summary {

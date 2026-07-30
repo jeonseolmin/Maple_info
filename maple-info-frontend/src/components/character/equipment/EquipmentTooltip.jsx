@@ -24,31 +24,39 @@ function Starforce({ starforce = 0 }) {
         30
     );
 
-    // 15성 이하는 총 15칸, 16성 이상은 총 30칸
     const totalStars = currentStars <= 15 ? 15 : 30;
+    const groupCount = totalStars / 5;
 
     return (
         <div
             className="starforce"
             aria-label={`스타포스 ${currentStars}성`}
         >
-            {Array.from({ length: totalStars }, (_, index) => {
-                const isFilled = index < currentStars;
+            {Array.from({ length: groupCount }, (_, groupIndex) => (
+                <div
+                    key={groupIndex}
+                    className="starforce__group"
+                >
+                    {Array.from({ length: 5 }, (_, starIndex) => {
+                        const index = groupIndex * 5 + starIndex;
+                        const isFilled = index < currentStars;
 
-                return (
-                    <span
-                        key={index}
-                        className={`starforce__star ${
-                            isFilled
-                                ? "starforce__star--filled"
-                                : "starforce__star--empty"
-                        }`}
-                        aria-hidden="true"
-                    >
-                        ★
-                    </span>
-                );
-            })}
+                        return (
+                            <span
+                                key={starIndex}
+                                className={
+                                    isFilled
+                                        ? "starforce__star starforce__star--filled"
+                                        : "starforce__star starforce__star--empty"
+                                }
+                                aria-hidden="true"
+                            >
+                                ★
+                            </span>
+                        );
+                    })}
+                </div>
+            ))}
         </div>
     );
 }
