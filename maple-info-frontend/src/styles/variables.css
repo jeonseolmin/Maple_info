@@ -73,6 +73,13 @@
     --equipment-tooltip-muted: #747d91;
     --equipment-tooltip-image-bg: #e9ecf3;
     --equipment-tooltip-divider: rgba(35, 50, 85, 0.1);
+
+    /* 장비 옵션 강조색 */
+    --equipment-option-positive: #15803d;
+    --equipment-potential: #a16207;
+    --equipment-additional-potential: #0369a1;
+    --equipment-starforce: #ca8a04;
+    --equipment-starforce-sub: #a16207;
 }
 
 html.dark {
@@ -145,4 +152,13 @@ html.dark {
     --equipment-tooltip-muted: #9ca5b7;
     --equipment-tooltip-image-bg: #171b24;
     --equipment-tooltip-divider: rgba(255, 255, 255, 0.1);
+
+    /* 장비 옵션 강조색 */
+    --equipment-option-positive: #86efac;
+    --equipment-potential: #facc15;
+    --equipment-additional-potential: #67e8f9;
+    --equipment-starforce: #facc15;
+    --equipment-starforce-sub: #fde68a;
+
+
 }

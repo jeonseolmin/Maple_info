@@ -10,7 +10,8 @@ public record CharacterEquipmentResponse(
         String characterGender,
         String characterClass,
         Integer presetNo,
-        List<CharacterEquipmentItemResponse> equipment
+        List<CharacterEquipmentItemResponse> equipment,
+        CharacterTitleResponse equippedTitle
 ) {
 
     public static CharacterEquipmentResponse from(
@@ -22,7 +23,8 @@ public record CharacterEquipmentResponse(
                     null,
                     null,
                     null,
-                    List.of()
+                    List.of(),
+                    null
             );
         }
 
@@ -39,7 +41,8 @@ public record CharacterEquipmentResponse(
                 response.characterGender(),
                 response.characterClass(),
                 response.presetNo(),
-                equipment
+                equipment,
+                CharacterTitleResponse.from(response.equippedTitle())
         );
     }
 }
