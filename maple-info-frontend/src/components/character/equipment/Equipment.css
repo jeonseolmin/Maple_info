@@ -13,16 +13,35 @@
 .starforce {
     display: grid;
     grid-template-columns: repeat(15, 14px);
+    justify-content: center;
     gap: 3px;
     width: max-content;
 }
 
 .starforce__star {
-    width: 14px;
-    height: 14px;
-    object-fit: contain;
+    display: block;
+    width: 12px;
+    height: 12px;
+
+    font-size: 12px;
+    line-height: 12px;
+    text-align: center;
+    margin-inline: auto;
+}
+/* 채워진 별 */
+.starforce__star--filled {
+    color: var(--equipment-starforce);
 }
 
+/* 부족한 별 */
+.starforce__star--empty {
+    color: #3f4652;
+}
+
+/* 5개 단위 간격 */
+.starforce__star:nth-child(5n):not(:nth-child(15n)) {
+    margin-right: 5px;
+}
 /* 5개 단위 묶음 사이를 조금 더 띄움 */
 .starforce__star:nth-child(5n) {
     margin-right: 5px;
@@ -233,12 +252,7 @@
     word-break: break-all;
 }
 
-.equipment-tooltip__starforce span {
-    display: block;
-    margin-top: 4px;
-    color: var(--equipment-starforce-sub);
-    font-size: 12px;
-}
+
 
 .equipment-tooltip__summary {
     display: flex;

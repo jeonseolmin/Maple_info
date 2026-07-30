@@ -19,15 +19,36 @@ const OPTION_LABELS = {
 };
 
 function Starforce({ starforce = 0 }) {
-    const starCount = Number(starforce) || 0;
+    const currentStars = Math.min(
+        Math.max(Number(starforce) || 0, 0),
+        30
+    );
+
+    // 15성 이하는 총 15칸, 16성 이상은 총 30칸
+    const totalStars = currentStars <= 15 ? 15 : 30;
 
     return (
-        <div className="starforce">
-            {Array.from({ length: starCount }, (_, index) => (
-                <span key={index} className="starforce__star">
-                    ★
-                </span>
-            ))}
+        <div
+            className="starforce"
+            aria-label={`스타포스 ${currentStars}성`}
+        >
+            {Array.from({ length: totalStars }, (_, index) => {
+                const isFilled = index < currentStars;
+
+                return (
+                    <span
+                        key={index}
+                        className={`starforce__star ${
+                            isFilled
+                                ? "starforce__star--filled"
+                                : "starforce__star--empty"
+                        }`}
+                        aria-hidden="true"
+                    >
+                        ★
+                    </span>
+                );
+            })}
         </div>
     );
 }
