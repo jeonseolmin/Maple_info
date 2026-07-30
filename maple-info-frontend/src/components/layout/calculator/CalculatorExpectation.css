@@ -1,0 +1,131 @@
+/* 전체 레이아웃 */
+.modern-calc-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: "MapleStory", "Noto Sans KR", sans-serif;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #191f28;
+    margin-bottom: 8px;
+}
+
+.page-subtitle {
+    font-size: 15px;
+    color: #8b95a1;
+    margin-bottom: 32px;
+}
+
+/* 둥글고 깔끔한 카드 스타일 */
+.toss-card {
+    background-color: #ffffff;
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04), 0 16px 24px rgba(0, 0, 0, 0.02);
+    margin-bottom: 24px;
+    border: 1px solid #f2f4f6;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333d4b;
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+/* 입력 그리드 (2칸씩 배치) */
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4e5968;
+    margin-bottom: 8px;
+}
+
+/* 셀렉트 박스 공통 디자인 */
+select, input[type="number"] {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 15px;
+    color: #333d4b;
+    background-color: #f2f4f6;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    appearance: none;
+    cursor: pointer; /* input은 텍스트 커서가 나오게 하려면 auto로 하셔도 됩니다 */
+    transition: all 0.2s ease;
+    box-sizing: border-box; /* 패딩 삐져나옴 방지 */
+}
+
+select:hover, input[type="number"]:hover {
+    background-color: #e5e8eb;
+}
+
+select:focus, input[type="number"]:focus {
+    outline: none;
+    background-color: #ffffff;
+    border-color: #3182f6; 
+    box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.1);
+}
+
+/* 목표 옵션 세로 스택 */
+.options-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.option-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.option-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: #3182f6;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.loading-select {
+    color: #8b95a1;
+    cursor: not-allowed;
+}
+
+/* 눈에 띄는 큼직한 버튼 */
+.primary-calc-btn {
+    width: 100%;
+    padding: 18px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: #3182f6;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.primary-calc-btn:hover {
+    background-color: #1b64da;
+}
+

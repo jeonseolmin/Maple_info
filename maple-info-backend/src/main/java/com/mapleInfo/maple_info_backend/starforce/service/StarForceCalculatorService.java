@@ -1,55 +1,127 @@
 package com.mapleInfo.maple_info_backend.starforce.service;
 
-import com.mapleInfo.maple_info_backend.starforce.StarForceLevel;
+import com.mapleInfo.maple_info_backend.starforce.dto.StarForceRequestDto;
+import com.mapleInfo.maple_info_backend.starforce.dto.StarForceResponseDto;
+import com.mapleInfo.maple_info_backend.starforce.entity.StarForceLevel;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class StarForceCalculatorService {
 
-    /**
-     * 특정 장비를 startStar 에서 targetStar 까지 보내는 데 드는 총 기댓값(메소)을 계산합니다.
-     * @param itemLevel 장비 레벨 (예: 150, 160)
-     * @param startStar 현재 별 개수
-     * @param targetStar 목표 별 개수
-     * @param replacementCost 장비 파괴 시 복구에 필요한 '노작' 장비 가격
-     */
-    public long calculateExpectedMeso(int itemLevel, int startStar, int targetStar, long replacementCost) {
-        long totalExpectedMeso = 0;
+    private static final int SIMULATION_COUNT = 10000;
 
-        // 시작 별부터 목표 별 바로 전까지 반복해서 기댓값을 누적
-        for (int currentStar = startStar; currentStar < targetStar; currentStar++) {
-            totalExpectedMeso += getExpectedCostForOneStep(itemLevel, currentStar, replacementCost);
-        }
+    public StarForceResponseDto simulateExpectedMeso(StarForceRequestDto request) {
+        long totalMesoAll = 0;
+        long totalDestroyAll = 0;
 
-        return totalExpectedMeso;
-    }
+        Map<Long, Integer> costDistribution = new TreeMap<>();
 
-    // 딱 '1성' 올리는데 필요한 기댓값 수학적 연산
-    private long getExpectedCostForOneStep(int itemLevel, int currentStar, long replacementCost) {
-        StarForceLevel stat = getStarForceLevel(currentStar);
+        int itemLevel = request.getItemLevel();
+        int startStar = request.getCurrentStar();
+        int targetStar = request.getTargetStar();
+        String event = request.getEvent();
+        String mvp = request.getMvp();
+        boolean useSafeguard = request.isSafeguard();
 
-        long tryCost = stat.calculateCost(itemLevel); // 1회 시도 비용
-        double pSuccess = stat.getSuccessRate();
-        double pDestroy = stat.getDestroyRate();
+        for (int i = 0; i < SIMULATION_COUNT; i++) {
+            long currentMeso = 0;
+            long currentDestroy = 0;
+            int currentStar = startStar;
 
-        if (pDestroy == 0.0) {
-            // 파괴가 없는 구간: (1회 비용) / 성공확률
-            return (long) (tryCost / pSuccess);
-        } else {
-            // 파괴가 있는 구간:
-            // 파괴 시 12성으로 복구되므로, 12성부터 현재 별(currentStar)까지 다시 오는 기댓값을 계산해야 함
-            long recoveryToCurrentCost = 0;
-            if (currentStar > 12) {
-                recoveryToCurrentCost = calculateExpectedMeso(itemLevel, 12, currentStar, replacementCost);
+            while (currentStar < targetStar) {
+                StarForceLevel stat = getStarForceLevel(currentStar);
+
+                long tryCost = stat.calculateCost(itemLevel);
+                double pSuccess = stat.getSuccessRate();
+                double pDestroy = stat.getDestroyRate();
+
+                // 확률 수치 정규화 (예: 30.0 -> 0.3)
+                if (pSuccess > 1.0) pSuccess /= 100.0;
+                if (pDestroy > 1.0) pDestroy /= 100.0;
+
+                // [할인 1] 비용 30% 할인 및 샤이닝
+                if ("COST_THIRTY_DISCOUNT".equals(event) || "SHINING".equals(event)) {
+                    tryCost = (long) (tryCost * 0.7);
+                }
+
+                // [할인 2] MVP 할인 (17성까지만 적용)
+                if (currentStar <= 17) {
+                    if ("SILVER".equals(mvp)) tryCost = (long) (tryCost * 0.97);
+                    else if ("GOLD".equals(mvp)) tryCost = (long) (tryCost * 0.95);
+                    else if ("DIAMOND".equals(mvp)) tryCost = (long) (tryCost * 0.90);
+                }
+
+                // [이벤트 1] 파괴 확률 30% 감소 (21성 이하)
+                if ("DESTRUCTION_REDUCTION".equals(event) && currentStar <= 21) {
+                    pDestroy *= 0.7;
+                }
+
+                // [이벤트 2] 샤이닝 스타포스 (25년 3월 개편 반영: 15, 16성 파괴 확률 30% 감소)
+                if ("SHINING".equals(event) && (currentStar == 15 || currentStar == 16)) {
+                    pDestroy *= 0.7;
+                }
+
+                // [옵션] 파괴 방지 (15~17성)
+                boolean isSafeguardApplied = useSafeguard && currentStar >= 15 && currentStar <= 17;
+                if (isSafeguardApplied) {
+                    tryCost += stat.calculateCost(itemLevel); // 기본 강화 비용 100% 추가
+                    pDestroy = 0.0;
+                }
+
+                // 메소 소모
+                currentMeso += tryCost;
+                double rand = Math.random();
+
+                if (rand < pSuccess) {
+                    // 성공
+                    currentStar++;
+
+                    if ("TEN_UNDER_ONE_PLUS_ONE".equals(event) && (currentStar - 1) <= 10) {
+                        currentStar++;
+                    }
+                } else if (rand < pSuccess + pDestroy) {
+                    // 파괴
+                    currentDestroy++;
+                    currentStar = 12; // 파괴 시 12성 복구
+                } else {
+                    // 실패 (25년 3월 패치 반영: 등급 하락 완전 삭제)
+                    // 실패하더라도 currentStar는 깎이지 않고 그대로 유지됩니다.
+                }
             }
 
-            // 수식: [1회 비용 + 파괴확률 * (노작값 + 12성에서 복구하는 비용)] / 성공확률
-            double expectedCost = (tryCost + pDestroy * (replacementCost + recoveryToCurrentCost)) / pSuccess;
-            return (long) expectedCost;
+            totalMesoAll += currentMeso;
+            totalDestroyAll += currentDestroy;
+
+            // 차트 데이터 수집 (10억 단위)
+            long tenBillionBucket = currentMeso / 1000000000L;
+            costDistribution.put(tenBillionBucket, costDistribution.getOrDefault(tenBillionBucket, 0) + 1);
         }
+
+        List<StarForceResponseDto.ChartDataDto> chartDataList = new ArrayList<>();
+        for (Map.Entry<Long, Integer> entry : costDistribution.entrySet()) {
+            long startRange = entry.getKey() * 10;
+            long endRange = startRange + 10;
+
+            chartDataList.add(StarForceResponseDto.ChartDataDto.builder()
+                    .costRange(startRange + "~" + endRange)
+                    .userCount(entry.getValue())
+                    .build());
+        }
+
+        return StarForceResponseDto.builder()
+                .itemLevel(itemLevel)
+                .section(startStar + "성 -> " + targetStar + "성")
+                .expectedMeso(totalMesoAll / SIMULATION_COUNT)
+                .destroyedCount((double) totalDestroyAll / SIMULATION_COUNT)
+                .chartData(chartDataList)
+                .build();
     }
 
-    // 현재 별에 맞는 Enum 데이터를 가져오는 유틸리티 메서드
     private StarForceLevel getStarForceLevel(int star) {
         for (StarForceLevel level : StarForceLevel.values()) {
             if (level.ordinal() == star) {

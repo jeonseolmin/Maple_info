@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
-export default function Header() {
+export default function Header({ isMenuOpen, onMenuClick }) {
     const navigate = useNavigate();
 
     const [characterName, setCharacterName] = useState("");
@@ -40,18 +40,8 @@ export default function Header() {
             return;
         }
 
-        navigate(
-            `/?character=${encodeURIComponent(trimmedName)}`
-        );
+        navigate(`/character/${encodeURIComponent(trimmedName)}`);
     };
-
-    const handleMenuClick = () => {
-        /*
-         * 다음 단계에서 앱 메뉴를 여는 기능을
-         * 이곳에 연결하면 됩니다.
-         */
-    };
-
     const handleLoginClick = () => {
         /*
          * 아직 /login 라우트가 없기 때문에
@@ -66,14 +56,12 @@ export default function Header() {
             <div className="header-left">
                 <button
                     type="button"
-                    className="header-icon-button"
-                    onClick={handleMenuClick}
-                    aria-label="전체 메뉴 열기"
+                    className="menu-button"
+                    onClick={onMenuClick}
+                    aria-expanded={isMenuOpen}
+                    aria-label={isMenuOpen ? "메뉴 닫기" : "메뉴 열기"}
                 >
-                    <svg
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                    >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M4 6h16" />
                         <path d="M4 12h16" />
                         <path d="M4 18h16" />

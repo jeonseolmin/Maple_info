@@ -1,6 +1,6 @@
 package com.mapleInfo.maple_info_backend.potentialAbility.dto;
 
-import com.mapleInfo.maple_info_backend.potentialAbility.CubeType;
+import com.mapleInfo.maple_info_backend.potentialAbility.entity.CubeType;
 
 public class CubeProbabilityDto {
     private CubeType cubeType;       // 큐브 종류

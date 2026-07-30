@@ -9,7 +9,7 @@
     --color-surface: #ffffff;
     --color-surface-soft: #f2f4f9;
     --color-surface-glass: rgba(255, 255, 255, 0.84);
-
+    --color-text-muted: #747d91;
     --color-text: #151922;
     --color-text-secondary: #747d91;
     --color-placeholder: #969daf;
@@ -54,6 +54,32 @@
     --frame-edge: rgba(37, 42, 49, 0.75);
     --frame-highlight: rgba(255, 255, 255, 0.82);
     --frame-shadow: rgba(27, 34, 48, 0.26);
+
+    /* 장비 슬롯 */
+    --equipment-grid-bg:
+            linear-gradient(145deg, #e8ebf2, #dfe3ec);
+    --equipment-slot-bg:
+            linear-gradient(145deg, #ffffff, #edf0f6);
+    --equipment-slot-border: rgba(35, 50, 85, 0.16);
+    --equipment-slot-border-filled: rgba(77, 111, 255, 0.4);
+    --equipment-slot-text: #747d91;
+
+    /* 장비 툴팁 */
+    --equipment-tooltip-bg:
+            linear-gradient(180deg, #ffffff, #f2f4f9);
+    --equipment-tooltip-border: rgba(35, 50, 85, 0.12);
+    --equipment-tooltip-title: #151922;
+    --equipment-tooltip-text: #41495b;
+    --equipment-tooltip-muted: #747d91;
+    --equipment-tooltip-image-bg: #e9ecf3;
+    --equipment-tooltip-divider: rgba(35, 50, 85, 0.1);
+
+    /* 장비 옵션 강조색 */
+    --equipment-option-positive: #15803d;
+    --equipment-potential: #a16207;
+    --equipment-additional-potential: #0369a1;
+    --equipment-starforce: #ca8a04;
+    --equipment-starforce-sub: #a16207;
 }
 
 html.dark {
@@ -67,7 +93,7 @@ html.dark {
     --color-surface: #20232d;
     --color-surface-soft: #292d38;
     --color-surface-glass: rgba(27, 30, 39, 0.88);
-
+    --color-text-muted: #adb5c6;
     --color-text: #f4f6fb;
     --color-text-secondary: #adb5c6;
     --color-placeholder: #868e9f;
@@ -107,4 +133,32 @@ html.dark {
                     transparent 38%
             ),
             var(--color-stage);
+
+    /* 장비 슬롯 */
+    --equipment-grid-bg:
+            linear-gradient(145deg, #202532, #151922);
+    --equipment-slot-bg:
+            linear-gradient(145deg, #292f3c, #1b202b);
+    --equipment-slot-border: rgba(255, 255, 255, 0.1);
+    --equipment-slot-border-filled: rgba(119, 136, 255, 0.48);
+    --equipment-slot-text: #adb5c6;
+
+    /* 장비 툴팁 */
+    --equipment-tooltip-bg:
+            linear-gradient(180deg, #252a36, #191d26);
+    --equipment-tooltip-border: rgba(255, 255, 255, 0.1);
+    --equipment-tooltip-title: #f4f6fb;
+    --equipment-tooltip-text: #d4d9e4;
+    --equipment-tooltip-muted: #9ca5b7;
+    --equipment-tooltip-image-bg: #171b24;
+    --equipment-tooltip-divider: rgba(255, 255, 255, 0.1);
+
+    /* 장비 옵션 강조색 */
+    --equipment-option-positive: #86efac;
+    --equipment-potential: #facc15;
+    --equipment-additional-potential: #67e8f9;
+    --equipment-starforce: #facc15;
+    --equipment-starforce-sub: #fde68a;
+
+
 }

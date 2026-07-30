@@ -8,7 +8,11 @@ public final class SecurityUrls {
             "/error",
             "/oauth2/**",
             "/login/oauth2/**",
-            "/api/auth/**"
+            "/api/auth/**",
+            "/api/starforce/**",
+            "/api/cube/**",
+            "/api/exp/**"
+
     };
 
     public static final String[] PUBLIC_GET_URLS = {

@@ -1,4 +1,4 @@
-package com.mapleInfo.maple_info_backend.starforce;
+package com.mapleInfo.maple_info_backend.starforce.entity;
 
 public enum StarForceLevel {
     // 세팅값: 현재 별, 성공확률, 실패확률, 파괴확률, 비용공식 분모

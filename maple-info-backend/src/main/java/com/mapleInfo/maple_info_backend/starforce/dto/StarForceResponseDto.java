@@ -1,13 +1,28 @@
 package com.mapleInfo.maple_info_backend.starforce.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.util.List;
 
-@Getter
+@Data
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class StarForceResponseDto {
     private int itemLevel;
-    private String section;        // 예: "15성 -> 22성"
-    private long expectedMeso;     // 예: 15000000000 (총 소모 기댓값)
-    private long replacementCost;  // 참고용으로 다시 내려줌
+    private String section;
+    private long expectedMeso;
+    private double destroyedCount;
+    private List<ChartDataDto> chartData;
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChartDataDto {
+        private String costRange; // "100~110" (단위: 억)
+        private int userCount;
+    }
 }
