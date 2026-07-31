@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
+import axiosInstance from '../../api/axiosInstance';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts'; 
 import '../layout/calculator/CalculatorExpectation.css'; 
 
