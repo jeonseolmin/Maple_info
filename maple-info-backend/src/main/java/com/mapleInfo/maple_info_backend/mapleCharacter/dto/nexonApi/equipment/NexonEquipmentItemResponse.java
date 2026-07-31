@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
+import java.util.List;
+
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record NexonEquipmentItemResponse(
         String itemEquipmentPart,
@@ -54,6 +56,8 @@ public record NexonEquipmentItemResponse(
         String goldenHammerFlag,
 
         String soulName,
-        String soulOption
+        String soulOption,
+
+        List<NexonEquipmentItemResponse> itemEquipment
 ) {
 }

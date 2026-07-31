@@ -8,6 +8,7 @@ const TABS = [
     { id: "equipment", label: "장착 장비" },
     { id: "cashPet", label: "캐시 · 펫" },
     { id: "symbol", label: "심볼" },
+    { id: "skill", label: "6차" },
 ];
 
 export default function CharacterContentTabs({ character }) {

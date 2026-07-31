@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import axiosInstance from "../../../../api/axiosInstance";
 import "./EventBanner.css";
-
+import LoadingIcon from "../../../../components/loading/LoadingIcon.jsx";
 const SLIDE_INTERVAL = 5000;
 
 export default function EventBanner() {
@@ -79,12 +79,9 @@ export default function EventBanner() {
 
     if (loading) {
         return (
-            <article
-                className="event-banner event-banner--loading"
-                aria-busy="true"
-            >
-                <p>이벤트를 불러오는 중입니다.</p>
-            </article>
+            <LoadingIcon
+                text="이벤트 정보를 불러오는 중"
+            />
         );
     }
 
