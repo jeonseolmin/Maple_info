@@ -70,6 +70,14 @@ export const folderMenuItems = [
                 path: "/boss/setting",
                 color: "#d95c59",
             },
+            {
+                id: "boss-scheduler",
+                type: "app",
+                label: "보스 스케줄러",
+                icon: "/images/menu/boss-setting.png",
+                path: "/boss/scheduler",
+                color: "#d95c59",
+            },
         ],
     },
     {
