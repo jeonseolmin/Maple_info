@@ -42,7 +42,7 @@ const StarforceExpectation = () => {
         setResultData(null);
         
         try {
-            const response = await axios.post('http://localhost:8080/api/starforce/simulate', formData);
+            const response = await axiosInstance.post('http://localhost:8080/api/starforce/simulate', formData);
             setResultData(response.data);
         } catch (error) {
             console.error("스타포스 계산 중 오류 발생:", error);

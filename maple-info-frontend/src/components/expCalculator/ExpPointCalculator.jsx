@@ -17,7 +17,7 @@ const ExpPointCalculator = () => {
         const fetchExpTable = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get('http://localhost:8080/api/exp/table');
+                const response = await axiosInstance.get('http://localhost:8080/api/exp/table');
                 setExpTable(response.data);
             } catch (error) {
                 console.error("경험치 표를 불러오는데 실패했습니다:", error);
