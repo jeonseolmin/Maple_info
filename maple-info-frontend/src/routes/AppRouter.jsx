@@ -9,6 +9,7 @@ import ExpPointCalculator from "../components/expCalculator/ExpPointCalculator.j
 import TreasureHunter from "../components/expCalculator/TreasureHunter.jsx";
 import AfkExperience from "../components/expCalculator/AfkExperience.jsx";
 import BossScheduler from "../components/bossCalculator/BossScheduler.jsx";
+import BossEncyclopedia from "../components/bossinfo/BossEncyclopedia.jsx";
 
 export default function AppRouter() {
   return (
@@ -26,6 +27,7 @@ export default function AppRouter() {
           <Route path="experience/treasure-hunter" element={<TreasureHunter/>} />
           <Route path="experience/afk" element={<AfkExperience/>} />
           <Route path="boss/scheduler" element={<BossScheduler />} />
+          <Route path="/gameinfo/boss" element={<BossEncyclopedia />} />
           
         </Route>
       </Routes>

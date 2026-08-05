@@ -230,7 +230,7 @@ export const folderMenuItems = [
                 type: "app",
                 label: "보스 정보",
                 icon: bossImg,
-                path: "/information/boss",
+                path: "/gameinfo/boss",
                 color: "#e26661",
             },
             {
