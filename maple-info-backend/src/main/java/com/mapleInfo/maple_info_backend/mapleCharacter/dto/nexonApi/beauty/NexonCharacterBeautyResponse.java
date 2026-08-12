@@ -18,8 +18,8 @@ public record NexonCharacterBeautyResponse(
         @JsonProperty("character_face")
         NexonBeautyFaceResponse characterFace,
 
-        @JsonProperty("character_skin_name")
-        String characterSkinName,
+        @JsonProperty("character_skin")
+        NexonBeautySkinResponse characterSkin,
 
         @JsonProperty("additional_character_hair")
         NexonBeautyHairResponse additionalCharacterHair,
@@ -27,7 +27,7 @@ public record NexonCharacterBeautyResponse(
         @JsonProperty("additional_character_face")
         NexonBeautyFaceResponse additionalCharacterFace,
 
-        @JsonProperty("additional_character_skin_name")
-        String additionalCharacterSkinName
+        @JsonProperty("additional_character_skin")
+        NexonBeautySkinResponse additionalCharacterSkin
 ) {
 }

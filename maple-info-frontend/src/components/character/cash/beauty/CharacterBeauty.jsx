@@ -104,12 +104,56 @@ export default function CharacterBeauty({ ocid }) {
 
                 <BeautyCard
                     title="피부"
-                    name={beauty.skinName}
+                    name={beauty.skin?.name}
+                    colorStyle={beauty.skin?.colorStyle}
+                    hue={beauty.skin?.hue}
+                    saturation={beauty.skin?.saturation}
+                    brightness={beauty.skin?.brightness}
                 />
             </div>
 
             <AdditionalBeauty beauty={beauty} />
         </section>
+    );
+}
+
+function BeautySkinCard({ skin }) {
+    return (
+        <article className="beauty-card">
+            <span className="beauty-card__label">
+                피부
+            </span>
+
+            <h3>{skin?.name || "정보 없음"}</h3>
+
+            {skin?.colorStyle && (
+                <p>
+                    색상 계열
+                    <strong>{skin.colorStyle}</strong>
+                </p>
+            )}
+
+            {skin?.hue != null && (
+                <p>
+                    색조
+                    <strong>{skin.hue}</strong>
+                </p>
+            )}
+
+            {skin?.saturation != null && (
+                <p>
+                    채도
+                    <strong>{skin.saturation}</strong>
+                </p>
+            )}
+
+            {skin?.brightness != null && (
+                <p>
+                    명도
+                    <strong>{skin.brightness}</strong>
+                </p>
+            )}
+        </article>
     );
 }
 
@@ -156,7 +200,7 @@ function AdditionalBeauty({ beauty }) {
     const hasAdditionalBeauty =
         beauty.additionalHair ||
         beauty.additionalFace ||
-        beauty.additionalSkinName;
+        beauty.additionalSkin;
 
     if (!hasAdditionalBeauty) {
         return null;
@@ -197,7 +241,7 @@ function AdditionalBeauty({ beauty }) {
 
                 <BeautyCard
                     title="추가 피부"
-                    name={beauty.additionalSkinName}
+                    name={beauty.additionalSkin?.name}
                 />
             </div>
         </section>
