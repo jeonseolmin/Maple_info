@@ -27,3 +27,16 @@ export const getCharacterEquipment = async (ocid) => {
 
     return response.data;
 };
+
+export const getCharacterCashEquipment = async (ocid) => {
+    const response = await axiosInstance.get(
+        "/characters/cash-equipment",
+        {
+            params: {
+                ocid,
+            },
+        }
+    );
+
+    return response.data;
+};

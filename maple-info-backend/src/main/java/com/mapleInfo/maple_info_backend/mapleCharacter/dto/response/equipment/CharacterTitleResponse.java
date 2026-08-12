@@ -7,8 +7,8 @@ import java.time.OffsetDateTime;
 public record CharacterTitleResponse(String name,
                                      String icon,
                                      String description,
-                                     OffsetDateTime expireAt,
-                                     OffsetDateTime optionExpireAt,
+                                     String expireAt,
+                                     String optionExpireAt,
                                      String shapeName,
                                      String shapeIcon,
                                      String shapeDescription
