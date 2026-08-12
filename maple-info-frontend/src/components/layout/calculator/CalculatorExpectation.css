@@ -9,30 +9,30 @@
 .page-title {
     font-size: 28px;
     font-weight: 800;
-    color: #191f28;
+    color: var(--color-text);
     margin-bottom: 8px;
 }
 
 .page-subtitle {
     font-size: 15px;
-    color: #8b95a1;
+    color: var(--color-text-muted);
     margin-bottom: 32px;
 }
 
 /* 둥글고 깔끔한 카드 스타일 */
 .toss-card {
-    background-color: #ffffff;
-    border-radius: 24px;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-large);
     padding: 32px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04), 0 16px 24px rgba(0, 0, 0, 0.02);
+    box-shadow: var(--shadow-card);
     margin-bottom: 24px;
-    border: 1px solid #f2f4f6;
+    border: 1px solid var(--color-border);
 }
 
 .card-title {
     font-size: 18px;
     font-weight: 700;
-    color: #333d4b;
+    color: var(--color-text);
     margin-top: 0;
     margin-bottom: 24px;
 }
@@ -48,34 +48,42 @@
     display: block;
     font-size: 13px;
     font-weight: 600;
-    color: #4e5968;
+    color: var(--color-text-secondary);
     margin-bottom: 8px;
 }
 
 /* 셀렉트 박스 공통 디자인 */
-select, input[type="number"] {
+select, 
+input[type="text"], 
+input[type="number"] {
     width: 100%;
     padding: 14px 16px;
     font-size: 15px;
-    color: #333d4b;
-    background-color: #f2f4f6;
-    border: 1px solid transparent;
-    border-radius: 12px;
+    color: var(--color-text);
+    background-color: var(--color-surface-soft);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
     appearance: none;
-    cursor: pointer; /* input은 텍스트 커서가 나오게 하려면 auto로 하셔도 됩니다 */
+    cursor: pointer;
     transition: all 0.2s ease;
-    box-sizing: border-box; /* 패딩 삐져나옴 방지 */
+    box-sizing: border-box;
 }
 
-select:hover, input[type="number"]:hover {
-    background-color: #e5e8eb;
+/* 마우스를 올렸을 때 살짝 배경색 변화 */
+select:hover, 
+input[type="text"]:hover, 
+input[type="number"]:hover {
+    background-color: var(--color-background);
 }
 
-select:focus, input[type="number"]:focus {
+/* 클릭(포커스) 했을 때 강조 효과 */
+select:focus, 
+input[type="text"]:focus, 
+input[type="number"]:focus {
     outline: none;
-    background-color: #ffffff;
-    border-color: #3182f6; 
-    box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.1);
+    background-color: var(--color-surface);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-focus);
 }
 
 /* 목표 옵션 세로 스택 */
@@ -97,8 +105,8 @@ select:focus, input[type="number"]:focus {
     justify-content: center;
     width: 28px;
     height: 28px;
-    background-color: #3182f6;
-    color: white;
+    background-color: var(--color-primary);
+    color: #ffffff; /* 번호 안의 숫자는 항상 흰색이 잘 어울립니다 */
     font-size: 14px;
     font-weight: bold;
     border-radius: 50%;
@@ -106,7 +114,7 @@ select:focus, input[type="number"]:focus {
 }
 
 .loading-select {
-    color: #8b95a1;
+    color: var(--color-placeholder);
     cursor: not-allowed;
 }
 
@@ -116,16 +124,20 @@ select:focus, input[type="number"]:focus {
     padding: 18px;
     font-size: 17px;
     font-weight: 700;
-    color: #ffffff;
-    background-color: #3182f6;
+    color: #ffffff; /* 버튼 글자는 항상 흰색 고정 */
+    background-color: var(--color-primary);
     border: none;
-    border-radius: 16px;
+    border-radius: var(--radius-medium);
     cursor: pointer;
     transition: background-color 0.2s;
     margin-top: 10px;
 }
 
 .primary-calc-btn:hover {
-    background-color: #1b64da;
+    background-color: var(--color-primary-dark);
 }
 
+/* 계산 완료 결과 카드 스타일 (추가) */
+.result-card {
+    background-color: var(--color-surface-soft) !important;
+}

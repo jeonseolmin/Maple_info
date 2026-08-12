@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
 import '../layout/calculator/CalculatorExpectation.css';
-
+import '../../api/axiosInstance.js';
+import axiosInstance from "../../api/axiosInstance.js";
 const ExpCalculator = () => {
     const [expTable, setExpTable] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -17,7 +17,7 @@ const ExpCalculator = () => {
     useEffect(() => {
         const fetchExpTable = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/exp/table');
+                const response = await axiosInstance.get('http://localhost:8080/api/exp/table');
                 setExpTable(response.data);
             } catch (error) {
                 console.error("경험치 표를 불러오는데 실패했습니다:", error);

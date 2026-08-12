@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
+import axiosInstance from '../../api/axiosInstance';
 import '../layout/calculator/CalculatorExpectation.css';
 
 const CUBE_TYPES = [
@@ -107,7 +107,7 @@ const CubeExpectation = () => {
             try {
                 const formattedPartName = `${formData.itemPart} (${formData.level}레벨)`;
                 
-                const response = await axios.get('http://localhost:8080/api/cube/options', {
+                const response = await axiosInstance.get('http://localhost:8080/api/cube/options', {
                     params: {
                         cubeType: formData.cubeType,
                         partName: formattedPartName,
@@ -166,7 +166,7 @@ const CubeExpectation = () => {
                 cubePrice: Number(formData.cubePrice) || 0 
             };
 
-            const response = await axios.post('http://localhost:8080/api/cube/calculate', requestPayload);
+            const response = await axiosInstance.post('http://localhost:8080/api/cube/calculate', requestPayload);
             setResultData(response.data);
             
         } catch (error) {

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
+import axiosInstance from '../../api/axiosInstance';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts'; 
 import '../layout/calculator/CalculatorExpectation.css'; 
 
@@ -42,7 +42,7 @@ const StarforceExpectation = () => {
         setResultData(null);
         
         try {
-            const response = await axios.post('http://localhost:8080/api/starforce/simulate', formData);
+            const response = await axiosInstance.post('http://localhost:8080/api/starforce/simulate', formData);
             setResultData(response.data);
         } catch (error) {
             console.error("스타포스 계산 중 오류 발생:", error);
