@@ -15,10 +15,10 @@ public record NexonTitleResponse(
         String titleDescription,
 
         @JsonProperty("date_expire")
-        OffsetDateTime dateExpire,
+        String dateExpire,
 
         @JsonProperty("date_option_expire")
-        OffsetDateTime dateOptionExpire,
+        String dateOptionExpire,
 
         @JsonProperty("title_shape_name")
         String titleShapeName,

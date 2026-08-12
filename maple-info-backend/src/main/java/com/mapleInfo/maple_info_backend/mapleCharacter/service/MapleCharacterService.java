@@ -3,6 +3,7 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.service;
 import com.mapleInfo.maple_info_backend.mapleCharacter.client.MapleCharacterClient;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.cash.NexonCharacterCashItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment.NexonCharacterEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
@@ -11,6 +12,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.Nexo
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSearchResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
 import com.mapleInfo.maple_info_backend.mapleCharacter.repository.MapleCharacterRepository;
@@ -482,6 +484,23 @@ public class MapleCharacterService {
         }
 
         return CharacterEquipmentResponse.from(
+                nexonResponse
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public CharacterCashEquipmentResponse getCashEquipment(
+            String ocid
+    ) {
+        log.info(
+                "캐시 장비 API 호출 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
+        NexonCharacterCashItemResponse nexonResponse =
+                mapleCharacterClient.getCashEquipment(ocid);
+
+        return CharacterCashEquipmentResponse.from(
                 nexonResponse
         );
     }
