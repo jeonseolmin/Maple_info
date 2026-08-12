@@ -10,6 +10,7 @@ import TreasureHunter from "../components/expCalculator/TreasureHunter.jsx";
 import AfkExperience from "../components/expCalculator/AfkExperience.jsx";
 import BossScheduler from "../components/bossCalculator/BossScheduler.jsx";
 import BossEncyclopedia from "../components/bossinfo/BossEncyclopedia.jsx";
+import SymbolCalculator from "../components/symbolCalculator/SymbolCalculator.jsx";
 
 export default function AppRouter() {
   return (
@@ -28,6 +29,7 @@ export default function AppRouter() {
           <Route path="experience/afk" element={<AfkExperience/>} />
           <Route path="boss/scheduler" element={<BossScheduler />} />
           <Route path="/gameinfo/boss" element={<BossEncyclopedia />} />
+          <Route path="/symbol" element={<SymbolCalculator />} />
           
         </Route>
       </Routes>

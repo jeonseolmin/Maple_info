@@ -13,7 +13,8 @@ public final class SecurityUrls {
             "/api/cube/**",
             "/api/exp/**",
             "/api/boss/**",
-            "/api/bossinfo/**"
+            "/api/bossinfo/**",
+            "/api/symbol/**"
 
     };
 

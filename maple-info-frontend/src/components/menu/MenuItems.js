@@ -136,9 +136,9 @@ export const folderMenuItems = [
             {
                 id: "symbol-efficiency",
                 type: "app",
-                label: "심볼 효율",
+                label: "심볼 계산",
                 icon: symbolImg,
-                path: "/efficiency/symbol",
+                path: "/symbol",
                 color: "#49a6e9",
             },
             growthOrderMenu,
