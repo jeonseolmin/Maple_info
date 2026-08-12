@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axiosInstance from '../../api/axiosInstance';
 import './SymbolCalculator.css';
 import '../layout/calculator/CalculatorExpectation.css';

@@ -14,7 +14,8 @@ public final class SecurityUrls {
             "/api/exp/**",
             "/api/boss/**",
             "/api/bossinfo/**",
-            "/api/symbol/**"
+            "/api/symbol/**",
+            "/api/characters/**"
 
     };
 

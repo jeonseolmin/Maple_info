@@ -205,7 +205,7 @@ export const folderMenuItems = [
                 type: "app",
                 label: "유니온 챔피언",
                 icon: unionImg,
-                path: "/ranking/union-champion",
+                path: "/champion",
                 color: "#5c8ed8",
             },
             {
