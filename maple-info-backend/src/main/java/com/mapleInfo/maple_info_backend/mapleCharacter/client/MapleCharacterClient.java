@@ -3,6 +3,7 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.client;
 import com.mapleInfo.maple_info_backend.common.exception.NexonApiException;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.cash.NexonCharacterCashItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment.NexonCharacterEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
@@ -270,6 +271,32 @@ public class MapleCharacterClient {
             );
         }
     }
+    public NexonCharacterCashItemResponse getCashEquipment(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/cashitem-equipment"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterCashItemResponse.class
+                    );
 
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 캐시 장비 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
 
 }

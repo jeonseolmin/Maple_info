@@ -35,7 +35,6 @@ public record CharacterEquipmentResponse(
                           .filter(Objects::nonNull)
                           .map(CharacterEquipmentItemResponse::from)
                           .toList();
-
         return new CharacterEquipmentResponse(
                 response.date(),
                 response.characterGender(),
@@ -46,3 +45,4 @@ public record CharacterEquipmentResponse(
         );
     }
 }
+
