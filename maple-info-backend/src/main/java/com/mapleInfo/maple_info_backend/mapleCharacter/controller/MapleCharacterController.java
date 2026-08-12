@@ -2,6 +2,7 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.controller;
 
 
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSearchResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty.CharacterBeautyResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.service.MapleCharacterService;
@@ -36,4 +37,12 @@ public class MapleCharacterController {
         return mapleCharacterService.getCashEquipment(ocid);
     }
 
+    @GetMapping("/beauty-equipment")
+    public CharacterBeautyResponse getBeautyEquipment(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getBeautyEquipment(
+                ocid
+        );
+    }
 }

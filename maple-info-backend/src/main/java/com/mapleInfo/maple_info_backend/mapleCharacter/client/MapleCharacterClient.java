@@ -3,6 +3,7 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.client;
 import com.mapleInfo.maple_info_backend.common.exception.NexonApiException;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.beauty.NexonCharacterBeautyResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.cash.NexonCharacterCashItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment.NexonCharacterEquipmentResponse;
@@ -298,5 +299,31 @@ public class MapleCharacterClient {
             );
         }
     }
+    public NexonCharacterBeautyResponse getBeautyEquipment(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/beauty-equipment"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterBeautyResponse.class
+                    );
 
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 외형 정보 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
 }

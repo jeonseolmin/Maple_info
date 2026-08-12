@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getCharacterCashEquipment } from "../../../api/characterApi";
 import CashEquipmentGrid from "./CashEquipmentGrid.jsx";
 import "./CharacterCash.css";
+import CharacterBeauty from "./beauty/CharacterBeauty.jsx";
 
 export default function CharacterCash({ character }) {
     const [cashData, setCashData] = useState(null);
@@ -93,6 +94,7 @@ export default function CharacterCash({ character }) {
                     onClose={() => setSelectedItem(null)}
                 />
             </div>
+            <CharacterBeauty ocid={character.ocid} />
         </section>
     );
 }

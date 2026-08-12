@@ -3,6 +3,7 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.service;
 import com.mapleInfo.maple_info_backend.mapleCharacter.client.MapleCharacterClient;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.beauty.NexonCharacterBeautyResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.cash.NexonCharacterCashItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment.NexonCharacterEquipmentResponse;
@@ -12,6 +13,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.Nexo
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSearchResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty.CharacterBeautyResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
@@ -501,6 +503,23 @@ public class MapleCharacterService {
                 mapleCharacterClient.getCashEquipment(ocid);
 
         return CharacterCashEquipmentResponse.from(
+                nexonResponse
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public CharacterBeautyResponse getBeautyEquipment(
+            String ocid
+    ) {
+        log.info(
+                "외형 정보 API 호출 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
+        NexonCharacterBeautyResponse nexonResponse =
+                mapleCharacterClient.getBeautyEquipment(ocid);
+
+        return CharacterBeautyResponse.from(
                 nexonResponse
         );
     }
