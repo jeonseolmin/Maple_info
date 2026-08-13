@@ -117,9 +117,9 @@ export const folderMenuItems = [
             {
                 id: "hunting-setting",
                 type: "app",
-                label: "사냥 세팅 최적화",
+                label: "사냥 효율 분석",
                 icon: huntsetImg,
-                path: "/hunting/setting",
+                path: "/hunting",
                 color: "#43aa8b",
             },
         ],
