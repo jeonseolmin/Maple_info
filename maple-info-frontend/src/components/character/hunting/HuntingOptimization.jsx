@@ -2,63 +2,66 @@ import { useState } from 'react';
 import '../../mulungDojo/MuLungDojo.css';
 
 const huntingGrounds = [
-    // --- 세르니움 ---
-    { region: "세르니움", map: "해변 암석 지대 1~4", mobLevel: 260, reqAut: 50 },
-    { region: "세르니움", map: "세르니움 서쪽 성벽 1~3", mobLevel: 260, reqAut: 50 },
-    { region: "세르니움", map: "세르니움 동쪽 성벽 1~3, 왕립 도서관 1~6", mobLevel: 261, reqAut: 50 },
+    // --- 세르니움 (전) ---
+    { region: "세르니움", map: "해변 암석 지대 1~4", mobLevel: 260, reqAut: 30 },
+    { region: "세르니움", map: "세르니움 서쪽 성벽 1~3", mobLevel: 260, reqAut: 30 },
+    { region: "세르니움", map: "세르니움 동쪽 성벽 1~3, 왕립 도서관 1~6", mobLevel: 261, reqAut: 30 },
 
-    // --- 불타는 세르니움 ---
+    // --- 불타는 세르니움 (후) ---
     { region: "불타는 세르니움", map: "격전의 서쪽 성벽 1~4", mobLevel: 262, reqAut: 50 },
     { region: "불타는 세르니움", map: "격전의 동쪽 성벽 1~6", mobLevel: 263, reqAut: 50 },
     { region: "불타는 세르니움", map: "불타는 왕립 도서관 1~6", mobLevel: 264, reqAut: 50 },
 
     // --- 호텔 아르크스 ---
-    { region: "호텔 아르크스", map: "무법자들이 지배하는 황야 1~4", mobLevel: 265, reqAut: 130 },
-    { region: "호텔 아르크스", map: "낭만이 저무는 자동차 극장 1~3", mobLevel: 266, reqAut: 130 },
-    { region: "호텔 아르크스", map: "낭만이 저무는 자동차 극장 4~6", mobLevel: 267, reqAut: 130 },
-    { region: "호텔 아르크스", map: "종착지 없는 횡단열차 1~3", mobLevel: 268, reqAut: 130 },
-    { region: "호텔 아르크스", map: "종착지 없는 횡단열차 4~6", mobLevel: 269, reqAut: 130 },
+    { region: "호텔 아르크스", map: "무법자들이 지배하는 황야 1~4", mobLevel: 265, reqAut: 70 },
+    { region: "호텔 아르크스", map: "낭만이 저무는 자동차 극장 1~3", mobLevel: 266, reqAut: 70 },
+    { region: "호텔 아르크스", map: "낭만이 저무는 자동차 극장 4~6", mobLevel: 267, reqAut: 70 },
+    { region: "호텔 아르크스", map: "종착지 없는 횡단열차 1~3", mobLevel: 268, reqAut: 100 },
+    { region: "호텔 아르크스", map: "종착지 없는 횡단열차 4~6", mobLevel: 269, reqAut: 100 },
 
     // --- 오디움 ---
-    { region: "오디움", map: "성문으로 가는 길 1~5", mobLevel: 270, reqAut: 230 },
-    { region: "오디움", map: "점령당한 골목 1~4", mobLevel: 271, reqAut: 230 },
-    { region: "오디움", map: "볕 드는 실험실 1~3", mobLevel: 272, reqAut: 260 },
-    { region: "오디움", map: "잠긴 문 뒤 실험실 1~2", mobLevel: 273, reqAut: 260 },
-    { region: "오디움", map: "잠긴 문 뒤 실험실 2~4", mobLevel: 274, reqAut: 260 },
+    { region: "오디움", map: "성문으로 가는 길 1~5", mobLevel: 270, reqAut: 130 },
+    { region: "오디움", map: "점령당한 골목 1~4", mobLevel: 271, reqAut: 160 },
+    { region: "오디움", map: "볕 드는 실험실 1~3", mobLevel: 272, reqAut: 180 },
+    { region: "오디움", map: "잠긴 문 뒤 실험실 1~2", mobLevel: 273, reqAut: 200 },
+    { region: "오디움", map: "잠긴 문 뒤 실험실 2~4", mobLevel: 274, reqAut: 200 },
 
     // --- 도원경 ---
-    { region: "도원경", map: "생기가 돌아오는 봄 1~5", mobLevel: 275, reqAut: 300 },
-    { region: "도원경", map: "빛이 약한 여름 1~5", mobLevel: 276, reqAut: 300 },
-    { region: "도원경", map: "색깔이 옅은 가을 1~5", mobLevel: 277, reqAut: 330 },
-    { region: "도원경", map: "참혹한 흔적의 겨울 1~2", mobLevel: 278, reqAut: 330 },
-    { region: "도원경", map: "참혹한 흔적의 겨울 2~5", mobLevel: 279, reqAut: 330 },
+    { region: "도원경", map: "생기가 돌아오는 봄 1~5", mobLevel: 275, reqAut: 230 },
+    { region: "도원경", map: "빛이 약한 여름 1~5", mobLevel: 276, reqAut: 260 },
+    { region: "도원경", map: "색깔이 옅은 가을 1~5", mobLevel: 277, reqAut: 280 },
+    { region: "도원경", map: "참혹한 흔적의 겨울 1~2", mobLevel: 278, reqAut: 300 },
+    { region: "도원경", map: "참혹한 흔적의 겨울 2~5", mobLevel: 279, reqAut: 300 },
 
     // --- 아르테리아 ---
-    { region: "아르테리아", map: "북쪽/남쪽/동쪽/서쪽 외곽지역, 외곽 전투지역 1~2", mobLevel: 280, reqAut: 330 },
+    { region: "아르테리아", map: "퀸스로드 (북/남/동/서, 외곽 전투지역)", mobLevel: 280, reqAut: 330 },
     { region: "아르테리아", map: "최하층 통로 1~3", mobLevel: 282, reqAut: 360 },
     { region: "아르테리아", map: "최하층 통로 4~6", mobLevel: 283, reqAut: 360 },
-    { region: "아르테리아", map: "최상층 통로 1~8", mobLevel: 284, reqAut: 360 },
+    { region: "아르테리아", map: "최상층 통로 1~8", mobLevel: 284, reqAut: 400 },
 
     // --- 카르시온 ---
-    { region: "카르시온", map: "거대 산호 군락 1~2", mobLevel: 285, reqAut: 380 },
-    { region: "카르시온", map: "거대 산호 군락 3, 잔잔한 해안가 1~3", mobLevel: 286, reqAut: 380 },
-    { region: "카르시온", map: "휘감기는 숲 1~2", mobLevel: 287, reqAut: 400 },
-    { region: "카르시온", map: "휘감기는 숲 3, 어둠이 내리는 나무줄기 1~3", mobLevel: 288, reqAut: 400 },
-    { region: "카르시온", map: "숨이 멎어드는 동굴 1~4, 가라앉은 유적지 1~4", mobLevel: 289, reqAut: 400 },
+    { region: "카르시온", map: "거대 산호 군락 1~2", mobLevel: 285, reqAut: 430 },
+    { region: "카르시온", map: "거대 산호 군락 3, 잔잔한 해안가 1~3", mobLevel: 286, reqAut: 430 },
+    { region: "카르시온", map: "휘감기는 숲 1~2", mobLevel: 287, reqAut: 460 },
+    { region: "카르시온", map: "휘감기는 숲 3, 어둠이 내리는 나무줄기 1~3", mobLevel: 288, reqAut: 460 },
+    { region: "카르시온", map: "숨이 멎어드는 동굴 1~4, 가라앉은 유적지 1~4", mobLevel: 289, reqAut: 500 },
 
     // --- 탈라하트 ---
-    { region: "탈라하트", map: "재와 침묵의 땅 1~3", mobLevel: 290, reqAut: 430 },
-    { region: "탈라하트", map: "재와 침묵의 땅 3~5, 섭리와 운명의 전쟁터 1~3", mobLevel: 291, reqAut: 430 },
-    { region: "탈라하트", map: "심판과 운명의 전쟁터 1~3", mobLevel: 292, reqAut: 430 },
-    { region: "탈라하트", map: "영원과 운명의 전쟁터 1~3", mobLevel: 293, reqAut: 460 },
-    { region: "탈라하트", map: "밤의 길 1~4, 환영의 길 1~4", mobLevel: 294, reqAut: 460 },
+    { region: "탈라하트", map: "재와 침묵의 땅 1~3", mobLevel: 290, reqAut: 630 },
+    { region: "탈라하트", map: "재와 침묵의 땅 3~5 (침묵을 삼키는 사념)", mobLevel: 291, reqAut: 630 },
+    { region: "탈라하트", map: "섭리와 운명의 전쟁터 1~3", mobLevel: 291, reqAut: 660 },
+    { region: "탈라하트", map: "심판과 운명의 전쟁터 1~3", mobLevel: 292, reqAut: 660 },
+    { region: "탈라하트", map: "영원과 운명의 전쟁터 1~3", mobLevel: 293, reqAut: 660 },
+    { region: "탈라하트", map: "밤의 길 1~4", mobLevel: 294, reqAut: 700 },
+    { region: "탈라하트", map: "환영의 길 1~4", mobLevel: 294, reqAut: 700 },
 
     // --- 기어드락 ---
-    { region: "기어드락", map: "지하 1층, 지하 2층 1~2구역", mobLevel: 295, reqAut: 480 },
-    { region: "기어드락", map: "지하 3층 1구역, 지하 2층 3구역, 지하 4층", mobLevel: 296, reqAut: 480 },
-    { region: "기어드락", map: "로봇 창고 1~4", mobLevel: 297, reqAut: 480 },
-    { region: "기어드락", map: "로봇 창고 5~8", mobLevel: 298, reqAut: 510 },
-    { region: "기어드락", map: "고브의 작업실 1~8", mobLevel: 299, reqAut: 510 }
+    { region: "기어드락", map: "지하 1층, 지하 2층 1~2구역", mobLevel: 295, reqAut: 740 },
+    { region: "기어드락", map: "지하 3층 1구역, 지하 2층 3구역, 지하 4층", mobLevel: 296, reqAut: 740 },
+    { region: "기어드락", map: "로봇 창고 1~4", mobLevel: 297, reqAut: 770 },
+    { region: "기어드락", map: "로봇 창고 5~8", mobLevel: 298, reqAut: 770 },
+    { region: "기어드락", map: "고브의 작업실 1~4", mobLevel: 299, reqAut: 810 },
+    { region: "기어드락", map: "고브의 작업실 5~8", mobLevel: 299, reqAut: 810 }
 ];
 
 const HuntingOptimization = () => {
