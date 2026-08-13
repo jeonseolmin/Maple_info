@@ -1,18 +1,40 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 import {
     getCharacterBeauty,
     getCharacterCashEquipment,
 } from "../../../api/characterApi";
 import CashEquipmentGrid from "./CashEquipmentGrid.jsx";
+import CashItemDetail from "./CashItemDetail.jsx";
 import "../equipment/Equipment.css";
 import "./CharacterCash.css";
 
-export default function CharacterCash({ character }) {
-    const [cashData, setCashData] = useState(null);
-    const [beautyData, setBeautyData] = useState(null);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+export default function CharacterCash({
+                                          character,
+                                      }) {
+    const [cashData, setCashData] =
+        useState(null);
+
+    const [beautyData, setBeautyData] =
+        useState(null);
+
+    const [equipmentMode, setEquipmentMode] =
+        useState("default");
+
+    const [selectedItem, setSelectedItem] =
+        useState(null);
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [cashError, setCashError] =
+        useState("");
+
+    const [beautyError, setBeautyError] =
+        useState("");
 
     useEffect(() => {
         if (!character?.ocid) {
@@ -20,147 +42,155 @@ export default function CharacterCash({ character }) {
             setBeautyData(null);
             setSelectedItem(null);
             setLoading(false);
-            setError("캐릭터 식별 정보를 찾을 수 없습니다.");
+            setCashError(
+                "캐릭터 식별 정보를 찾을 수 없습니다."
+            );
             return;
         }
 
         let cancelled = false;
 
-        const fetchCashEquipment = async () => {
+        const fetchCashData = async () => {
             setLoading(true);
-            setError("");
+            setCashError("");
+            setBeautyError("");
             setSelectedItem(null);
+            setEquipmentMode("default");
 
-            const [cashResult, beautyResult] =
-                await Promise.allSettled([
-                    getCharacterCashEquipment(character.ocid),
-                    getCharacterBeauty(character.ocid),
-                ]);
+            const [
+                cashResult,
+                beautyResult,
+            ] = await Promise.allSettled([
+                getCharacterCashEquipment(
+                    character.ocid
+                ),
+                getCharacterBeauty(
+                    character.ocid
+                ),
+            ]);
 
             if (cancelled) {
                 return;
             }
 
-            if (cashResult.status === "fulfilled") {
+            if (
+                cashResult.status === "fulfilled"
+            ) {
                 setCashData(cashResult.value);
             } else {
                 console.error(
                     "캐시 장비 조회 실패:",
                     cashResult.reason
                 );
+
                 setCashData(null);
+                setCashError(
+                    "캐시 장비 정보를 불러오지 못했습니다."
+                );
             }
 
-            if (beautyResult.status === "fulfilled") {
-                setBeautyData(beautyResult.value);
+            if (
+                beautyResult.status === "fulfilled"
+            ) {
+                setBeautyData(
+                    beautyResult.value
+                );
             } else {
                 console.error(
                     "외형 정보 조회 실패:",
                     beautyResult.reason
                 );
-                setBeautyData(null);
-            }
 
-            if (
-                cashResult.status === "rejected" &&
-                beautyResult.status === "rejected"
-            ) {
-                setError(
-                    "캐시 장비와 외형 정보를 불러오지 못했습니다."
-                );
-            } else if (cashResult.status === "rejected") {
-                setError(
-                    "캐시 장비는 불러오지 못했지만 외형 정보는 표시합니다."
+                setBeautyData(null);
+                setBeautyError(
+                    "외형 정보를 불러오지 못했습니다."
                 );
             }
 
             setLoading(false);
         };
 
-        fetchCashEquipment();
+        fetchCashData();
 
         return () => {
             cancelled = true;
         };
     }, [character?.ocid]);
 
-    const cashEquipment = cashData?.equipment ?? [];
+    const defaultCashEquipment =
+        cashData?.equipment ?? [];
 
-    /*
-     * Hook은 loading/error 조건부 return보다
-     * 반드시 위에서 호출해야 합니다.
-     */
-    const beautyEquipment = useMemo(() => {
-        if (!beautyData) {
-            return [];
-        }
+    const additionalCashEquipment =
+        cashData?.additionalEquipment ?? [];
 
-        return [
-            beautyData.hair?.name
-                ? {
-                    type: "beauty",
-                    beautyType: "hair",
-                    slot: "헤어",
-                    part: "헤어",
-                    name: beautyData.hair.name,
-                    icon: beautyData.hair.imageUrl,
-                    baseColor: beautyData.hair.baseColor,
-                    mixColor: beautyData.hair.mixColor,
-                    mixRate: beautyData.hair.mixRate,
-                }
-                : null,
+    const defaultBeautyEquipment =
+        useMemo(
+            () =>
+                createBeautyEquipment(
+                    beautyData,
+                    false
+                ),
+            [beautyData]
+        );
 
-            beautyData.faceName?.name
-                ? {
-                    type: "beauty",
-                    beautyType: "faceName",
-                    slot: "성형",
-                    part: "성형",
-                    name: beautyData.faceName.name,
-                    icon: beautyData.faceName.imageUrl,
-                    baseColor: beautyData.faceName.baseColor,
-                    mixColor: beautyData.faceName.mixColor,
-                    mixRate: beautyData.faceName.mixRate,
-                }
-                : null,
+    const additionalBeautyEquipment =
+        useMemo(
+            () =>
+                createBeautyEquipment(
+                    beautyData,
+                    true
+                ),
+            [beautyData]
+        );
 
-            beautyData.skin?.name
-                ? {
-                    type: "beauty",
-                    beautyType: "skin",
-                    slot: "피부",
-                    part: "피부",
-                    name: beautyData.skin.name,
-                    icon: beautyData.skin.imageUrl,
-                    colorStyle: beautyData.skin.colorStyle,
-                    hue: beautyData.skin.hue,
-                    saturation: beautyData.skin.saturation,
-                    brightness: beautyData.skin.brightness,
-                }
-                : null,
-        ].filter(Boolean);
-    }, [beautyData]);
+    const hasAdditionalMode =
+        additionalCashEquipment.length > 0 ||
+        additionalBeautyEquipment.length > 0;
 
-    const equipment = useMemo(
+    const visibleCashEquipment =
+        equipmentMode === "additional"
+            ? additionalCashEquipment
+            : defaultCashEquipment;
+
+    const visibleBeautyEquipment =
+        equipmentMode === "additional"
+            ? additionalBeautyEquipment
+            : defaultBeautyEquipment;
+
+    const visibleEquipment = useMemo(
         () => [
-            ...cashEquipment,
-            ...beautyEquipment,
+            ...visibleCashEquipment,
+            ...visibleBeautyEquipment,
         ],
-        [cashEquipment, beautyEquipment]
+        [
+            visibleCashEquipment,
+            visibleBeautyEquipment,
+        ]
     );
+
+    const handleModeChange = (mode) => {
+        setEquipmentMode(mode);
+        setSelectedItem(null);
+    };
 
     if (loading) {
         return (
             <p className="character-content__empty">
-                캐시 장비 정보를 불러오는 중입니다.
+                캐시 장비와 외형 정보를
+                불러오는 중입니다.
             </p>
         );
     }
 
-    if (error && equipment.length === 0) {
+    if (
+        cashError &&
+        beautyError &&
+        visibleEquipment.length === 0
+    ) {
         return (
             <p className="character-content__empty">
-                {error}
+                캐시 장비와 외형 정보를
+                불러오지 못했습니다.
             </p>
         );
     }
@@ -176,161 +206,168 @@ export default function CharacterCash({ character }) {
                         상세정보를 확인할 수 있습니다.
                     </p>
 
-                    {error && (
+                    {(cashError ||
+                        beautyError) && (
                         <p className="cash-equipment__warning">
-                            {error}
+                            {cashError ||
+                                beautyError}
                         </p>
                     )}
                 </div>
 
-                <span>
-                    캐시 장비 {cashEquipment.length}개
-                </span>
+                <div className="cash-equipment__header-info">
+                    {cashData?.presetNo != null && (
+                        <span className="cash-equipment__preset">
+                            프리셋{" "}
+                            {cashData.presetNo}
+                        </span>
+                    )}
+
+                    <span className="cash-equipment__count">
+                        캐시 장비{" "}
+                        {
+                            visibleCashEquipment.length
+                        }
+                        개
+                    </span>
+                </div>
             </header>
+
+            {hasAdditionalMode && (
+                <div
+                    className="cash-equipment__mode"
+                    role="tablist"
+                    aria-label="캐시 장비 외형 선택"
+                >
+                    <button
+                        type="button"
+                        role="tab"
+                        aria-selected={
+                            equipmentMode ===
+                            "default"
+                        }
+                        className={
+                            equipmentMode ===
+                            "default"
+                                ? "is-active"
+                                : ""
+                        }
+                        onClick={() =>
+                            handleModeChange(
+                                "default"
+                            )
+                        }
+                    >
+                        기본 외형
+                    </button>
+
+                    <button
+                        type="button"
+                        role="tab"
+                        aria-selected={
+                            equipmentMode ===
+                            "additional"
+                        }
+                        className={
+                            equipmentMode ===
+                            "additional"
+                                ? "is-active"
+                                : ""
+                        }
+                        onClick={() =>
+                            handleModeChange(
+                                "additional"
+                            )
+                        }
+                    >
+                        추가 외형
+                    </button>
+                </div>
+            )}
 
             <div className="equipment-panel__body">
                 <CashEquipmentGrid
-                    key={character.ocid}
-                    equipment={equipment}
+                    equipment={visibleEquipment}
+                    selectedItem={selectedItem}
                     onSelect={setSelectedItem}
                 />
 
                 <CashItemDetail
                     item={selectedItem}
-                    onClose={() => setSelectedItem(null)}
+                    onClose={() =>
+                        setSelectedItem(null)
+                    }
                 />
             </div>
         </section>
     );
 }
 
-function CashItemDetail({ item, onClose }) {
-    if (!item) {
-        return (
-            <div className="equipment-tooltip equipment-tooltip--empty">
-                캐시 장비 또는 외형을 선택해 주세요.
-            </div>
-        );
+function createBeautyEquipment(
+    beautyData,
+    additional
+) {
+    if (!beautyData) {
+        return [];
     }
 
-    return (
-        <article className="equipment-tooltip">
-            <button
-                type="button"
-                className="equipment-tooltip__close"
-                onClick={onClose}
-                aria-label="상세정보 닫기"
-            >
-                ×
-            </button>
+    const hair = additional
+        ? beautyData.additionalHair
+        : beautyData.hair;
 
-            <header className="equipment-tooltip__header">
-                <h3>{item.name}</h3>
+    const face = additional
+        ? beautyData.additionalFace
+        : beautyData.face;
 
-                <div className="equipment-tooltip__summary">
-                    {item.icon ? (
-                        <img
-                            src={item.icon}
-                            alt={item.name}
-                        />
-                    ) : (
-                        <span className="equipment-tooltip__beauty-icon">
-                            {item.slot}
-                        </span>
-                    )}
+    const skin = additional
+        ? beautyData.additionalSkin
+        : beautyData.skin;
 
-                    <div>
-                        <span>{item.part || item.slot}</span>
+    return [
+        hair?.name
+            ? {
+                type: "beauty",
+                beautyType: "hair",
+                slot: "헤어",
+                part: "헤어",
+                name: hair.name,
+                icon: hair.imageUrl,
+                baseColor: hair.baseColor,
+                mixColor: hair.mixColor,
+                mixRate: hair.mixRate,
+            }
+            : null,
 
-                        {item.gender && (
-                            <span>
-                                성별: {item.gender}
-                            </span>
-                        )}
+        face?.name
+            ? {
+                type: "beauty",
+                beautyType: "face",
+                slot: "성형",
+                part: "성형",
+                name: face.name,
+                icon: face.imageUrl,
+                baseColor: face.baseColor,
+                mixColor: face.mixColor,
+                mixRate: face.mixRate,
+            }
+            : null,
 
-                        {item.label && (
-                            <span>{item.label}</span>
-                        )}
-                    </div>
-                </div>
-            </header>
-
-            {item.description && (
-                <p className="equipment-tooltip__description">
-                    {item.description}
-                </p>
-            )}
-
-            {item.type === "beauty" && (
-                <BeautyDetail item={item} />
-            )}
-
-            {item.options?.length > 0 && (
-                <section className="equipment-tooltip__section">
-                    <h4>캐시 옵션</h4>
-
-                    {item.options.map((option, index) => (
-                        <p key={`${option.type}-${index}`}>
-                            {option.type}: {option.value}
-                        </p>
-                    ))}
-                </section>
-            )}
-
-            {item.coloringPrism && (
-                <section className="equipment-tooltip__section">
-                    <h4>컬러링 프리즘</h4>
-                    <p>
-                        색상 범위:{" "}
-                        {item.coloringPrism.colorRange}
-                    </p>
-                    <p>
-                        색조: {item.coloringPrism.hue}
-                    </p>
-                    <p>
-                        채도: {item.coloringPrism.saturation}
-                    </p>
-                    <p>
-                        명도: {item.coloringPrism.value}
-                    </p>
-                </section>
-            )}
-        </article>
-    );
-}
-
-function BeautyDetail({ item }) {
-    return (
-        <section className="equipment-tooltip__section">
-            <h4>외형 정보</h4>
-
-            {item.baseColor && (
-                <p>기본 색상: {item.baseColor}</p>
-            )}
-
-            {item.mixColor && (
-                <p>믹스 색상: {item.mixColor}</p>
-            )}
-
-            {item.mixRate != null && (
-                <p>믹스 비율: {item.mixRate}%</p>
-            )}
-
-            {item.colorStyle && (
-                <p>색상 계열: {item.colorStyle}</p>
-            )}
-
-            {item.hue != null && (
-                <p>색조: {item.hue}</p>
-            )}
-
-            {item.saturation != null && (
-                <p>채도: {item.saturation}</p>
-            )}
-
-            {item.brightness != null && (
-                <p>명도: {item.brightness}</p>
-            )}
-        </section>
-    );
+        skin?.name
+            ? {
+                type: "beauty",
+                beautyType: "skin",
+                slot: "피부",
+                part: "피부",
+                name: skin.name,
+                icon: skin.imageUrl,
+                colorStyle:
+                skin.colorStyle,
+                hue: skin.hue,
+                saturation:
+                skin.saturation,
+                brightness:
+                skin.brightness,
+            }
+            : null,
+    ].filter(Boolean);
 }

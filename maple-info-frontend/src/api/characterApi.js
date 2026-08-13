@@ -11,8 +11,6 @@ export const getCharacter = async (characterName) => {
     );
 
     return response.data;
-
-
 };
 
 export const getCharacterEquipment = async (ocid) => {
@@ -40,6 +38,7 @@ export const getCharacterCashEquipment = async (ocid) => {
 
     return response.data;
 };
+
 export const getCharacterBeauty = async (ocid) => {
     const response = await axiosInstance.get(
         "/characters/beauty-equipment",

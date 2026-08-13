@@ -41,6 +41,7 @@ public class MapleCharacterService {
     private final MapleCharacterRepository mapleCharacterRepository;
     private final MapleCharacterClient mapleCharacterClient;
     private final BeautyImageService beautyImageService;
+    private final SkinImageService skinImageService;
 
     @Transactional
     public CharacterSearchResponse searchCharacter(
@@ -513,14 +514,27 @@ public class MapleCharacterService {
     public CharacterBeautyResponse getBeautyEquipment(
             String ocid
     ) {
+        log.info(
+                "외형 정보 API 호출 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
         NexonCharacterBeautyResponse nexonResponse =
                 mapleCharacterClient.getBeautyEquipment(ocid);
 
         if (nexonResponse == null) {
+            log.warn(
+                    "넥슨 외형 응답 없음 - ocidLength={}",
+                    ocid != null ? ocid.length() : 0
+            );
+
             return null;
         }
 
-        var hairImage =
+        /*
+         * 기본 헤어 이미지
+         */
+        MapleStoryIoBeautyImage hairImage =
                 nexonResponse.characterHair() == null
                         ? MapleStoryIoBeautyImage.empty()
                         : beautyImageService.findHairImage(
@@ -532,7 +546,10 @@ public class MapleCharacterService {
                         .baseColor()
                 );
 
-        var faceImage =
+        /*
+         * 기본 성형 이미지
+         */
+        MapleStoryIoBeautyImage faceImage =
                 nexonResponse.characterFace() == null
                         ? MapleStoryIoBeautyImage.empty()
                         : beautyImageService.findFaceImage(
@@ -544,7 +561,22 @@ public class MapleCharacterService {
                         .baseColor()
                 );
 
-        var additionalHairImage =
+        /*
+         * 기본 피부 이미지
+         */
+        String skinImageUrl =
+                nexonResponse.characterSkin() == null
+                        ? null
+                        : skinImageService.findImageUrl(
+                        nexonResponse
+                        .characterSkin()
+                        .skinName()
+                );
+
+        /*
+         * 추가 헤어 이미지
+         */
+        MapleStoryIoBeautyImage additionalHairImage =
                 nexonResponse.additionalCharacterHair() == null
                         ? MapleStoryIoBeautyImage.empty()
                         : beautyImageService.findHairImage(
@@ -556,7 +588,10 @@ public class MapleCharacterService {
                         .baseColor()
                 );
 
-        var additionalFaceImage =
+        /*
+         * 추가 성형 이미지
+         */
+        MapleStoryIoBeautyImage additionalFaceImage =
                 nexonResponse.additionalCharacterFace() == null
                         ? MapleStoryIoBeautyImage.empty()
                         : beautyImageService.findFaceImage(
@@ -568,12 +603,39 @@ public class MapleCharacterService {
                         .baseColor()
                 );
 
+        /*
+         * 추가 피부 이미지
+         */
+        String additionalSkinImageUrl =
+                nexonResponse.additionalCharacterSkin() == null
+                        ? null
+                        : skinImageService.findImageUrl(
+                        nexonResponse
+                        .additionalCharacterSkin()
+                        .skinName()
+                );
+
+        log.info(
+                "외형 이미지 조회 완료 - "
+                        + "hair={}, face={}, skin={}, "
+                        + "additionalHair={}, additionalFace={}, "
+                        + "additionalSkin={}",
+                hairImage.imageUrl() != null,
+                faceImage.imageUrl() != null,
+                skinImageUrl != null,
+                additionalHairImage.imageUrl() != null,
+                additionalFaceImage.imageUrl() != null,
+                additionalSkinImageUrl != null
+        );
+
         return CharacterBeautyResponse.from(
                 nexonResponse,
                 hairImage.imageUrl(),
                 faceImage.imageUrl(),
+                skinImageUrl,
                 additionalHairImage.imageUrl(),
-                additionalFaceImage.imageUrl()
+                additionalFaceImage.imageUrl(),
+                additionalSkinImageUrl
         );
     }
 

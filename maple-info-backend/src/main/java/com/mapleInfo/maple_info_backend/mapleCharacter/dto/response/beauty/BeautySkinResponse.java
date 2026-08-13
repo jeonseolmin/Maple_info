@@ -7,11 +7,13 @@ public record BeautySkinResponse(
         String colorStyle,
         Integer hue,
         Integer saturation,
-        Integer brightness
+        Integer brightness,
+        String imageUrl
 ) {
 
     public static BeautySkinResponse from(
-            NexonBeautySkinResponse response
+            NexonBeautySkinResponse response,
+            String imageUrl
     ) {
         if (response == null) {
             return null;
@@ -22,7 +24,8 @@ public record BeautySkinResponse(
                 response.colorStyle(),
                 response.hue(),
                 response.saturation(),
-                response.brightness()
+                response.brightness(),
+                imageUrl
         );
     }
 }

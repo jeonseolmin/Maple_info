@@ -17,7 +17,7 @@ public class MapleStoryIoClient {
             "https://maplestory.io";
 
     private static final String REGION = "KMS";
-    private static final String VERSION = "latest";
+    private static final String VERSION = "389";
 
     private final RestClient restClient;
 

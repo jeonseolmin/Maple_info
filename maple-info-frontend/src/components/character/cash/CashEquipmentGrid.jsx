@@ -1,18 +1,20 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { CASH_EQUIPMENT_SLOTS } from "./cashEquipmentSlot.js";
-import EquipmentSlot from "../equipment/EquipmentSlot.jsx";
+import CashEquipmentSlot from "./CashEquipmentSlot.jsx";
 
 export default function CashEquipmentGrid({
                                               equipment = [],
+                                              selectedItem,
                                               onSelect,
                                           }) {
-    const [selectedSlot, setSelectedSlot] = useState(null);
-
     const equipmentBySlot = useMemo(() => {
         return Object.fromEntries(
             equipment
                 .filter((item) => item?.slot)
-                .map((item) => [item.slot, item])
+                .map((item) => [
+                    item.slot,
+                    item,
+                ])
         );
     }, [equipment]);
 
@@ -22,16 +24,11 @@ export default function CashEquipmentGrid({
         }
 
         const isSameItem =
-            selectedSlot === item.slot;
+            selectedItem?.slot === item.slot;
 
-        const nextItem =
-            isSameItem ? null : item;
-
-        setSelectedSlot(
-            nextItem?.slot ?? null
+        onSelect?.(
+            isSameItem ? null : item
         );
-
-        onSelect?.(nextItem);
     };
 
     return (
@@ -52,12 +49,12 @@ export default function CashEquipmentGrid({
                         equipmentBySlot[slot];
 
                     return (
-                        <EquipmentSlot
+                        <CashEquipmentSlot
                             key={slot}
                             slot={slot}
                             item={item}
                             selected={
-                                selectedSlot === slot
+                                selectedItem?.slot === slot
                             }
                             onSelect={handleSelect}
                         />

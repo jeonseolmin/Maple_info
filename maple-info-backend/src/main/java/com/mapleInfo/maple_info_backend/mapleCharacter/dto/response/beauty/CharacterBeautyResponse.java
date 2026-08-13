@@ -18,8 +18,10 @@ public record CharacterBeautyResponse(
             NexonCharacterBeautyResponse response,
             String hairImageUrl,
             String faceImageUrl,
+            String skinImageUrl,
             String additionalHairImageUrl,
-            String additionalFaceImageUrl
+            String additionalFaceImageUrl,
+            String additionalSkinImageUrl
     ) {
         if (response == null) {
             return null;
@@ -41,7 +43,8 @@ public record CharacterBeautyResponse(
                 ),
 
                 BeautySkinResponse.from(
-                        response.characterSkin()
+                        response.characterSkin(),
+                        skinImageUrl
                 ),
 
                 BeautyHairResponse.from(
@@ -55,7 +58,8 @@ public record CharacterBeautyResponse(
                 ),
 
                 BeautySkinResponse.from(
-                        response.additionalCharacterSkin()
+                        response.additionalCharacterSkin(),
+                        additionalSkinImageUrl
                 )
         );
     }
