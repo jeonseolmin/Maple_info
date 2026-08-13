@@ -1,0 +1,136 @@
+.union-champion-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* 캐릭터 카드 전체 틀 */
+.char-card {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-surface, #ffffff);
+    border: 1px solid var(--color-border, #eaeaea);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    gap: 30px;
+}
+
+/* 좌측: 캐릭터 프로필 영역 */
+.char-profile-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-width: 280px;
+    border-right: 2px dashed var(--color-border, #eaeaea);
+    padding-right: 20px;
+}
+
+.char-avatar-box {
+    width: 90px;
+    height: 90px;
+    background-color: #f8f9fa; /* 흰색/회색 배경 */
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.char-avatar-box img {
+    transform: scale(2.8); 
+    margin-top: -15px; 
+}
+
+.char-info .char-name {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--color-text, #172033);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.char-info .char-job-level {
+    font-size: 0.9rem;
+    color: var(--color-text-muted, #4a5568);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.char-info .char-stats {
+    font-size: 0.8rem;
+    color: var(--color-text-muted, #718096);
+    line-height: 1.4;
+}
+
+.char-stats strong {
+    color: var(--color-text, #172033);
+}
+
+/* 우측: 보스 리스트 영역 */
+.boss-list-section {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.boss-item-card {
+    display: flex;
+    flex-direction: column;
+    width: 85px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px solid #eaeaea;
+}
+
+/* 보스 이미지와 난이도 뱃지 */
+.boss-img-wrapper {
+    position: relative;
+    width: 100%;
+    height: 85px;
+    background-color: #f1f5f9;
+}
+
+.boss-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.difficulty-badge {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.difficulty-badge.HARD { background-color: #e53e3e; } /* 빨간색 뱃지 */
+.difficulty-badge.NORMAL { background-color: #3182ce; } /* 파란색 뱃지 */
+
+/* 상태 뱃지 (CLEAR / 불가) */
+.status-bar {
+    text-align: center;
+    padding: 6px 0;
+    font-size: 0.9rem;
+    font-weight: 900;
+    color: #fff;
+}
+
+.status-bar.clear {
+    background-color: #ecc94b; /* 노란색 */
+    color: #744210; /* 글씨는 진한 갈색으로 가독성 확보 */
+}
+
+.status-bar.fail {
+    background-color: #e53e3e; /* 빨간색 */
+}

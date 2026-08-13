@@ -136,9 +136,9 @@ export const folderMenuItems = [
             {
                 id: "symbol-efficiency",
                 type: "app",
-                label: "심볼 효율",
+                label: "심볼 계산",
                 icon: symbolImg,
-                path: "/efficiency/symbol",
+                path: "/symbol",
                 color: "#49a6e9",
             },
             growthOrderMenu,
@@ -205,7 +205,7 @@ export const folderMenuItems = [
                 type: "app",
                 label: "유니온 챔피언",
                 icon: unionImg,
-                path: "/ranking/union-champion",
+                path: "/champion",
                 color: "#5c8ed8",
             },
             {
@@ -230,7 +230,7 @@ export const folderMenuItems = [
                 type: "app",
                 label: "보스 정보",
                 icon: bossImg,
-                path: "/information/boss",
+                path: "/gameinfo/boss",
                 color: "#e26661",
             },
             {

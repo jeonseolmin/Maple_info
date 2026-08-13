@@ -523,4 +523,64 @@ public class MapleCharacterService {
                 nexonResponse
         );
     }
+
+    // 기존 getUnionChampionInfo 메서드 대신 아래 메서드를 사용합니다.
+    public java.util.List<com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.UnionChampionResponse> getChampionInfoByNames(
+            java.util.List<String> characterNames
+    ) {
+        log.info("수동 입력된 캐릭터들 전적 조회 시작 - 갯수: {}", characterNames.size());
+
+        java.util.List<com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.UnionChampionResponse> resultList = new java.util.ArrayList<>();
+        java.util.List<String> targetBosses = java.util.List.of("스우_HARD", "데미안_HARD", "검은마법사_HARD", "세렌_HARD", "칼로스_NORMAL");
+
+        for (String name : characterNames) {
+            try {
+                // 1. OCID 조회
+                waitForNextCall();
+                NexonOcidResponse ocidRes = mapleCharacterClient.getOcid(name);
+
+                // 2. 캐릭터 기본 정보 조회
+                waitForNextCall();
+                NexonCharacterBasicResponse basic = mapleCharacterClient.getBasic(ocidRes.ocid());
+
+                // 3. 보스 킬 데이터 (현재 API 권한 문제로 예외 처리 및 빈 값으로 대체)
+                java.util.List<String> myClearedBosses = new java.util.ArrayList<>();
+                try {
+                    waitForNextCall();
+                    var bossKill = mapleCharacterClient.getCharacterBossKill(ocidRes.ocid());
+                    if (bossKill != null && bossKill.boss_kill_data() != null) {
+                        myClearedBosses.addAll(
+                                bossKill.boss_kill_data().stream()
+                                        .map(b -> b.boss_name() + "_" + b.boss_difficulty())
+                                        .toList()
+                        );
+                    }
+                } catch (Exception e) {
+                    log.warn("보스 킬 API 권한이 없어 조회할 수 없습니다. (캐릭터명: {})", name);
+                }
+
+                // 4. 타겟 보스 매칭 리스트 생성
+                java.util.List<com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.UnionChampionResponse.BossClearStatus> bossList = targetBosses.stream()
+                        .map(target -> {
+                            String[] split = target.split("_");
+                            return new com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.UnionChampionResponse.BossClearStatus(
+                                    split[0], split[1], "boss_" + split[0].toLowerCase() + ".png", myClearedBosses.contains(target)
+                            );
+                        }).toList();
+
+                // 5. 결과 리스트에 추가
+                resultList.add(new com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.UnionChampionResponse(
+                        basic.characterName(),
+                        basic.characterImage(),
+                        basic.characterClass(),
+                        basic.characterLevel(),
+                        bossList
+                ));
+
+            } catch (Exception e) {
+                log.error("캐릭터 조회 중 오류 발생: {}", name, e);
+            }
+        }
+        return resultList;
+    }
 }

@@ -7,6 +7,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.Charact
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.service.MapleCharacterService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +36,10 @@ public class MapleCharacterController {
             @RequestParam String ocid
     ) {
         return mapleCharacterService.getCashEquipment(ocid);
+    }
+    @GetMapping("/champion")
+    public ResponseEntity<?> getUnionChampion(@RequestParam java.util.List<String> names) {
+        return ResponseEntity.ok(mapleCharacterService.getChampionInfoByNames(names));
     }
 
     @GetMapping("/beauty-equipment")

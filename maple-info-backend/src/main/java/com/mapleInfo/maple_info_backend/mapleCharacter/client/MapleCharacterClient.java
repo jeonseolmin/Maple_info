@@ -318,12 +318,49 @@ public class MapleCharacterClient {
                     .body(
                             NexonCharacterBeautyResponse.class
                     );
-
         } catch (RestClientException e) {
             throw new NexonApiException(
                     "넥슨 외형 정보 API 호출에 실패했습니다.",
                     e
             );
+        }
+    }
+
+    public com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.UnionRaiderDto getUnionRaider(
+            String ocid
+    ) {
+        String date = LocalDate.now(KOREA_ZONE).minusDays(1).format(DateTimeFormatter.ISO_LOCAL_DATE);
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/maplestory/v1/user/union-raider")
+                            .queryParam("ocid", normalizeOcid(ocid))
+                            .queryParam("date", date)
+                            .build()
+                    )
+                    .retrieve()
+                    .body(com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.UnionRaiderDto.class);
+        } catch (RestClientException e) {
+            throw new NexonApiException("넥슨 유니온 공격대 API 호출에 실패했습니다.", e);
+        }
+    }
+
+    public com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.boss.CharacterBossKillDto getCharacterBossKill(
+            String ocid
+    ) {
+        String date = LocalDate.now(KOREA_ZONE).minusDays(1).format(DateTimeFormatter.ISO_LOCAL_DATE);
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/maplestory/v1/character/boss-kill")
+                            .queryParam("ocid", normalizeOcid(ocid))
+                            .queryParam("date", date)
+                            .build()
+                    )
+                    .retrieve()
+                    .body(com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.boss.CharacterBossKillDto.class);
+        } catch (RestClientException e) {
+            throw new NexonApiException("넥슨 보스 킬 API 호출에 실패했습니다.", e);
         }
     }
 }
