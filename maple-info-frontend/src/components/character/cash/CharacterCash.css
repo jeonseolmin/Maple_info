@@ -11,7 +11,19 @@
     align-content: start;
     gap: 10px;
 }
-
+.equipment-slot__beauty-icon {
+    display: flex;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(142, 185, 255, 0.35);
+    border-radius: 10px;
+    background: rgba(91, 143, 249, 0.12);
+    color: #a9c9ff;
+    font-size: 11px;
+    font-weight: 700;
+}
 .cash-equipment__slot {
     display: flex;
     min-width: 0;

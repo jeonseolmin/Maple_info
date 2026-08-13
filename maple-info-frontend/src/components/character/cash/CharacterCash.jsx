@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
-import { getCharacterCashEquipment } from "../../../api/characterApi";
+import { useEffect, useMemo, useState } from "react";
+import {
+    getCharacterBeauty,
+    getCharacterCashEquipment,
+} from "../../../api/characterApi";
 import CashEquipmentGrid from "./CashEquipmentGrid.jsx";
 import "./CharacterCash.css";
-import CharacterBeauty from "./beauty/CharacterBeauty.jsx";
 
 export default function CharacterCash({ character }) {
     const [cashData, setCashData] = useState(null);
+    const [beautyData, setBeautyData] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -24,19 +27,23 @@ export default function CharacterCash({ character }) {
             setError("");
 
             try {
-                const data = await getCharacterCashEquipment(
-                    character.ocid
-                );
+                const [cash, beauty] = await Promise.all([
+                    getCharacterCashEquipment(character.ocid),
+                    getCharacterBeauty(character.ocid),
+                ]);
 
                 if (!cancelled) {
-                    setCashData(data);
+                    setCashData(cash);
+                    setBeautyData(beauty);
                     setSelectedItem(null);
                 }
             } catch (error) {
-                console.error("캐시 장비 조회 실패:", error);
+                console.error("캐시 외형 정보 조회 실패:", error);
 
                 if (!cancelled) {
-                    setError("캐시 장비 정보를 불러오지 못했습니다.");
+                    setCashData(null);
+                    setBeautyData(null);
+                    setError("캐시 외형 정보를 불러오지 못했습니다.");
                 }
             } finally {
                 if (!cancelled) {
@@ -68,7 +75,54 @@ export default function CharacterCash({ character }) {
         );
     }
 
-    const equipment = cashData?.equipment ?? [];
+    const cashEquipment = cashData?.equipment ?? [];
+
+    const beautyEquipment = useMemo(() => {
+        if (!beautyData) {
+            return [];
+        }
+
+        return [
+            beautyData.hair && {
+                type: "beauty",
+                beautyType: "hair",
+                slot: "헤어",
+                part: "헤어",
+                name: beautyData.hair.name,
+                baseColor: beautyData.hair.baseColor,
+                mixColor: beautyData.hair.mixColor,
+                mixRate: beautyData.hair.mixRate,
+            },
+
+            beautyData.face && {
+                type: "beauty",
+                beautyType: "face",
+                slot: "성형",
+                part: "성형",
+                name: beautyData.face.name,
+                baseColor: beautyData.face.baseColor,
+                mixColor: beautyData.face.mixColor,
+                mixRate: beautyData.face.mixRate,
+            },
+
+            beautyData.skin && {
+                type: "beauty",
+                beautyType: "skin",
+                slot: "피부",
+                part: "피부",
+                name: beautyData.skin.name,
+                colorStyle: beautyData.skin.colorStyle,
+                hue: beautyData.skin.hue,
+                saturation: beautyData.skin.saturation,
+                brightness: beautyData.skin.brightness,
+            },
+        ].filter(Boolean);
+    }, [beautyData]);
+
+    const equipment = [
+        ...cashEquipment,
+        ...beautyEquipment,
+    ];
 
     return (
         <section className="equipment-panel">
@@ -94,7 +148,7 @@ export default function CharacterCash({ character }) {
                     onClose={() => setSelectedItem(null)}
                 />
             </div>
-            <CharacterBeauty ocid={character.ocid} />
+            <span>{cashEquipment.length}개 장착</span>
         </section>
     );
 }
@@ -118,7 +172,39 @@ function CashItemDetail({ item, onClose }) {
             >
                 ×
             </button>
+            {item.type === "beauty" && (
+                <section className="equipment-tooltip__section">
+                    <h4>외형 정보</h4>
 
+                    {item.baseColor && (
+                        <p>기본 색상: {item.baseColor}</p>
+                    )}
+
+                    {item.mixColor && (
+                        <p>믹스 색상: {item.mixColor}</p>
+                    )}
+
+                    {item.mixRate != null && (
+                        <p>믹스 비율: {item.mixRate}%</p>
+                    )}
+
+                    {item.colorStyle && (
+                        <p>색상 계열: {item.colorStyle}</p>
+                    )}
+
+                    {item.hue != null && (
+                        <p>색조: {item.hue}</p>
+                    )}
+
+                    {item.saturation != null && (
+                        <p>채도: {item.saturation}</p>
+                    )}
+
+                    {item.brightness != null && (
+                        <p>명도: {item.brightness}</p>
+                    )}
+                </section>
+            )}
             <header className="equipment-tooltip__header">
                 <h3>{item.name}</h3>
 

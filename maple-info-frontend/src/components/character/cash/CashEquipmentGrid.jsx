@@ -16,14 +16,20 @@ export  default function CashEquipmentGrid(
         );
     },[equipment]);
 
-    const handleSelect = (item) =>{
+    const handleSelect = (item) => {
         if (!item) {
             return;
         }
 
         const isSameItem = selectedSlot === item.slot;
-        setSelectedSlot(isSameItem ? null : item.s);
-        onSelect(isSameItem? null : item);
+
+        setSelectedSlot(
+            isSameItem ? null : item.slot
+        );
+
+        onSelect(
+            isSameItem ? null : item
+        );
     };
 
     return (
@@ -45,7 +51,7 @@ export  default function CashEquipmentGrid(
                         key={slot}
                         slot={slot}
                         item={item}
-                        selected={setSelectedSlot===slot}
+                        selected={selectedSlot===slot}
                         onSelect={handleSelect}
                     />
                 );

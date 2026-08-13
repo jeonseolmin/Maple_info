@@ -34,11 +34,17 @@ export default function EquipmentSlot({
                         </span>
                     )}
 
-                    <img
-                        className="equipment-slot__icon"
-                        src={item.icon}
-                        alt={item.name}
-                    />
+                    {item.icon ? (
+                        <img
+                            className="equipment-slot__icon"
+                            src={item.icon}
+                            alt={item.name}
+                        />
+                    ) : (
+                        <span className="equipment-slot__beauty-icon">
+        {item.slot}
+    </span>
+                    )}
 
                     <span className="equipment-slot__name">
                         {item.name}
