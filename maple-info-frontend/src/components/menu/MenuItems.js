@@ -238,7 +238,7 @@ export const folderMenuItems = [
                 type: "app",
                 label: "무릉 정보",
                 icon: mulungImg,
-                path: "/information/dojo",
+                path: "/mulung",
                 color: "#78909c",
             },
         ],

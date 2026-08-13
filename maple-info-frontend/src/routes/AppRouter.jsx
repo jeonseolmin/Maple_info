@@ -12,6 +12,7 @@ import BossScheduler from "../components/bossCalculator/BossScheduler.jsx";
 import BossEncyclopedia from "../components/bossinfo/BossEncyclopedia.jsx";
 import SymbolCalculator from "../components/symbolCalculator/SymbolCalculator.jsx";
 import UnionChampion from "../components/unionChampion/UnionChampion.jsx";
+import MuLungDojo from "../components/mulungDojo/MuLungDojo.jsx";
 
 export default function AppRouter() {
   return (
@@ -32,6 +33,7 @@ export default function AppRouter() {
           <Route path="/gameinfo/boss" element={<BossEncyclopedia />} />
           <Route path="/symbol" element={<SymbolCalculator />} />
           <Route path="/champion" element={<UnionChampion />} />
+          <Route path="/mulung" element={<MuLungDojo />} />
           
         </Route>
       </Routes>
