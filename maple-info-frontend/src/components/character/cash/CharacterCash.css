@@ -1,16 +1,4 @@
-.cash-equipment {
-    display: grid;
-    grid-template-columns: minmax(300px, 1fr) minmax(320px, 1fr);
-    gap: 20px;
-    width: 100%;
-}
 
-.cash-equipment__grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(62px, 1fr));
-    align-content: start;
-    gap: 10px;
-}
 .equipment-slot__beauty-icon {
     display: flex;
     width: 42px;
@@ -24,85 +12,11 @@
     font-size: 11px;
     font-weight: 700;
 }
-.cash-equipment__slot {
-    display: flex;
-    min-width: 0;
-    min-height: 92px;
-    padding: 8px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-
-    color: inherit;
-    background: var(--equipment-grid-bg, #f5f6f8);
-
-    border: 1px solid var(--equipment-tooltip-border, #d9dce2);
-    border-radius: 12px;
-    cursor: pointer;
-}
 
 .cash-equipment__slot:hover,
 .cash-equipment__slot.is-selected {
     border-color: #727985;
     box-shadow: 0 0 0 2px rgba(114, 121, 133, 0.15);
-}
-
-.cash-equipment__icon {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    image-rendering: pixelated;
-}
-
-.cash-equipment__empty-icon {
-    display: grid;
-    width: 48px;
-    height: 48px;
-    place-items: center;
-
-    color: #9096a0;
-    background: #e4e6ea;
-    border-radius: 8px;
-}
-
-.cash-equipment__slot-name {
-    width: 100%;
-    overflow: hidden;
-
-    font-size: 11px;
-    text-align: center;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.cash-detail {
-    height: 530px;
-    max-height: 530px;
-    padding: 22px;
-    box-sizing: border-box;
-    overflow-y: auto;
-
-    color: var(--equipment-tooltip-text, #32363d);
-    background: var(--equipment-grid-bg, #f8f9fa);
-
-    border: 1px solid var(--equipment-tooltip-border, #d9dce2);
-    border-radius: 16px;
-}
-
-.cash-detail--empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #868c96;
-}
-
-.cash-detail__header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #e1e3e7;
 }
 
 .cash-detail__header h3,
@@ -154,6 +68,27 @@
     font-size: 13px;
 }
 
+.cash-equipment__warning {
+    color: #f59e0b !important;
+}
+
+.equipment-tooltip__beauty-icon {
+    display: flex;
+    width: 82px;
+    height: 82px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+
+    border: 1px solid var(--equipment-tooltip-border);
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 700;
+}
 @media (max-width: 820px) {
     .cash-equipment {
         grid-template-columns: 1fr;

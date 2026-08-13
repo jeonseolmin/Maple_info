@@ -5,12 +5,13 @@ export default function EquipmentSlot({
                                           onSelect,
                                       }) {
     const handleClick = () => {
-        if (!item) {
-            return;
+        if (item) {
+            onSelect?.(item);
         }
-
-        onSelect(item);
     };
+
+    const itemTypeLabel =
+        item?.type === "beauty" ? "외형" : "장비";
 
     return (
         <button
@@ -18,13 +19,19 @@ export default function EquipmentSlot({
             className={[
                 "equipment-slot",
                 item ? "equipment-slot--filled" : "",
-                selected ? "equipment-slot--selected" : "",
+                selected
+                    ? "equipment-slot--selected"
+                    : "",
             ]
                 .filter(Boolean)
                 .join(" ")}
             onClick={handleClick}
             disabled={!item}
-            aria-label={item ? `${item.name} 장비 상세 보기` : `${slot} 빈 슬롯`}
+            aria-label={
+                item
+                    ? `${item.name} ${itemTypeLabel} 상세 보기`
+                    : `${slot} 빈 슬롯`
+            }
         >
             {item ? (
                 <>
@@ -38,12 +45,12 @@ export default function EquipmentSlot({
                         <img
                             className="equipment-slot__icon"
                             src={item.icon}
-                            alt={item.name}
+                            alt=""
                         />
                     ) : (
                         <span className="equipment-slot__beauty-icon">
-        {item.slot}
-    </span>
+                            {item.slot}
+                        </span>
                     )}
 
                     <span className="equipment-slot__name">

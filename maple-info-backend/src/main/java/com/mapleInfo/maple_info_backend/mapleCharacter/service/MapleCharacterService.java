@@ -1,6 +1,7 @@
 package com.mapleInfo.maple_info_backend.mapleCharacter.service;
 
 import com.mapleInfo.maple_info_backend.mapleCharacter.client.MapleCharacterClient;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.mapleStoryIo.MapleStoryIoBeautyImage;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.beauty.NexonCharacterBeautyResponse;
@@ -39,6 +40,7 @@ public class MapleCharacterService {
 
     private final MapleCharacterRepository mapleCharacterRepository;
     private final MapleCharacterClient mapleCharacterClient;
+    private final BeautyImageService beautyImageService;
 
     @Transactional
     public CharacterSearchResponse searchCharacter(
@@ -511,16 +513,67 @@ public class MapleCharacterService {
     public CharacterBeautyResponse getBeautyEquipment(
             String ocid
     ) {
-        log.info(
-                "외형 정보 API 호출 - ocidLength={}",
-                ocid != null ? ocid.length() : 0
-        );
-
         NexonCharacterBeautyResponse nexonResponse =
                 mapleCharacterClient.getBeautyEquipment(ocid);
 
+        if (nexonResponse == null) {
+            return null;
+        }
+
+        var hairImage =
+                nexonResponse.characterHair() == null
+                        ? MapleStoryIoBeautyImage.empty()
+                        : beautyImageService.findHairImage(
+                        nexonResponse
+                        .characterHair()
+                        .hairName(),
+                        nexonResponse
+                        .characterHair()
+                        .baseColor()
+                );
+
+        var faceImage =
+                nexonResponse.characterFace() == null
+                        ? MapleStoryIoBeautyImage.empty()
+                        : beautyImageService.findFaceImage(
+                        nexonResponse
+                        .characterFace()
+                        .faceName(),
+                        nexonResponse
+                        .characterFace()
+                        .baseColor()
+                );
+
+        var additionalHairImage =
+                nexonResponse.additionalCharacterHair() == null
+                        ? MapleStoryIoBeautyImage.empty()
+                        : beautyImageService.findHairImage(
+                        nexonResponse
+                        .additionalCharacterHair()
+                        .hairName(),
+                        nexonResponse
+                        .additionalCharacterHair()
+                        .baseColor()
+                );
+
+        var additionalFaceImage =
+                nexonResponse.additionalCharacterFace() == null
+                        ? MapleStoryIoBeautyImage.empty()
+                        : beautyImageService.findFaceImage(
+                        nexonResponse
+                        .additionalCharacterFace()
+                        .faceName(),
+                        nexonResponse
+                        .additionalCharacterFace()
+                        .baseColor()
+                );
+
         return CharacterBeautyResponse.from(
-                nexonResponse
+                nexonResponse,
+                hairImage.imageUrl(),
+                faceImage.imageUrl(),
+                additionalHairImage.imageUrl(),
+                additionalFaceImage.imageUrl()
         );
     }
 
