@@ -2,6 +2,7 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.service;
 
 import com.mapleInfo.maple_info_backend.mapleCharacter.client.MapleCharacterClient;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.mapleStoryIo.MapleStoryIoBeautyImage;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.android.NexonCharacterAndroidEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.beauty.NexonCharacterBeautyResponse;
@@ -15,6 +16,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.Nexo
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSearchResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.android.CharacterAndroidEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty.CharacterBeautyResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
@@ -720,6 +722,32 @@ public class MapleCharacterService {
         }
 
         return CharacterPetEquipmentResponse.from(
+                nexonResponse
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public CharacterAndroidEquipmentResponse getAndroidEquipment(
+            String ocid
+    ) {
+        log.info(
+                "안드로이드 장비 API 호출 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
+        NexonCharacterAndroidEquipmentResponse nexonResponse =
+                mapleCharacterClient.getAndroidEquipment(
+                        ocid
+                );
+
+        if (nexonResponse == null) {
+            log.warn(
+                    "넥슨 안드로이드 장비 응답 없음 - ocidLength={}",
+                    ocid != null ? ocid.length() : 0
+            );
+        }
+
+        return CharacterAndroidEquipmentResponse.from(
                 nexonResponse
         );
     }

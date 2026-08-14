@@ -1,6 +1,7 @@
 package com.mapleInfo.maple_info_backend.mapleCharacter.client;
 
 import com.mapleInfo.maple_info_backend.common.exception.NexonApiException;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.android.NexonCharacterAndroidEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.beauty.NexonCharacterBeautyResponse;
@@ -388,6 +389,34 @@ public class MapleCharacterClient {
         } catch (RestClientException e) {
             throw new NexonApiException(
                     "넥슨 펫 장비 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
+
+    public NexonCharacterAndroidEquipmentResponse getAndroidEquipment(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/android-equipment"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterAndroidEquipmentResponse.class
+                    );
+
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 안드로이드 장비 API 호출에 실패했습니다.",
                     e
             );
         }

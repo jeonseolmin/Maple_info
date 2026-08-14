@@ -64,3 +64,16 @@ export const getCharacterPetEquipment = async (ocid) => {
 
     return response.data;
 };
+
+export const getCharacterAndroidEquipment = async (ocid) => {
+    const response = await axiosInstance.get(
+        "/characters/android-equipment",
+        {
+            params: {
+                ocid,
+            },
+        }
+    );
+
+    return response.data;
+};

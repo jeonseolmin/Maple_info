@@ -1,4 +1,10 @@
-
+.cash-equipment__loading {
+    display: flex;
+    width: 100%;
+    min-height: 530px;
+    align-items: center;
+    justify-content: center;
+}
 .cash-equipment__header-info {
     display: flex;
     flex-shrink: 0;
@@ -256,6 +262,9 @@
 }
 
 @media (max-width: 520px) {
+    .cash-equipment__loading {
+        min-height: 380px;
+    }
     .equipment-panel__header {
         flex-direction: column;
     }

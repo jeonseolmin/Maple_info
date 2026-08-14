@@ -7,12 +7,15 @@ import {
     getCharacterBeauty,
     getCharacterCashEquipment,
     getCharacterPetEquipment,
+    getCharacterAndroidEquipment,
 } from "../../../api/characterApi";
 import CashEquipmentGrid from "./CashEquipmentGrid.jsx";
 import CashItemDetail from "./CashItemDetail.jsx";
 import CharacterPets from "./pet/CharacterPets.jsx";
 import "../equipment/Equipment.css";
 import "./CharacterCash.css";
+import CharacterAndroid from "./android/CharacterAndroid.jsx";
+import LoadingIcon from "../../loading/LoadingIcon.jsx";
 
 export default function CharacterCash({
                                           character,
@@ -27,6 +30,12 @@ export default function CharacterCash({
         useState(null);
 
     const [petError, setPetError] =
+        useState("");
+
+    const [androidData, setAndroidData] =
+        useState(null);
+
+    const [androidError, setAndroidError] =
         useState("");
 
     const [loading, setLoading] =
@@ -51,8 +60,9 @@ export default function CharacterCash({
         if (!character?.ocid) {
             setCashData(null);
             setBeautyData(null);
-            setSelectedPresetNo(1);
             setPetData(null);
+            setAndroidData(null);
+            setSelectedPresetNo(1);
             setSelectedItem(null);
             setLoading(false);
             setCashError(
@@ -68,6 +78,7 @@ export default function CharacterCash({
             setCashError("");
             setBeautyError("");
             setPetError("");
+            setAndroidError("");
             setSelectedItem(null);
             setEquipmentMode("default");
             setSelectedPresetNo(1);
@@ -76,6 +87,7 @@ export default function CharacterCash({
                 cashResult,
                 beautyResult,
                 petResult,
+                androidResult,
             ] = await Promise.allSettled([
                 getCharacterCashEquipment(
                     character.ocid
@@ -84,6 +96,9 @@ export default function CharacterCash({
                     character.ocid
                 ),
                 getCharacterPetEquipment(
+                    character.ocid
+                ),
+                getCharacterAndroidEquipment(
                     character.ocid
                 ),
             ]);
@@ -146,7 +161,23 @@ export default function CharacterCash({
                     "펫 장비 정보를 불러오지 못했습니다."
                 );
             }
+            if (
+                androidResult.status === "fulfilled"
+            ) {
+                setAndroidData(
+                    androidResult.value
+                );
+            } else {
+                console.error(
+                    "안드로이드 장비 조회 실패:",
+                    androidResult.reason
+                );
 
+                setAndroidData(null);
+                setAndroidError(
+                    "안드로이드 장비 정보를 불러오지 못했습니다."
+                );
+            }
             setLoading(false);
         };
 
@@ -226,10 +257,11 @@ export default function CharacterCash({
 
     if (loading) {
         return (
-            <p className="character-content__empty">
-                캐시 장비와 외형 정보를
-                불러오는 중입니다.
-            </p>
+            <div className="cash-equipment__loading">
+                <LoadingIcon
+                    text="캐시 장비와 펫 정보를 불러오는 중..."
+                />
+            </div>
         );
     }
 
@@ -388,6 +420,17 @@ export default function CharacterCash({
             ) : (
                 <CharacterPets
                     pets={petData?.pets ?? []}
+                />
+            )}
+            {androidError ? (
+                <section className="android-panel">
+                    <p className="android-panel__empty">
+                        {androidError}
+                    </p>
+                </section>
+            ) : (
+                <CharacterAndroid
+                    android={androidData}
                 />
             )}
         </>
