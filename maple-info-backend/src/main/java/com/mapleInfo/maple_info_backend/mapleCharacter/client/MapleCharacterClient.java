@@ -11,6 +11,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment.Ne
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.pet.NexonCharacterPetEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.symbol.NexonCharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
 import lombok.RequiredArgsConstructor;
@@ -417,6 +418,34 @@ public class MapleCharacterClient {
         } catch (RestClientException e) {
             throw new NexonApiException(
                     "넥슨 안드로이드 장비 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
+
+    public NexonCharacterSymbolEquipmentResponse getSymbolEquipment(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/symbol-equipment"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterSymbolEquipmentResponse.class
+                    );
+
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 심볼 장비 API 호출에 실패했습니다.",
                     e
             );
         }

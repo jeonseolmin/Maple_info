@@ -13,6 +13,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.pet.NexonCha
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.symbol.NexonCharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSearchResponse;
@@ -21,6 +22,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty.Chara
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.pet.CharacterPetEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.symbol.CharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
 import com.mapleInfo.maple_info_backend.mapleCharacter.repository.MapleCharacterRepository;
 import lombok.RequiredArgsConstructor;
@@ -748,6 +750,32 @@ public class MapleCharacterService {
         }
 
         return CharacterAndroidEquipmentResponse.from(
+                nexonResponse
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public CharacterSymbolEquipmentResponse getSymbolEquipment(
+            String ocid
+    ) {
+        log.info(
+                "심볼 장비 API 호출 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
+        NexonCharacterSymbolEquipmentResponse nexonResponse =
+                mapleCharacterClient.getSymbolEquipment(
+                        ocid
+                );
+
+        if (nexonResponse == null) {
+            log.warn(
+                    "넥슨 심볼 장비 응답 없음 - ocidLength={}",
+                    ocid != null ? ocid.length() : 0
+            );
+        }
+
+        return CharacterSymbolEquipmentResponse.from(
                 nexonResponse
         );
     }

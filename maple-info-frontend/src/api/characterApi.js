@@ -77,3 +77,16 @@ export const getCharacterAndroidEquipment = async (ocid) => {
 
     return response.data;
 };
+
+export const getCharacterSymbolEquipment = async (ocid) => {
+    const response = await axiosInstance.get(
+        "/characters/symbol-equipment",
+        {
+            params: {
+                ocid,
+            },
+        }
+    );
+
+    return response.data;
+};

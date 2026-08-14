@@ -7,6 +7,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty.Chara
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.pet.CharacterPetEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.symbol.CharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.service.MapleCharacterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -67,6 +68,15 @@ public class MapleCharacterController {
             @RequestParam String ocid
     ) {
         return mapleCharacterService.getAndroidEquipment(
+                ocid
+        );
+    }
+
+    @GetMapping("/symbol-equipment")
+    public CharacterSymbolEquipmentResponse getSymbolEquipment(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getSymbolEquipment(
                 ocid
         );
     }
