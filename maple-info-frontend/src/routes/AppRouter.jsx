@@ -14,6 +14,7 @@ import SymbolCalculator from "../components/symbolCalculator/SymbolCalculator.js
 import UnionChampion from "../components/unionChampion/UnionChampion.jsx";
 import MuLungDojo from "../components/mulungDojo/MuLungDojo.jsx";
 import HuntingOptimization from "../components/character/hunting/HuntingOptimization.jsx";
+import FlameExpectation from "../components/flame/FlameExpectation.jsx";
 
 export default function AppRouter() {
   return (
@@ -36,6 +37,8 @@ export default function AppRouter() {
           <Route path="/champion" element={<UnionChampion />} />
           <Route path="/mulung" element={<MuLungDojo />} />
           <Route path="/hunting" element={<HuntingOptimization />} />
+          <Route path="/flame" element={<FlameExpectation />} />
+
 
           
         </Route>

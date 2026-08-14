@@ -22,6 +22,7 @@ import mapleImg from '../../images/maple.png';
 import coordiImg from '../../images/coordi.png';
 import mulungImg from '../../images/mulung.png';
 import coordiaImg from '../../images/coordia.png';
+import flameImg from '../../images/flame.png';
 
 
 
@@ -54,12 +55,12 @@ export const potentialMenu = {
     color: "#9b6de3",
 };
 
-export const growthOrderMenu = {
-    id: "growth-order",
+export const flameMenu = {
+    id: "flame-exception",
     type: "app",
-    label: "스펙업 순서",
-    icon: solImg,
-    path: "/efficiency/growth-order",
+    label: "추가옵션 계산",
+    icon: flameImg,
+    path: "/flame",
     color: "#5b8def",
 };
 
@@ -68,7 +69,7 @@ export const quickMenuItems = [
     bossCutMenu,
     starforceMenu,
     potentialMenu,
-    growthOrderMenu,
+    flameMenu,
 ];
 
 // 폴더 메뉴
@@ -141,7 +142,7 @@ export const folderMenuItems = [
                 path: "/symbol",
                 color: "#49a6e9",
             },
-            growthOrderMenu,
+            flameMenu,
         ],
     },
     {
