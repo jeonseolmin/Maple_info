@@ -21,12 +21,6 @@ export default function CharacterCash({
     const [beautyData, setBeautyData] =
         useState(null);
 
-    const [equipmentMode, setEquipmentMode] =
-        useState("default");
-
-    const [selectedItem, setSelectedItem] =
-        useState(null);
-
     const [loading, setLoading] =
         useState(true);
 
@@ -36,10 +30,20 @@ export default function CharacterCash({
     const [beautyError, setBeautyError] =
         useState("");
 
+    const [equipmentMode, setEquipmentMode] =
+        useState("default");
+
+    const [selectedPresetNo, setSelectedPresetNo] =
+        useState(1);
+
+    const [selectedItem, setSelectedItem] =
+        useState(null);
+
     useEffect(() => {
         if (!character?.ocid) {
             setCashData(null);
             setBeautyData(null);
+            setSelectedPresetNo(1);
             setSelectedItem(null);
             setLoading(false);
             setCashError(
@@ -56,6 +60,7 @@ export default function CharacterCash({
             setBeautyError("");
             setSelectedItem(null);
             setEquipmentMode("default");
+            setSelectedPresetNo(1);
 
             const [
                 cashResult,
@@ -76,7 +81,13 @@ export default function CharacterCash({
             if (
                 cashResult.status === "fulfilled"
             ) {
-                setCashData(cashResult.value);
+                const data = cashResult.value;
+
+                setCashData(data);
+
+                setSelectedPresetNo(
+                    data?.presetNo ?? 1
+                );
             } else {
                 console.error(
                     "캐시 장비 조회 실패:",
@@ -117,11 +128,14 @@ export default function CharacterCash({
         };
     }, [character?.ocid]);
 
+    const selectedPreset =
+        cashData?.presets?.[selectedPresetNo];
+
     const defaultCashEquipment =
-        cashData?.equipment ?? [];
+        selectedPreset?.equipment ?? [];
 
     const additionalCashEquipment =
-        cashData?.additionalEquipment ?? [];
+        selectedPreset?.additionalEquipment ?? [];
 
     const defaultBeautyEquipment =
         useMemo(
@@ -167,6 +181,14 @@ export default function CharacterCash({
             visibleBeautyEquipment,
         ]
     );
+
+    const handlePresetChange = (event) => {
+        const nextPresetNo =
+            Number(event.target.value);
+
+        setSelectedPresetNo(nextPresetNo);
+        setSelectedItem(null);
+    };
 
     const handleModeChange = (mode) => {
         setEquipmentMode(mode);
@@ -216,12 +238,38 @@ export default function CharacterCash({
                 </div>
 
                 <div className="cash-equipment__header-info">
-                    {cashData?.presetNo != null && (
-                        <span className="cash-equipment__preset">
-                            프리셋{" "}
-                            {cashData.presetNo}
+                    <div className="cash-equipment__preset-select">
+    <span
+        className={[
+            "cash-equipment__preset-status",
+            selectedPresetNo === cashData?.presetNo
+                ? "is-active"
+                : "",
+        ]
+            .filter(Boolean)
+            .join(" ")}
+        aria-hidden="true"
+    />
+
+                        <span className="cash-equipment__preset-description">
+                            {selectedPresetNo === cashData?.presetNo
+                                ? "현재 장착 프리셋"
+                                : "미리보기"}
                         </span>
-                    )}
+
+                        <select
+                            id="cash-preset"
+                            value={selectedPresetNo}
+                            onChange={handlePresetChange}
+                            aria-label="캐시 장비 프리셋 선택"
+                        >
+                            <option value={1}>프리셋 1</option>
+                            <option value={2}>프리셋 2</option>
+                            <option value={3}>프리셋 3</option>
+                        </select>
+
+
+                    </div>
 
                     <span className="cash-equipment__count">
                         캐시 장비{" "}
