@@ -95,22 +95,26 @@
 
 .equipment-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(64px, 1fr));
-    gap: 9px;
-    padding: 14px;
+
+    /* 항상 5열, 패널 크기에 맞춰 동일 비율로 축소 */
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(4px, 1vw, 9px);
+
     width: 100%;
     height: 100%;
+    padding: clamp(7px, 1.5vw, 14px);
+
     background: var(--equipment-grid-bg);
     border: 1px solid var(--equipment-slot-border);
-    border-radius: 18px;
-
+    border-radius: clamp(10px, 2vw, 18px);
 }
 
 .equipment-slot {
     position: relative;
     display: flex;
+    width: 100%;
     min-width: 0;
-    aspect-ratio: 1;
+    aspect-ratio: 1 / 1;
 
     align-items: center;
     justify-content: center;
@@ -120,7 +124,7 @@
     background: var(--equipment-slot-bg);
 
     border: 1px solid var(--equipment-slot-border);
-    border-radius: 10px;
+    border-radius: clamp(6px, 1.2vw, 10px);
 }
 
 .equipment-grid__spacer {
@@ -166,11 +170,11 @@
 
 .equipment-slot__star {
     position: absolute;
-    top: 3px;
-    right: 4px;
+    top: 2px;
+    right: 3px;
     z-index: 1;
     color: var(--equipment-starforce);
-    font-size: 9px;
+    font-size: clamp(6px, 1.5vw, 9px);
 }
 
 .equipment-slot__name,
@@ -180,11 +184,12 @@
     bottom: 3px;
     left: 3px;
     overflow: hidden;
-    font-size: 9px;
+    font-size: clamp(6px, 1.6vw, 9px);
     line-height: 1.2;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
+
 }
 
 .equipment-slot__name {
@@ -341,6 +346,7 @@
     }
 
     .equipment-grid {
-        grid-template-columns: repeat(4, minmax(56px, 1fr));
+        /* 모바일에서도 5열 유지 */
+        grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 }

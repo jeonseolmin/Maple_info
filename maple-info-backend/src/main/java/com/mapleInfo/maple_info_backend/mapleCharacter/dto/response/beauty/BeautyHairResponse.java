@@ -3,15 +3,16 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.beauty.NexonBeautyHairResponse;
 
 public record BeautyHairResponse(
-
         String name,
         String baseColor,
         String mixColor,
-        String mixRate
+        String mixRate,
+        String imageUrl
 ) {
 
     public static BeautyHairResponse from(
-            NexonBeautyHairResponse response
+            NexonBeautyHairResponse response,
+            String imageUrl
     ) {
         if (response == null) {
             return null;
@@ -21,7 +22,8 @@ public record BeautyHairResponse(
                 response.hairName(),
                 response.baseColor(),
                 response.mixColor(),
-                response.mixRate()
+                response.mixRate(),
+                imageUrl
         );
     }
 }

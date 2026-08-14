@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CharacterEquipment from "./equipment/CharacterEquipment";
 import CharacterCash from "./cash/CharacterCash";
-import CharacterSymbol from "./symbol/CharcterSymbol";
+import CharacterSymbol from "./symbol/CharacterSymbol.jsx";
 import "./CharacterContentTabs.css";
 
 const TABS = [
