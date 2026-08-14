@@ -2,9 +2,13 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.controller;
 
 
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSearchResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.android.CharacterAndroidEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty.CharacterBeautyResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.hexa.CharacterSixthJobResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.pet.CharacterPetEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.symbol.CharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.service.MapleCharacterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -50,4 +54,41 @@ public class MapleCharacterController {
                 ocid
         );
     }
+
+    @GetMapping("/pet-equipment")
+    public CharacterPetEquipmentResponse getPetEquipment(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getPetEquipment(
+                ocid
+        );
+    }
+
+    @GetMapping("/android-equipment")
+    public CharacterAndroidEquipmentResponse getAndroidEquipment(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getAndroidEquipment(
+                ocid
+        );
+    }
+
+    @GetMapping("/symbol-equipment")
+    public CharacterSymbolEquipmentResponse getSymbolEquipment(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getSymbolEquipment(
+                ocid
+        );
+    }
+
+    @GetMapping("/sixth-job")
+    public CharacterSixthJobResponse getSixthJob(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getSixthJob(
+                ocid
+        );
+    }
+
 }

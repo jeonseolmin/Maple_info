@@ -15,36 +15,52 @@ public record CharacterBeautyResponse(
 ) {
 
     public static CharacterBeautyResponse from(
-            NexonCharacterBeautyResponse response
+            NexonCharacterBeautyResponse response,
+            String hairImageUrl,
+            String faceImageUrl,
+            String skinImageUrl,
+            String additionalHairImageUrl,
+            String additionalFaceImageUrl,
+            String additionalSkinImageUrl
     ) {
         if (response == null) {
-            return empty();
+            return null;
         }
 
         return new CharacterBeautyResponse(
                 response.date(),
                 response.characterGender(),
                 response.characterClass(),
-                BeautyHairResponse.from(response.characterHair()),
-                BeautyFaceResponse.from(response.characterFace()),
-                BeautySkinResponse.from(response.characterSkin()),
-                BeautyHairResponse.from(response.additionalCharacterHair()),
-                BeautyFaceResponse.from(response.additionalCharacterFace()),
-                BeautySkinResponse.from(response.additionalCharacterSkin())
-        );
-    }
 
-    public static CharacterBeautyResponse empty() {
-        return new CharacterBeautyResponse(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
+                BeautyHairResponse.from(
+                        response.characterHair(),
+                        hairImageUrl
+                ),
+
+                BeautyFaceResponse.from(
+                        response.characterFace(),
+                        faceImageUrl
+                ),
+
+                BeautySkinResponse.from(
+                        response.characterSkin(),
+                        skinImageUrl
+                ),
+
+                BeautyHairResponse.from(
+                        response.additionalCharacterHair(),
+                        additionalHairImageUrl
+                ),
+
+                BeautyFaceResponse.from(
+                        response.additionalCharacterFace(),
+                        additionalFaceImageUrl
+                ),
+
+                BeautySkinResponse.from(
+                        response.additionalCharacterSkin(),
+                        additionalSkinImageUrl
+                )
         );
     }
 }
