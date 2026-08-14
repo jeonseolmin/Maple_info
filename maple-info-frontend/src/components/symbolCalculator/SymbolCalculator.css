@@ -1,0 +1,97 @@
+/* SymbolCalculator.css */
+.symbol-calc-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* 상단 토글 버튼 (아케인/어센틱) */
+.symbol-toggle-group {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.symbol-toggle-btn {
+    flex: 1;
+    padding: 16px;
+    border-radius: 16px;
+    border: 2px solid var(--color-border, #eaeaea);
+    background-color: var(--color-surface, #ffffff);
+    color: var(--color-text-muted, #718096);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.symbol-toggle-btn.active.arc {
+    border-color: #9f7aea; /* 아케인 보라색 */
+    background-color: #faf5ff;
+    color: #553c9a;
+}
+
+.symbol-toggle-btn.active.aut {
+    border-color: #f6ad55; /* 어센틱 주황색 */
+    background-color: #fffaf0;
+    color: #c05621;
+}
+
+/* 결과 카드 */
+.result-card {
+    margin-top: 24px;
+    padding: 30px;
+    border-radius: 20px;
+    background-color: var(--color-surface, #ffffff);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    border: 1px solid var(--color-border, #eaeaea);
+    animation: slideUp 0.4s ease-out forwards;
+}
+
+.d-day-text {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--color-primary, #5078ff);
+    margin: 10px 0;
+}
+
+/* 진행률 바 (Progress Bar) */
+.progress-container {
+    margin: 24px 0 12px;
+    position: relative;
+}
+
+.progress-track {
+    width: 100%;
+    height: 24px;
+    background-color: #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #5078ff, #7f9cff);
+    border-radius: 12px;
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.progress-rate-text {
+    position: absolute;
+    right: 0;
+    top: -24px;
+    font-weight: 800;
+    color: var(--color-primary, #5078ff);
+}
+
+.result-detail-text {
+    font-size: 1rem;
+    color: var(--color-text-muted, #718096);
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

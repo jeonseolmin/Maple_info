@@ -1,12 +1,17 @@
 package com.mapleInfo.maple_info_backend.mapleCharacter.client;
 
 import com.mapleInfo.maple_info_backend.common.exception.NexonApiException;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.android.NexonCharacterAndroidEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.beauty.NexonCharacterBeautyResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.cash.NexonCharacterCashItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment.NexonCharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.pet.NexonCharacterPetEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.symbol.NexonCharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
 import lombok.RequiredArgsConstructor;
@@ -270,6 +275,179 @@ public class MapleCharacterClient {
             );
         }
     }
+    public NexonCharacterCashItemResponse getCashEquipment(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/cashitem-equipment"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterCashItemResponse.class
+                    );
 
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 캐시 장비 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
+    public NexonCharacterBeautyResponse getBeautyEquipment(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/beauty-equipment"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterBeautyResponse.class
+                    );
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 외형 정보 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
 
+    public com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.UnionRaiderDto getUnionRaider(
+            String ocid
+    ) {
+        String date = LocalDate.now(KOREA_ZONE).minusDays(1).format(DateTimeFormatter.ISO_LOCAL_DATE);
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/maplestory/v1/user/union-raider")
+                            .queryParam("ocid", normalizeOcid(ocid))
+                            .queryParam("date", date)
+                            .build()
+                    )
+                    .retrieve()
+                    .body(com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.UnionRaiderDto.class);
+        } catch (RestClientException e) {
+            throw new NexonApiException("넥슨 유니온 공격대 API 호출에 실패했습니다.", e);
+        }
+    }
+
+    public com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.boss.CharacterBossKillDto getCharacterBossKill(
+            String ocid
+    ) {
+        String date = LocalDate.now(KOREA_ZONE).minusDays(1).format(DateTimeFormatter.ISO_LOCAL_DATE);
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/maplestory/v1/character/boss-kill")
+                            .queryParam("ocid", normalizeOcid(ocid))
+                            .queryParam("date", date)
+                            .build()
+                    )
+                    .retrieve()
+                    .body(com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.boss.CharacterBossKillDto.class);
+        } catch (RestClientException e) {
+            throw new NexonApiException("넥슨 보스 킬 API 호출에 실패했습니다.", e);
+        }
+    }
+
+    public NexonCharacterPetEquipmentResponse getPetEquipment(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/pet-equipment"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterPetEquipmentResponse.class
+                    );
+
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 펫 장비 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
+
+    public NexonCharacterAndroidEquipmentResponse getAndroidEquipment(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/android-equipment"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterAndroidEquipmentResponse.class
+                    );
+
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 안드로이드 장비 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
+
+    public NexonCharacterSymbolEquipmentResponse getSymbolEquipment(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/symbol-equipment"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterSymbolEquipmentResponse.class
+                    );
+
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 심볼 장비 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
 }

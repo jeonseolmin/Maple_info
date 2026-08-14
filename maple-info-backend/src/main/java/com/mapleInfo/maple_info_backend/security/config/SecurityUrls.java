@@ -11,7 +11,11 @@ public final class SecurityUrls {
             "/api/auth/**",
             "/api/starforce/**",
             "/api/cube/**",
-            "/api/exp/**"
+            "/api/exp/**",
+            "/api/boss/**",
+            "/api/bossinfo/**",
+            "/api/symbol/**",
+            "/api/characters/**"
 
     };
 

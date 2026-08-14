@@ -1,17 +1,28 @@
 package com.mapleInfo.maple_info_backend.mapleCharacter.service;
 
 import com.mapleInfo.maple_info_backend.mapleCharacter.client.MapleCharacterClient;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.mapleStoryIo.MapleStoryIoBeautyImage;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.android.NexonCharacterAndroidEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonCharacterBasicResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.basic.NexonOcidResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.beauty.NexonCharacterBeautyResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.cash.NexonCharacterCashItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment.NexonCharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.pet.NexonCharacterPetEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.symbol.NexonCharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSearchResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.android.CharacterAndroidEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty.CharacterBeautyResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.pet.CharacterPetEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.symbol.CharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
 import com.mapleInfo.maple_info_backend.mapleCharacter.repository.MapleCharacterRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +46,8 @@ public class MapleCharacterService {
 
     private final MapleCharacterRepository mapleCharacterRepository;
     private final MapleCharacterClient mapleCharacterClient;
+    private final BeautyImageService beautyImageService;
+    private final SkinImageService skinImageService;
 
     @Transactional
     public CharacterSearchResponse searchCharacter(
@@ -482,6 +495,287 @@ public class MapleCharacterService {
         }
 
         return CharacterEquipmentResponse.from(
+                nexonResponse
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public CharacterCashEquipmentResponse getCashEquipment(
+            String ocid
+    ) {
+        log.info(
+                "캐시 장비 API 호출 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
+        NexonCharacterCashItemResponse nexonResponse =
+                mapleCharacterClient.getCashEquipment(ocid);
+
+        return CharacterCashEquipmentResponse.from(
+                nexonResponse
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public CharacterBeautyResponse getBeautyEquipment(
+            String ocid
+    ) {
+        log.info(
+                "외형 정보 API 호출 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
+        NexonCharacterBeautyResponse nexonResponse =
+                mapleCharacterClient.getBeautyEquipment(ocid);
+
+        if (nexonResponse == null) {
+            log.warn(
+                    "넥슨 외형 응답 없음 - ocidLength={}",
+                    ocid != null ? ocid.length() : 0
+            );
+
+            return null;
+        }
+
+        /*
+         * 기본 헤어 이미지
+         */
+        MapleStoryIoBeautyImage hairImage =
+                nexonResponse.characterHair() == null
+                        ? MapleStoryIoBeautyImage.empty()
+                        : beautyImageService.findHairImage(
+                        nexonResponse
+                        .characterHair()
+                        .hairName(),
+                        nexonResponse
+                        .characterHair()
+                        .baseColor()
+                );
+
+        /*
+         * 기본 성형 이미지
+         */
+        MapleStoryIoBeautyImage faceImage =
+                nexonResponse.characterFace() == null
+                        ? MapleStoryIoBeautyImage.empty()
+                        : beautyImageService.findFaceImage(
+                        nexonResponse
+                        .characterFace()
+                        .faceName(),
+                        nexonResponse
+                        .characterFace()
+                        .baseColor()
+                );
+
+        /*
+         * 기본 피부 이미지
+         */
+        String skinImageUrl =
+                nexonResponse.characterSkin() == null
+                        ? null
+                        : skinImageService.findImageUrl(
+                        nexonResponse
+                        .characterSkin()
+                        .skinName()
+                );
+
+        /*
+         * 추가 헤어 이미지
+         */
+        MapleStoryIoBeautyImage additionalHairImage =
+                nexonResponse.additionalCharacterHair() == null
+                        ? MapleStoryIoBeautyImage.empty()
+                        : beautyImageService.findHairImage(
+                        nexonResponse
+                        .additionalCharacterHair()
+                        .hairName(),
+                        nexonResponse
+                        .additionalCharacterHair()
+                        .baseColor()
+                );
+
+        /*
+         * 추가 성형 이미지
+         */
+        MapleStoryIoBeautyImage additionalFaceImage =
+                nexonResponse.additionalCharacterFace() == null
+                        ? MapleStoryIoBeautyImage.empty()
+                        : beautyImageService.findFaceImage(
+                        nexonResponse
+                        .additionalCharacterFace()
+                        .faceName(),
+                        nexonResponse
+                        .additionalCharacterFace()
+                        .baseColor()
+                );
+
+        /*
+         * 추가 피부 이미지
+         */
+        String additionalSkinImageUrl =
+                nexonResponse.additionalCharacterSkin() == null
+                        ? null
+                        : skinImageService.findImageUrl(
+                        nexonResponse
+                        .additionalCharacterSkin()
+                        .skinName()
+                );
+
+        log.info(
+                "외형 이미지 조회 완료 - "
+                        + "hair={}, face={}, skin={}, "
+                        + "additionalHair={}, additionalFace={}, "
+                        + "additionalSkin={}",
+                hairImage.imageUrl() != null,
+                faceImage.imageUrl() != null,
+                skinImageUrl != null,
+                additionalHairImage.imageUrl() != null,
+                additionalFaceImage.imageUrl() != null,
+                additionalSkinImageUrl != null
+        );
+
+        return CharacterBeautyResponse.from(
+                nexonResponse,
+                hairImage.imageUrl(),
+                faceImage.imageUrl(),
+                skinImageUrl,
+                additionalHairImage.imageUrl(),
+                additionalFaceImage.imageUrl(),
+                additionalSkinImageUrl
+        );
+    }
+
+    public java.util.List<com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.UnionChampionResponse> getChampionInfoByNames(
+            java.util.List<String> characterNames
+    ) {
+        log.info("수동 입력된 캐릭터들 전적 조회 시작 - 갯수: {}", characterNames.size());
+
+        java.util.List<com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.UnionChampionResponse> resultList = new java.util.ArrayList<>();
+        java.util.List<String> targetBosses = java.util.List.of("스우_HARD", "데미안_HARD", "검은마법사_HARD", "세렌_HARD", "칼로스_NORMAL");
+
+        for (String name : characterNames) {
+            try {
+                // 1. OCID 조회
+                waitForNextCall();
+                NexonOcidResponse ocidRes = mapleCharacterClient.getOcid(name);
+
+                // 2. 캐릭터 기본 정보 조회
+                waitForNextCall();
+                NexonCharacterBasicResponse basic = mapleCharacterClient.getBasic(ocidRes.ocid());
+
+                // 3. 보스 킬 데이터 (현재 API 권한 문제로 예외 처리 및 빈 값으로 대체)
+                java.util.List<String> myClearedBosses = new java.util.ArrayList<>();
+                try {
+                    waitForNextCall();
+                    var bossKill = mapleCharacterClient.getCharacterBossKill(ocidRes.ocid());
+                    if (bossKill != null && bossKill.boss_kill_data() != null) {
+                        myClearedBosses.addAll(
+                                bossKill.boss_kill_data().stream()
+                                        .map(b -> b.boss_name() + "_" + b.boss_difficulty())
+                                        .toList()
+                        );
+                    }
+                } catch (Exception e) {
+                    log.warn("보스 킬 API 권한이 없어 조회할 수 없습니다. (캐릭터명: {})", name);
+                }
+
+                // 4. 타겟 보스 매칭 리스트 생성
+                java.util.List<com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.UnionChampionResponse.BossClearStatus> bossList = targetBosses.stream()
+                        .map(target -> {
+                            String[] split = target.split("_");
+                            return new com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.UnionChampionResponse.BossClearStatus(
+                                    split[0], split[1], "boss_" + split[0].toLowerCase() + ".png", myClearedBosses.contains(target)
+                            );
+                        }).toList();
+
+                // 5. 결과 리스트에 추가
+                resultList.add(new com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.UnionChampionResponse(
+                        basic.characterName(),
+                        basic.characterImage(),
+                        basic.characterClass(),
+                        basic.characterLevel(),
+                        bossList
+                ));
+
+            } catch (Exception e) {
+                log.error("캐릭터 조회 중 오류 발생: {}", name, e);
+            }
+        }
+        return resultList;
+    }
+
+    @Transactional(readOnly = true)
+    public CharacterPetEquipmentResponse getPetEquipment(
+            String ocid
+    ) {
+        log.info(
+                "펫 장비 API 호출 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
+        NexonCharacterPetEquipmentResponse nexonResponse =
+                mapleCharacterClient.getPetEquipment(ocid);
+
+        if (nexonResponse == null) {
+            log.warn(
+                    "넥슨 펫 장비 응답 없음 - ocidLength={}",
+                    ocid != null ? ocid.length() : 0
+            );
+        }
+
+        return CharacterPetEquipmentResponse.from(
+                nexonResponse
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public CharacterAndroidEquipmentResponse getAndroidEquipment(
+            String ocid
+    ) {
+        log.info(
+                "안드로이드 장비 API 호출 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
+        NexonCharacterAndroidEquipmentResponse nexonResponse =
+                mapleCharacterClient.getAndroidEquipment(
+                        ocid
+                );
+
+        if (nexonResponse == null) {
+            log.warn(
+                    "넥슨 안드로이드 장비 응답 없음 - ocidLength={}",
+                    ocid != null ? ocid.length() : 0
+            );
+        }
+
+        return CharacterAndroidEquipmentResponse.from(
+                nexonResponse
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public CharacterSymbolEquipmentResponse getSymbolEquipment(
+            String ocid
+    ) {
+        log.info(
+                "심볼 장비 API 호출 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
+        NexonCharacterSymbolEquipmentResponse nexonResponse =
+                mapleCharacterClient.getSymbolEquipment(
+                        ocid
+                );
+
+        if (nexonResponse == null) {
+            log.warn(
+                    "넥슨 심볼 장비 응답 없음 - ocidLength={}",
+                    ocid != null ? ocid.length() : 0
+            );
+        }
+
+        return CharacterSymbolEquipmentResponse.from(
                 nexonResponse
         );
     }

@@ -158,6 +158,10 @@
             filter 0.18s ease;
 }
 
+.app-menu-icon img {
+    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.3));
+}
+
 .app-menu-label {
     max-width: 100%;
 

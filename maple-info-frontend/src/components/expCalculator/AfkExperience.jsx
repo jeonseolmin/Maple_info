@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../layout/calculator/CalculatorExpectation.css';
 
 // VIP 사우나 1시간당 경험치 효율표 (%)

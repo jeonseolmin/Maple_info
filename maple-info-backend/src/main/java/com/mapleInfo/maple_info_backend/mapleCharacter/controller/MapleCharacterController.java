@@ -2,9 +2,15 @@ package com.mapleInfo.maple_info_backend.mapleCharacter.controller;
 
 
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSearchResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.android.CharacterAndroidEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty.CharacterBeautyResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.pet.CharacterPetEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.symbol.CharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.service.MapleCharacterService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +34,50 @@ public class MapleCharacterController {
     ) {
         return mapleCharacterService.getEquipment(ocid);
     }
+    @GetMapping("/cash-equipment")
+    public CharacterCashEquipmentResponse getCashEquipment(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getCashEquipment(ocid);
+    }
+    @GetMapping("/champion")
+    public ResponseEntity<?> getUnionChampion(@RequestParam java.util.List<String> names) {
+        return ResponseEntity.ok(mapleCharacterService.getChampionInfoByNames(names));
+    }
 
+    @GetMapping("/beauty-equipment")
+    public CharacterBeautyResponse getBeautyEquipment(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getBeautyEquipment(
+                ocid
+        );
+    }
 
+    @GetMapping("/pet-equipment")
+    public CharacterPetEquipmentResponse getPetEquipment(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getPetEquipment(
+                ocid
+        );
+    }
+
+    @GetMapping("/android-equipment")
+    public CharacterAndroidEquipmentResponse getAndroidEquipment(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getAndroidEquipment(
+                ocid
+        );
+    }
+
+    @GetMapping("/symbol-equipment")
+    public CharacterSymbolEquipmentResponse getSymbolEquipment(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getSymbolEquipment(
+                ocid
+        );
+    }
 }
