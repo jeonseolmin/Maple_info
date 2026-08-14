@@ -6,9 +6,11 @@ import {
 import {
     getCharacterBeauty,
     getCharacterCashEquipment,
+    getCharacterPetEquipment,
 } from "../../../api/characterApi";
 import CashEquipmentGrid from "./CashEquipmentGrid.jsx";
 import CashItemDetail from "./CashItemDetail.jsx";
+import CharacterPets from "./pet/CharacterPets.jsx";
 import "../equipment/Equipment.css";
 import "./CharacterCash.css";
 
@@ -20,6 +22,12 @@ export default function CharacterCash({
 
     const [beautyData, setBeautyData] =
         useState(null);
+
+    const [petData, setPetData] =
+        useState(null);
+
+    const [petError, setPetError] =
+        useState("");
 
     const [loading, setLoading] =
         useState(true);
@@ -44,6 +52,7 @@ export default function CharacterCash({
             setCashData(null);
             setBeautyData(null);
             setSelectedPresetNo(1);
+            setPetData(null);
             setSelectedItem(null);
             setLoading(false);
             setCashError(
@@ -58,6 +67,7 @@ export default function CharacterCash({
             setLoading(true);
             setCashError("");
             setBeautyError("");
+            setPetError("");
             setSelectedItem(null);
             setEquipmentMode("default");
             setSelectedPresetNo(1);
@@ -65,11 +75,15 @@ export default function CharacterCash({
             const [
                 cashResult,
                 beautyResult,
+                petResult,
             ] = await Promise.allSettled([
                 getCharacterCashEquipment(
                     character.ocid
                 ),
                 getCharacterBeauty(
+                    character.ocid
+                ),
+                getCharacterPetEquipment(
                     character.ocid
                 ),
             ]);
@@ -115,6 +129,21 @@ export default function CharacterCash({
                 setBeautyData(null);
                 setBeautyError(
                     "외형 정보를 불러오지 못했습니다."
+                );
+            }
+            if (
+                petResult.status === "fulfilled"
+            ) {
+                setPetData(petResult.value);
+            } else {
+                console.error(
+                    "펫 장비 조회 실패:",
+                    petResult.reason
+                );
+
+                setPetData(null);
+                setPetError(
+                    "펫 장비 정보를 불러오지 못했습니다."
                 );
             }
 
@@ -218,136 +247,150 @@ export default function CharacterCash({
     }
 
     return (
-        <section className="equipment-panel">
-            <header className="equipment-panel__header">
-                <div>
-                    <h2>캐시 장비</h2>
+        <>
+            <section className="equipment-panel">
+                <header className="equipment-panel__header">
+                    <div>
+                        <h2>캐시 장비</h2>
 
-                    <p>
-                        캐시 장비와 외형을 선택하면
-                        상세정보를 확인할 수 있습니다.
-                    </p>
-
-                    {(cashError ||
-                        beautyError) && (
-                        <p className="cash-equipment__warning">
-                            {cashError ||
-                                beautyError}
+                        <p>
+                            캐시 장비와 외형을 선택하면
+                            상세정보를 확인할 수 있습니다.
                         </p>
-                    )}
-                </div>
 
-                <div className="cash-equipment__header-info">
-                    <div className="cash-equipment__preset-select">
-    <span
-        className={[
-            "cash-equipment__preset-status",
-            selectedPresetNo === cashData?.presetNo
-                ? "is-active"
-                : "",
-        ]
-            .filter(Boolean)
-            .join(" ")}
-        aria-hidden="true"
-    />
-
-                        <span className="cash-equipment__preset-description">
-                            {selectedPresetNo === cashData?.presetNo
-                                ? "현재 장착 프리셋"
-                                : "미리보기"}
-                        </span>
-
-                        <select
-                            id="cash-preset"
-                            value={selectedPresetNo}
-                            onChange={handlePresetChange}
-                            aria-label="캐시 장비 프리셋 선택"
-                        >
-                            <option value={1}>프리셋 1</option>
-                            <option value={2}>프리셋 2</option>
-                            <option value={3}>프리셋 3</option>
-                        </select>
-
-
+                        {(cashError ||
+                            beautyError) && (
+                            <p className="cash-equipment__warning">
+                                {cashError ||
+                                    beautyError}
+                            </p>
+                        )}
                     </div>
 
-                    <span className="cash-equipment__count">
-                        캐시 장비{" "}
-                        {
-                            visibleCashEquipment.length
-                        }
-                        개
-                    </span>
-                </div>
-            </header>
+                    <div className="cash-equipment__header-info">
+                        <div className="cash-equipment__preset-select">
+        <span
+            className={[
+                "cash-equipment__preset-status",
+                selectedPresetNo === cashData?.presetNo
+                    ? "is-active"
+                    : "",
+            ]
+                .filter(Boolean)
+                .join(" ")}
+            aria-hidden="true"
+        />
 
-            {hasAdditionalMode && (
-                <div
-                    className="cash-equipment__mode"
-                    role="tablist"
-                    aria-label="캐시 장비 외형 선택"
-                >
-                    <button
-                        type="button"
-                        role="tab"
-                        aria-selected={
-                            equipmentMode ===
-                            "default"
-                        }
-                        className={
-                            equipmentMode ===
-                            "default"
-                                ? "is-active"
-                                : ""
-                        }
-                        onClick={() =>
-                            handleModeChange(
+                            <span className="cash-equipment__preset-description">
+                                {selectedPresetNo === cashData?.presetNo
+                                    ? "현재 장착 프리셋"
+                                    : "미리보기"}
+                            </span>
+
+                            <select
+                                id="cash-preset"
+                                value={selectedPresetNo}
+                                onChange={handlePresetChange}
+                                aria-label="캐시 장비 프리셋 선택"
+                            >
+                                <option value={1}>프리셋 1</option>
+                                <option value={2}>프리셋 2</option>
+                                <option value={3}>프리셋 3</option>
+                            </select>
+
+
+                        </div>
+
+                        <span className="cash-equipment__count">
+                            캐시 장비{" "}
+                            {
+                                visibleCashEquipment.length
+                            }
+                            개
+                        </span>
+                    </div>
+                </header>
+
+                {hasAdditionalMode && (
+                    <div
+                        className="cash-equipment__mode"
+                        role="tablist"
+                        aria-label="캐시 장비 외형 선택"
+                    >
+                        <button
+                            type="button"
+                            role="tab"
+                            aria-selected={
+                                equipmentMode ===
                                 "default"
-                            )
-                        }
-                    >
-                        기본 외형
-                    </button>
+                            }
+                            className={
+                                equipmentMode ===
+                                "default"
+                                    ? "is-active"
+                                    : ""
+                            }
+                            onClick={() =>
+                                handleModeChange(
+                                    "default"
+                                )
+                            }
+                        >
+                            기본 외형
+                        </button>
 
-                    <button
-                        type="button"
-                        role="tab"
-                        aria-selected={
-                            equipmentMode ===
-                            "additional"
-                        }
-                        className={
-                            equipmentMode ===
-                            "additional"
-                                ? "is-active"
-                                : ""
-                        }
-                        onClick={() =>
-                            handleModeChange(
+                        <button
+                            type="button"
+                            role="tab"
+                            aria-selected={
+                                equipmentMode ===
                                 "additional"
-                            )
+                            }
+                            className={
+                                equipmentMode ===
+                                "additional"
+                                    ? "is-active"
+                                    : ""
+                            }
+                            onClick={() =>
+                                handleModeChange(
+                                    "additional"
+                                )
+                            }
+                        >
+                            추가 외형
+                        </button>
+                    </div>
+                )}
+
+                <div className="equipment-panel__body">
+                    <CashEquipmentGrid
+                        equipment={visibleEquipment}
+                        selectedItem={selectedItem}
+                        onSelect={setSelectedItem}
+                    />
+
+                    <CashItemDetail
+                        item={selectedItem}
+                        onClose={() =>
+                            setSelectedItem(null)
                         }
-                    >
-                        추가 외형
-                    </button>
+                    />
                 </div>
+            </section>
+
+            {petError ? (
+                <section className="pet-panel">
+                    <p className="pet-panel__empty">
+                        {petError}
+                    </p>
+                </section>
+            ) : (
+                <CharacterPets
+                    pets={petData?.pets ?? []}
+                />
             )}
-
-            <div className="equipment-panel__body">
-                <CashEquipmentGrid
-                    equipment={visibleEquipment}
-                    selectedItem={selectedItem}
-                    onSelect={setSelectedItem}
-                />
-
-                <CashItemDetail
-                    item={selectedItem}
-                    onClose={() =>
-                        setSelectedItem(null)
-                    }
-                />
-            </div>
-        </section>
+        </>
     );
 }
 

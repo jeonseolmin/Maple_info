@@ -51,3 +51,16 @@ export const getCharacterBeauty = async (ocid) => {
 
     return response.data;
 };
+
+export const getCharacterPetEquipment = async (ocid) => {
+    const response = await axiosInstance.get(
+        "/characters/pet-equipment",
+        {
+            params: {
+                ocid,
+            },
+        }
+    );
+
+    return response.data;
+};

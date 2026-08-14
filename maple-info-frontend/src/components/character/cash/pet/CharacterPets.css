@@ -1,0 +1,355 @@
+.pet-panel {
+    margin-top: 18px;
+    padding: 20px;
+
+    color: var(--color-text);
+    background: var(--color-surface-soft);
+
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+}
+
+.pet-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.pet-panel__header h2 {
+    margin: 0;
+
+    color: var(--color-text);
+    font-size: 20px;
+}
+
+.pet-panel__header p {
+    margin: 6px 0 0;
+
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.pet-panel__header > span {
+    flex-shrink: 0;
+    padding: 7px 11px;
+
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pet-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+}
+
+.pet-card {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 14px;
+    padding: 14px;
+
+    background: var(--equipment-grid-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 14px;
+}
+
+.pet-card__top {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.pet-card__number {
+    padding: 4px 8px;
+
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.pet-card__expire {
+    overflow: hidden;
+
+    color: var(--color-text-secondary);
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pet-card__profile {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 12px;
+}
+
+.pet-card__image-box {
+    display: flex;
+    width: 76px;
+    height: 76px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    background: var(--equipment-slot-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 12px;
+}
+
+.pet-card__image {
+    width: 82%;
+    height: 82%;
+    object-fit: contain;
+}
+
+.pet-card__image-empty {
+    color: var(--color-text-secondary);
+    font-size: 10px;
+}
+
+.pet-card__identity {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pet-card__identity strong {
+    overflow: hidden;
+
+    color: var(--color-text);
+    font-size: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pet-card__identity span {
+    overflow: hidden;
+
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pet-card__section {
+    padding-top: 12px;
+
+    border-top: 1px solid
+    var(--equipment-tooltip-divider);
+}
+
+.pet-card__section h3 {
+    margin: 0 0 9px;
+
+    color: var(--color-text);
+    font-size: 12px;
+}
+
+.pet-equipment {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.pet-equipment img {
+    width: 42px;
+    height: 42px;
+    padding: 4px;
+    flex-shrink: 0;
+
+    background: var(--equipment-slot-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 8px;
+
+    object-fit: contain;
+}
+
+.pet-equipment > div {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.pet-equipment strong {
+    overflow: hidden;
+
+    color: var(--color-text);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pet-equipment span {
+    color: var(--color-text-secondary);
+    font-size: 10px;
+}
+
+.pet-option-list {
+    display: grid;
+    gap: 5px;
+    margin: 9px 0 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.pet-option-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    font-size: 11px;
+}
+
+.pet-option-list span {
+    overflow: hidden;
+
+    color: var(--color-text-secondary);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pet-option-list strong {
+    flex-shrink: 0;
+    color: #86efac;
+}
+
+.pet-auto-skills {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 7px;
+}
+
+.pet-auto-skill {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+
+    background: var(--equipment-slot-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 8px;
+}
+
+.pet-auto-skill img {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+
+    border-radius: 5px;
+    object-fit: contain;
+}
+
+.pet-auto-skill span {
+    overflow: hidden;
+
+    color: var(--color-text-secondary);
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pet-skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.pet-skill-list span {
+    padding: 4px 7px;
+
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+
+    font-size: 10px;
+}
+
+.pet-panel__empty {
+    display: flex;
+    min-height: 150px;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+
+    color: var(--color-text-secondary);
+    background: var(--equipment-grid-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 14px;
+
+    font-size: 13px;
+}
+
+@media (max-width: 1000px) {
+    .pet-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .pet-panel {
+        margin-top: 14px;
+        padding: 14px;
+    }
+
+    .pet-panel__header {
+        align-items: flex-start;
+    }
+
+    .pet-panel__header h2 {
+        font-size: 18px;
+    }
+
+    .pet-panel__header p {
+        font-size: 11px;
+    }
+
+    .pet-panel__header > span {
+        padding: 6px 8px;
+        font-size: 10px;
+    }
+
+    .pet-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pet-card__image-box {
+        width: 68px;
+        height: 68px;
+    }
+}

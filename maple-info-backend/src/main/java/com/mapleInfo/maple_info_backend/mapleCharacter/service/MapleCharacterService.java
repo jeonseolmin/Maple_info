@@ -8,6 +8,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.beauty.Nexon
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.cash.NexonCharacterCashItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment.NexonCharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.pet.NexonCharacterPetEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
@@ -17,6 +18,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSea
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty.CharacterBeautyResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.pet.CharacterPetEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
 import com.mapleInfo.maple_info_backend.mapleCharacter.repository.MapleCharacterRepository;
 import lombok.RequiredArgsConstructor;
@@ -639,7 +641,6 @@ public class MapleCharacterService {
         );
     }
 
-    // 기존 getUnionChampionInfo 메서드 대신 아래 메서드를 사용합니다.
     public java.util.List<com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.UnionChampionResponse> getChampionInfoByNames(
             java.util.List<String> characterNames
     ) {
@@ -697,5 +698,29 @@ public class MapleCharacterService {
             }
         }
         return resultList;
+    }
+
+    @Transactional(readOnly = true)
+    public CharacterPetEquipmentResponse getPetEquipment(
+            String ocid
+    ) {
+        log.info(
+                "펫 장비 API 호출 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
+        NexonCharacterPetEquipmentResponse nexonResponse =
+                mapleCharacterClient.getPetEquipment(ocid);
+
+        if (nexonResponse == null) {
+            log.warn(
+                    "넥슨 펫 장비 응답 없음 - ocidLength={}",
+                    ocid != null ? ocid.length() : 0
+            );
+        }
+
+        return CharacterPetEquipmentResponse.from(
+                nexonResponse
+        );
     }
 }

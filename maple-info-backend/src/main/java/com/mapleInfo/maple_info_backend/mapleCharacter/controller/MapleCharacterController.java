@@ -5,6 +5,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.CharacterSea
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty.CharacterBeautyResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.pet.CharacterPetEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.service.MapleCharacterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,15 @@ public class MapleCharacterController {
             @RequestParam String ocid
     ) {
         return mapleCharacterService.getBeautyEquipment(
+                ocid
+        );
+    }
+
+    @GetMapping("/pet-equipment")
+    public CharacterPetEquipmentResponse getPetEquipment(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getPetEquipment(
                 ocid
         );
     }
