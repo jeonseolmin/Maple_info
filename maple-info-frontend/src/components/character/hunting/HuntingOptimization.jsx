@@ -99,7 +99,7 @@ const HuntingOptimization = () => {
 
     return (
         <div className="mulung-container">
-            <h2 className="page-title">사냥터 효율 분석기 ⚔️</h2>
+            <h2 className="page-title">사냥터 효율 분석기</h2>
             <p className="page-subtitle">현재 레벨과 포스를 입력하면 최적의 사냥터를 추천합니다.</p>
 
             {/* 입력 폼 */}

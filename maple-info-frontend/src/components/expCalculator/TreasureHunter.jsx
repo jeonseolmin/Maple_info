@@ -37,7 +37,7 @@ const TreasureHunter = () => {
 
     return (
         <div className="modern-calc-container">
-            <h2 className="page-title">트레저 헌터 보상 계산기 🗝️</h2>
+            <h2 className="page-title">트레저 헌터 보상 계산기</h2>
             
             <div className="toss-card">
                 <div className="input-grid">

@@ -70,7 +70,7 @@ const StarforceExpectation = () => {
 
     return (
         <div className="modern-calc-container">
-            <h2 className="page-title">스타포스 시뮬레이터 ⭐</h2>
+            <h2 className="page-title">스타포스 시뮬레이터 </h2>
             <p className="page-subtitle">파괴 확률과 스페어 비용을 포함한 실질적인 강화 비용을 확인하세요.</p>
 
             <div className="toss-card">

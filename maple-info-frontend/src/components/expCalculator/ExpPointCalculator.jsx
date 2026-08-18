@@ -69,7 +69,7 @@ const ExpPointCalculator = () => {
         // 현재 경험치를 실제 수치(Raw)로 변환
         let currentExpRaw = levelData.requiredExp * (currentPercent / 100);
 
-        // 🌟 핵심 로직: 포인트가 남아있고 만렙(300)이 아닐 때까지 반복
+        // 핵심 로직: 포인트가 남아있고 만렙(300)이 아닐 때까지 반복
         while (remainingPoints > 0 && currentLevel < 300) {
             levelData = expTable.find(d => d.level === currentLevel);
             
@@ -112,7 +112,7 @@ const ExpPointCalculator = () => {
 
     return (
         <div className="modern-calc-container">
-            <h2 className="page-title">EXP 포인트 계산기 🎫</h2>
+            <h2 className="page-title">EXP 포인트 계산기</h2>
             <p className="page-subtitle">이벤트로 얻은 EXP 교환권을 사용했을 때의 최종 레벨을 확인하세요.</p>
 
             <div className="toss-card">

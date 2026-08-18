@@ -5,7 +5,6 @@ import '../layout/calculator/CalculatorExpectation.css';
 const BossScheduler = () => {
     const [bosses, setBosses] = useState([]);
     const [characters, setCharacters] = useState([]);
-    // 🌟 형태 변경: { characterId: { bossId: partySize } }
     const [clearLogs, setClearLogs] = useState({}); 
     
     const [newCharName, setNewCharName] = useState('');
@@ -32,7 +31,6 @@ const BossScheduler = () => {
         }
     };
 
-    // 🌟 수익 계산 (파티 인원수 나누기 적용)
     const totalWeeklyProfit = useMemo(() => {
         let total = 0;
         Object.keys(clearLogs).forEach(charId => {
@@ -64,7 +62,6 @@ const BossScheduler = () => {
         }
     };
 
-    // 🌟 토글 및 파티 변경 통합 로직
     const handleUpdateBoss = async (characterId, bossId, isCleared, partySize) => {
         // UI 즉각 반영 (Optimistic UI)
         setClearLogs(prevLogs => {
@@ -178,7 +175,7 @@ const BossScheduler = () => {
                                                 {Math.floor(boss.crystalPrice / partySize).toLocaleString()} 메소
                                             </div>
                                             
-                                            {/* 🌟 보스를 체크했을 때만 나타나는 파티 인원 선택 창 */}
+                                            {/* 보스를 체크했을 때만 나타나는 파티 인원 선택 창 */}
                                             {isCleared && (
                                                 <select 
                                                     value={partySize}
