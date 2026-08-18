@@ -14,8 +14,14 @@ public record CharacterSixthJobResponse(
         String skillGrade,
         List<SixthJobSkillResponse> skills,
         List<HexaCoreResponse> cores,
-        List<HexaStatCoreResponse> activeStatCores,
-        List<HexaStatCoreResponse> presetStatCores
+
+        List<HexaStatCoreResponse> activeStatCores1,
+        List<HexaStatCoreResponse> activeStatCores2,
+        List<HexaStatCoreResponse> activeStatCores3,
+
+        List<HexaStatCoreResponse> presetStatCores1,
+        List<HexaStatCoreResponse> presetStatCores2,
+        List<HexaStatCoreResponse> presetStatCores3
 ) {
 
     public enum HexaCoreType {
@@ -80,14 +86,36 @@ public record CharacterSixthJobResponse(
                         : "6",
                 convertSkills(skillResponse),
                 convertCores(matrixResponse),
+
                 convertStatCores(
                         statResponse != null
-                                ? statResponse.activeCores()
+                                ? statResponse.activeCores1()
                                 : null
                 ),
                 convertStatCores(
                         statResponse != null
-                                ? statResponse.presetCores()
+                                ? statResponse.activeCores2()
+                                : null
+                ),
+                convertStatCores(
+                        statResponse != null
+                                ? statResponse.activeCores3()
+                                : null
+                ),
+
+                convertStatCores(
+                        statResponse != null
+                                ? statResponse.presetCores1()
+                                : null
+                ),
+                convertStatCores(
+                        statResponse != null
+                                ? statResponse.presetCores2()
+                                : null
+                ),
+                convertStatCores(
+                        statResponse != null
+                                ? statResponse.presetCores3()
                                 : null
                 )
         );
@@ -334,6 +362,10 @@ public record CharacterSixthJobResponse(
                 null,
                 null,
                 "6",
+                List.of(),
+                List.of(),
+                List.of(),
+                List.of(),
                 List.of(),
                 List.of(),
                 List.of(),

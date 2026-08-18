@@ -224,147 +224,533 @@
     white-space: pre-line;
 }
 
-/* HEXA 코어 */
+/* HEXA 매트릭스 */
 
-.hexa-core-groups {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.hexa-core-group {
-    padding: 13px;
-
-    background: var(--equipment-grid-bg);
-
-    border: 1px solid var(--equipment-slot-border);
-    border-radius: 13px;
-}
-
-.hexa-core-group > header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 11px;
-}
-
-.hexa-core-group h3 {
-    margin: 0;
-
-    color: var(--color-text);
-    font-size: 14px;
-}
-
-.hexa-core-group > header span {
-    padding: 5px 8px;
-
-    color: var(--color-primary);
-    background: var(--color-primary-soft);
-
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-
-    font-size: 10px;
-    font-weight: 700;
-}
-
-.hexa-core-grid {
-    display: grid;
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-    gap: 8px;
-}
-
-.hexa-core-card {
-    min-width: 0;
-    padding: 11px;
-
-    background: var(--equipment-slot-bg);
-
-    border: 1px solid var(--equipment-slot-border);
-    border-radius: 10px;
-}
-
-.hexa-core-card__header {
-    display: flex;
-    min-width: 0;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 8px;
-}
-
-.hexa-core-card__header > div {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.hexa-core-card__header strong {
+.hexa-matrix {
+    position: relative;
+    width: 100%;
+    max-width: 780px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
     overflow: hidden;
 
-    color: var(--color-text);
-    font-size: 12px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    background:
+            radial-gradient(
+                    circle at 50% 48%,
+                    rgba(121, 74, 255, 0.42),
+                    transparent 19%
+            ),
+            radial-gradient(
+                    circle at 50% 88%,
+                    rgba(31, 180, 255, 0.34),
+                    transparent 36%
+            ),
+            radial-gradient(
+                    circle at 50% 15%,
+                    rgba(120, 55, 255, 0.34),
+                    transparent 35%
+            ),
+            linear-gradient(
+                    180deg,
+                    #070b20 0%,
+                    #10143c 52%,
+                    #06162b 100%
+            );
+
+    border: 1px solid
+    rgba(120, 135, 255, 0.35);
+    border-radius: 24px;
+
+    box-shadow:
+            inset 0 0 80px
+            rgba(69, 67, 255, 0.2),
+            0 18px 36px
+            rgba(0, 0, 0, 0.22);
 }
 
-.hexa-core-card__header span {
-    color: var(--color-text-secondary);
+.hexa-matrix::before {
+    position: absolute;
+    inset: 0;
+    content: "";
+
+    background-image:
+            radial-gradient(
+                    circle,
+                    rgba(255, 255, 255, 0.78)
+                    0 1px,
+                    transparent 1.5px
+            );
+
+    background-size: 61px 61px;
+    opacity: 0.18;
+    pointer-events: none;
+}
+
+.hexa-matrix__background {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.hexa-matrix__orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    border: 1px solid
+    rgba(139, 128, 255, 0.19);
+    border-radius: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+.hexa-matrix__orbit--one {
+    width: 42%;
+    height: 42%;
+}
+
+.hexa-matrix__orbit--two {
+    width: 62%;
+    height: 62%;
+}
+
+.hexa-matrix__star {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+
+    background: #ffffff;
+    border-radius: 50%;
+
+    box-shadow:
+            0 0 7px #9f8cff,
+            0 0 15px #6655ff;
+}
+
+.hexa-matrix__star--one {
+    top: 12%;
+    left: 63%;
+}
+
+.hexa-matrix__star--two {
+    top: 51%;
+    right: 7%;
+}
+
+.hexa-matrix__star--three {
+    bottom: 16%;
+    left: 10%;
+}
+
+/* 코어 그룹 */
+
+.hexa-cluster {
+    position: absolute;
+    z-index: 2;
+    width: 42%;
+}
+
+.hexa-cluster--top-left {
+    top: 4%;
+    left: 3%;
+}
+
+.hexa-cluster--top-right {
+    top: 4%;
+    right: 3%;
+}
+
+.hexa-cluster--bottom-left {
+    bottom: 4%;
+    left: 3%;
+}
+
+.hexa-cluster--bottom-right {
+    right: 3%;
+    bottom: 4%;
+}
+
+.hexa-cluster h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 0 0 7px;
+
+    color: rgba(
+            235,
+            239,
+            255,
+            0.86
+    );
+
+    font-size: 11px;
+    text-align: center;
+}
+
+.hexa-cluster h3 span {
+    display: inline-flex;
+    min-width: 18px;
+    height: 18px;
+    align-items: center;
+    justify-content: center;
+
+    color: #aebcff;
+    background: rgba(
+            111,
+            104,
+            255,
+            0.16
+    );
+
+    border: 1px solid
+    rgba(145, 151, 255, 0.3);
+    border-radius: 999px;
+
     font-size: 9px;
 }
 
-.hexa-core-card__header b {
-    flex-shrink: 0;
-
-    color: var(--color-primary);
-    font-size: 10px;
+.hexa-cluster__nodes {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 3px;
 }
 
-.hexa-core-card__progress {
+/* 육각 코어 */
+
+.hexa-core-node {
+    position: relative;
     width: 100%;
-    height: 7px;
-    margin-top: 10px;
+    min-width: 0;
+    aspect-ratio: 0.9 / 1;
+
+    background: linear-gradient(
+            145deg,
+            rgba(66, 76, 116, 0.96),
+            rgba(20, 25, 50, 0.98)
+    );
+
+    clip-path: polygon(
+            25% 5%,
+            75% 5%,
+            100% 25%,
+            100% 75%,
+            75% 95%,
+            25% 95%,
+            0 75%,
+            0 25%
+    );
+
+    filter: drop-shadow(
+            0 3px 4px
+            rgba(0, 0, 0, 0.4)
+    );
+}
+
+.hexa-core-node::before {
+    position: absolute;
+    inset: 3px;
+    content: "";
+
+    background: linear-gradient(
+            145deg,
+            rgba(35, 42, 73, 0.98),
+            rgba(12, 16, 35, 0.98)
+    );
+
+    clip-path: inherit;
+}
+
+.hexa-core-node__inner {
+    position: absolute;
+    inset: 18% 12%;
+    z-index: 1;
+
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+
+    text-align: center;
+}
+
+.hexa-core-node__inner strong {
+    display: -webkit-box;
     overflow: hidden;
 
-    background: var(--equipment-grid-bg);
+    color: #f1f4ff;
+    font-size: clamp(
+            7px,
+            1.2vw,
+            10px
+    );
+    line-height: 1.15;
 
-    border: 1px solid var(--equipment-slot-border);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.hexa-core-node__inner > span {
+    color: #aeb8d9;
+    font-size: clamp(
+            7px,
+            1vw,
+            9px
+    );
+    font-weight: 700;
+}
+
+.hexa-core-node__progress {
+    width: 72%;
+    height: 3px;
+    overflow: hidden;
+
+    background: rgba(
+            255,
+            255,
+            255,
+            0.12
+    );
+
     border-radius: 999px;
 }
 
-.hexa-core-card__progress > span {
+.hexa-core-node__progress i {
     display: block;
     height: 100%;
 
+    background: #778cff;
+    border-radius: inherit;
+}
+
+.hexa-core-node--mastery {
     background: linear-gradient(
-            90deg,
-            var(--color-primary),
-            #60a5fa
+            145deg,
+            #7867ff,
+            #2d275f
+    );
+}
+
+.hexa-core-node--enhancement {
+    background: linear-gradient(
+            145deg,
+            #a854ff,
+            #43235f
+    );
+}
+
+.hexa-core-node--skill {
+    background: linear-gradient(
+            145deg,
+            #3baeff,
+            #174b73
+    );
+}
+
+.hexa-core-node--common {
+    background: linear-gradient(
+            145deg,
+            #55d2e8,
+            #19515c
+    );
+}
+
+.hexa-core-node.is-max {
+    filter:
+            drop-shadow(
+                    0 0 5px
+                    rgba(
+                            116,
+                            142,
+                            255,
+                            0.75
+                    )
+            )
+            drop-shadow(
+                    0 0 11px
+                    rgba(
+                            102,
+                            84,
+                            255,
+                            0.42
+                    )
+            );
+}
+
+.hexa-core-node.is-max
+.hexa-core-node__inner
+> span {
+    color: #8ec5ff;
+}
+
+.hexa-core-node--empty {
+    opacity: 0.22;
+}
+
+/* 중앙 HEXA 문양 */
+
+.hexa-matrix__center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+
+    display: flex;
+    width: 24%;
+    height: 24%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    transform: translate(-50%, -50%);
+}
+
+.hexa-matrix__emblem {
+    display: flex;
+    width: 58%;
+    aspect-ratio: 1;
+    align-items: center;
+    justify-content: center;
+
+    background:
+            linear-gradient(
+                    145deg,
+                    rgba(
+                            122,
+                            91,
+                            255,
+                            0.82
+                    ),
+                    rgba(
+                            61,
+                            155,
+                            255,
+                            0.72
+                    )
+            );
+
+    clip-path: polygon(
+            50% 0,
+            92% 24%,
+            92% 75%,
+            50% 100%,
+            8% 75%,
+            8% 24%
     );
 
-    border-radius: inherit;
-    transition: width 0.35s ease;
+    filter:
+            drop-shadow(
+                    0 0 9px #805fff
+            )
+            drop-shadow(
+                    0 0 20px
+                    rgba(
+                            61,
+                            158,
+                            255,
+                            0.65
+                    )
+            );
 }
 
-.hexa-core-card__skills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-top: 9px;
+.hexa-matrix__emblem span {
+    color: #ffffff;
+    font-size: clamp(
+            23px,
+            4vw,
+            40px
+    );
+    font-weight: 900;
+    text-shadow:
+            0 0 8px #ffffff;
 }
 
-.hexa-core-card__skills span {
-    padding: 3px 6px;
+.hexa-matrix__center-line {
+    display: block;
+    width: 50%;
+    height: 4px;
+    margin: 9px;
+
+    background: linear-gradient(
+            90deg,
+            transparent,
+            #8c72ff,
+            #60caff,
+            transparent
+    );
+
+    border-radius: 999px;
+
+    box-shadow:
+            0 0 8px #7c6cff;
+}
+
+.hexa-matrix__center-line--top {
+    transform: rotate(-8deg);
+}
+
+.hexa-matrix__center-line--bottom {
+    transform: rotate(8deg);
+}
+
+.hexa-stat__group-tabs {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    margin-bottom: 9px;
+}
+
+.hexa-stat__group-tabs button {
+    position: relative;
+    padding: 9px 10px;
 
     color: var(--color-text-secondary);
     background: var(--equipment-grid-bg);
 
-    border: 1px solid var(--equipment-slot-border);
-    border-radius: 999px;
+    border: 1px solid
+    var(--equipment-slot-border);
+    border-radius: 10px;
 
-    font-size: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.hexa-stat__group-tabs button:hover {
+    color: var(--color-text);
+    border-color: var(--color-primary);
+}
+
+.hexa-stat__group-tabs button.is-active {
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+    border-color: var(--color-primary);
+
+    box-shadow:
+            0 0 0 2px
+            var(--color-primary-soft),
+            0 0 12px
+            rgba(70, 120, 255, 0.24);
+}
+
+.hexa-stat__data-dot {
+    position: absolute;
+    top: 6px;
+    right: 7px;
+
+    width: 6px;
+    height: 6px;
+
+    background: var(--color-primary);
+    border-radius: 50%;
+
+    box-shadow:
+            0 0 5px var(--color-primary),
+            0 0 9px var(--color-primary);
 }
 
 /* HEXA 스탯 */
@@ -494,43 +880,41 @@
 }
 
 @media (max-width: 620px) {
-    .sixth-job-loading {
-        min-height: 380px;
+    .hexa-matrix {
+        border-radius: 15px;
     }
 
-    .sixth-job-panel {
-        padding: 14px;
+    .hexa-cluster {
+        width: 45%;
     }
 
-    .sixth-job-panel__header {
-        align-items: flex-start;
+    .hexa-cluster--top-left,
+    .hexa-cluster--bottom-left {
+        left: 1.5%;
     }
 
-    .sixth-job-panel__header h2 {
-        font-size: 18px;
+    .hexa-cluster--top-right,
+    .hexa-cluster--bottom-right {
+        right: 1.5%;
     }
 
-    .sixth-job-panel__header p {
-        font-size: 11px;
+    .hexa-cluster h3 {
+        margin-bottom: 4px;
+        font-size: 8px;
     }
 
-    .sixth-job-panel__header > span {
-        padding: 6px 8px;
-        font-size: 10px;
+    .hexa-cluster h3 span {
+        min-width: 15px;
+        height: 15px;
+        font-size: 7px;
     }
 
-    .sixth-job-sections {
-        gap: 4px;
+    .hexa-core-node__inner {
+        inset: 17% 8%;
     }
 
-    .sixth-job-sections button {
-        padding: 7px 5px;
-        font-size: 10px;
-    }
-
-    .sixth-skill-grid,
-    .hexa-core-grid,
-    .hexa-stat-grid {
-        grid-template-columns: 1fr;
+    .hexa-stat__group-tabs button {
+        padding: 8px 3px;
+        font-size: 9px;
     }
 }

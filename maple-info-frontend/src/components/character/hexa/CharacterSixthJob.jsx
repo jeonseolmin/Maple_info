@@ -24,28 +24,6 @@ const SECTIONS = [
     },
 ];
 
-const CORE_GROUPS = [
-    {
-        type: "SKILL",
-        title: "스킬 코어",
-    },
-    {
-        type: "MASTERY",
-        title: "마스터리 코어",
-    },
-    {
-        type: "ENHANCEMENT",
-        title: "강화 코어",
-    },
-    {
-        type: "COMMON",
-        title: "공용 코어",
-    },
-    {
-        type: "UNKNOWN",
-        title: "기타 코어",
-    },
-];
 
 export default function CharacterSixthJob({
                                               character,
@@ -61,6 +39,54 @@ export default function CharacterSixthJob({
 
     const [error, setError] =
         useState("");
+
+    const SECTIONS = [
+        {
+            id: "skills",
+            label: "6차 스킬",
+        },
+        {
+            id: "cores",
+            label: "HEXA 코어",
+        },
+        {
+            id: "stats",
+            label: "HEXA 스탯",
+        },
+    ];
+
+    const HEXA_CORE_LAYOUT = {
+        MASTERY: [
+            { x: 12, y: 10 },
+            { x: 26, y: 10 },
+            { x: 19, y: 22 },
+            { x: 33, y: 22 },
+            { x: 26, y: 34 },
+            { x: 40, y: 34 },
+        ],
+
+        ENHANCEMENT: [
+            { x: 88, y: 10 },
+            { x: 74, y: 22 },
+            { x: 88, y: 22 },
+            { x: 61, y: 34 },
+            { x: 75, y: 34 },
+        ],
+
+        SKILL: [
+            { x: 39, y: 66 },
+            { x: 26, y: 78 },
+            { x: 12, y: 79 },
+            { x: 5, y: 91 },
+        ],
+
+        COMMON: [
+            { x: 61, y: 66 },
+            { x: 74, y: 78 },
+            { x: 88, y: 79 },
+            { x: 95, y: 91 },
+        ],
+    };
 
     useEffect(() => {
         if (!character?.ocid) {
@@ -115,18 +141,35 @@ export default function CharacterSixthJob({
     }, [character?.ocid]);
 
     const groupedCores = useMemo(() => {
-        const cores =
-            sixthJobData?.cores ?? [];
+        const mergedCores =
+            mergeLinkedCores(
+                sixthJobData?.cores ?? []
+            );
 
-        return Object.fromEntries(
-            CORE_GROUPS.map((group) => [
-                group.type,
-                cores.filter(
+        return {
+            MASTERY: mergedCores.filter(
+                (core) =>
+                    core.type === "MASTERY"
+            ),
+
+            ENHANCEMENT:
+                mergedCores.filter(
                     (core) =>
-                        core.type === group.type
+                        core.type ===
+                        "ENHANCEMENT"
                 ),
-            ])
-        );
+
+            SKILL: mergedCores.filter(
+                (core) =>
+                    core.type === "SKILL"
+            ),
+
+            COMMON: mergedCores.filter(
+                (core) =>
+                    core.type === "COMMON" ||
+                    core.type === "UNKNOWN"
+            ),
+        };
     }, [sixthJobData?.cores]);
 
     if (loading) {
@@ -152,8 +195,20 @@ export default function CharacterSixthJob({
         0 ||
         (sixthJobData?.cores?.length ?? 0) >
         0 ||
-        (sixthJobData?.activeStatCores
-            ?.length ?? 0) > 0;
+        [
+            ...(sixthJobData?.activeStatCores1 ??
+                []),
+            ...(sixthJobData?.activeStatCores2 ??
+                []),
+            ...(sixthJobData?.activeStatCores3 ??
+                []),
+            ...(sixthJobData?.presetStatCores1 ??
+                []),
+            ...(sixthJobData?.presetStatCores2 ??
+                []),
+            ...(sixthJobData?.presetStatCores3 ??
+                []),
+        ].length > 0;
 
     if (!hasSixthJobData) {
         return (
@@ -237,15 +292,29 @@ export default function CharacterSixthJob({
 
                 {activeSection === "stats" && (
                     <HexaStats
-                        activeCores={
+                        activeCores1={
                             sixthJobData
-                                .activeStatCores ??
-                            []
+                                .activeStatCores1 ?? []
                         }
-                        presetCores={
+                        activeCores2={
                             sixthJobData
-                                .presetStatCores ??
-                            []
+                                .activeStatCores2 ?? []
+                        }
+                        activeCores3={
+                            sixthJobData
+                                .activeStatCores3 ?? []
+                        }
+                        presetCores1={
+                            sixthJobData
+                                .presetStatCores1 ?? []
+                        }
+                        presetCores2={
+                            sixthJobData
+                                .presetStatCores2 ?? []
+                        }
+                        presetCores3={
+                            sixthJobData
+                                .presetStatCores3 ?? []
                         }
                     />
                 )}
@@ -334,9 +403,19 @@ Lv.{" "}
 }
 
 function HexaCores({ groupedCores }) {
-    const hasCore = CORE_GROUPS.some(
-        (group) =>
-            groupedCores[group.type]?.length >
+    const [selectedCore, setSelectedCore] =
+        useState(null);
+
+    const types = [
+        "MASTERY",
+        "ENHANCEMENT",
+        "SKILL",
+        "COMMON",
+    ];
+
+    const hasCore = types.some(
+        (type) =>
+            groupedCores[type]?.length >
             0
     );
 
@@ -349,125 +428,240 @@ function HexaCores({ groupedCores }) {
     }
 
     return (
-        <div className="hexa-core-groups">
-            {CORE_GROUPS.map((group) => {
-                const cores =
-                    groupedCores[group.type] ??
-                    [];
+        <div className="hexa-matrix-wrapper">
+            <div className="hexa-matrix">
+                <div className="hexa-matrix__background">
+                    <span className="hexa-matrix__orbit hexa-matrix__orbit--one" />
+                    <span className="hexa-matrix__orbit hexa-matrix__orbit--two" />
+                </div>
 
-                if (cores.length === 0) {
-                    return null;
-                }
+                {types.flatMap((type) => {
+                    const positions =
+                        HEXA_CORE_LAYOUT[
+                            type
+                            ];
 
-                return (
-                    <section
-                        key={group.type}
-                        className="hexa-core-group"
-                    >
-                        <header>
-                            <h3>{group.title}</h3>
+                    const cores =
+                        groupedCores[type] ??
+                        [];
 
-                            <span>
-{cores.length}개
-</span>
-                        </header>
+                    return positions.map(
+                        (
+                            position,
+                            index
+                        ) => {
+                            const core =
+                                cores[index];
 
-                        <div className="hexa-core-grid">
-                            {cores.map((core) => (
-                                <HexaCoreCard
-                                    key={`${core.type}-${core.name}`}
+                            return (
+                                <HexaCoreNode
+                                    key={`${type}-${index}`}
                                     core={core}
+                                    type={type}
+                                    position={
+                                        position
+                                    }
+                                    selected={
+                                        selectedCore
+                                            ?.name ===
+                                        core?.name
+                                    }
+                                    onSelect={
+                                        setSelectedCore
+                                    }
                                 />
-                            ))}
-                        </div>
-                    </section>
-                );
-            })}
+                            );
+                        }
+                    );
+                })}
+
+                <div className="hexa-matrix__center">
+                    <span className="hexa-matrix__center-line hexa-matrix__center-line--top" />
+
+                    <div className="hexa-matrix__emblem">
+                        <span>V</span>
+                    </div>
+
+                    <span className="hexa-matrix__center-line hexa-matrix__center-line--bottom" />
+                </div>
+            </div>
+
+            <HexaCoreDetail
+                core={selectedCore}
+            />
         </div>
     );
 }
-
-function HexaCoreCard({ core }) {
+function HexaCoreNode({
+                          core,
+                          type,
+                          position,
+                          selected,
+                          onSelect,
+                      }) {
     const progress =
-        core.maxLevel
+        core?.maxLevel
             ? 100
             : Math.min(
                 100,
                 Math.max(
                     0,
-                    ((core.level ?? 0) /
+                    ((core?.level ?? 0) /
                         30) *
                     100
                 )
             );
 
+    if (!core) {
+        return (
+            <span
+                className="hexa-core-node hexa-core-node--empty"
+                style={{
+                    left: `${position.x}%`,
+                    top: `${position.y}%`,
+                }}
+                aria-hidden="true"
+            />
+        );
+    }
+
     return (
-        <article className="hexa-core-card">
-            <div className="hexa-core-card__header">
-                <div>
-                    <strong>{core.name}</strong>
+        <button
+            type="button"
+            className={[
+                "hexa-core-node",
+                `hexa-core-node--${type.toLowerCase()}`,
+                core.maxLevel
+                    ? "is-max"
+                    : "",
+                selected
+                    ? "is-selected"
+                    : "",
+            ]
+                .filter(Boolean)
+                .join(" ")}
+            style={{
+                left: `${position.x}%`,
+                top: `${position.y}%`,
+            }}
+            onClick={() =>
+                onSelect(
+                    selected
+                        ? null
+                        : core
+                )
+            }
+            aria-label={`${core.name} 상세정보`}
+        >
+            <span className="hexa-core-node__inner">
+                <strong>
+                    {shortenCoreName(
+                        core.name
+                    )}
+                </strong>
 
-                    <span>
-{core.originalType}
-</span>
-                </div>
-
-                <b>
+                <span>
                     {core.maxLevel
                         ? "MAX"
-                        : `Lv. ${
-                            core.level ?? 0
+                        : `Lv.${
+                            core.level ??
+                            0
                         }`}
-                </b>
-            </div>
+                </span>
 
-            <div
-                className="hexa-core-card__progress"
-                role="progressbar"
-                aria-label={`${core.name} 레벨`}
-                aria-valuemin="0"
-                aria-valuemax="30"
-                aria-valuenow={
-                    core.level ?? 0
-                }
-            >
-<span
-    style={{
-        width: `${progress}%`,
-    }}
-/>
-            </div>
-
-            {core.linkedSkillIds?.length >
-                0 && (
-                    <div className="hexa-core-card__skills">
-                        {core.linkedSkillIds.map(
-                            (skillId) => (
-                                <span key={skillId}>
-                   {skillId}
-</span>
-                            )
-                        )}
-                    </div>
-                )}
-        </article>
+                <span className="hexa-core-node__progress">
+                    <i
+                        style={{
+                            width: `${progress}%`,
+                        }}
+                    />
+                </span>
+            </span>
+        </button>
     );
 }
 
+
 function HexaStats({
-                       activeCores,
-                       presetCores,
+                       activeCores1,
+                       activeCores2,
+                       activeCores3,
+                       presetCores1,
+                       presetCores2,
+                       presetCores3,
                    }) {
     const [mode, setMode] =
         useState("active");
 
+    const [groupNumber, setGroupNumber] =
+        useState(1);
+
+    const groups = {
+        1: {
+            active: activeCores1,
+            preset: presetCores1,
+        },
+        2: {
+            active: activeCores2,
+            preset: presetCores2,
+        },
+        3: {
+            active: activeCores3,
+            preset: presetCores3,
+        },
+    };
+
     const visibleCores =
-        mode === "preset"
-            ? presetCores
-            : activeCores;
+        groups[groupNumber]?.[mode] ?? [];
 
     return (
         <div className="hexa-stat">
+            <div className="hexa-stat__group-tabs">
+                {[1, 2, 3].map((number) => {
+                    const activeCount =
+                        groups[number]
+                            ?.active?.length ?? 0;
+
+                    const presetCount =
+                        groups[number]
+                            ?.preset?.length ?? 0;
+
+                    const hasData =
+                        activeCount > 0 ||
+                        presetCount > 0;
+
+                    return (
+                        <button
+                            key={number}
+                            type="button"
+                            className={
+                                groupNumber ===
+                                number
+                                    ? "is-active"
+                                    : ""
+                            }
+                            onClick={() =>
+                                setGroupNumber(
+                                    number
+                                )
+                            }
+                        >
+                            HEXA 스탯{" "}
+                            {toRomanNumber(
+                                number
+                            )}
+
+                            {hasData && (
+                                <span
+                                    className="hexa-stat__data-dot"
+                                    aria-label="데이터 있음"
+                                />
+                            )}
+                        </button>
+                    );
+                })}
+            </div>
+
             <div className="hexa-stat__mode">
                 <button
                     type="button"
@@ -500,14 +694,21 @@ function HexaStats({
 
             {visibleCores.length === 0 ? (
                 <p className="sixth-job-empty">
-                    조회된 HEXA 스탯이 없습니다.
+                    HEXA 스탯{" "}
+                    {toRomanNumber(
+                        groupNumber
+                    )}의{" "}
+                    {mode === "active"
+                        ? "현재 적용"
+                        : "프리셋"}{" "}
+                    정보가 없습니다.
                 </p>
             ) : (
                 <div className="hexa-stat-grid">
                     {visibleCores.map(
                         (core, index) => (
                             <HexaStatCard
-                                key={`${core.slotId}-${index}`}
+                                key={`${groupNumber}-${core.slotId}-${index}`}
                                 core={core}
                             />
                         )
@@ -564,6 +765,18 @@ function HexaStatCard({ core }) {
     );
 }
 
+function toRomanNumber(number) {
+    const romanNumbers = {
+        1: "I",
+        2: "II",
+        3: "III",
+    };
+
+    return (
+        romanNumbers[number] ??
+        String(number)
+    );
+}
 function StatRow({
                      label,
                      name,
@@ -589,5 +802,149 @@ function StatRow({
                 Lv. {level ?? 0}
             </strong>
         </div>
+    );
+}
+function shortenCoreName(name) {
+    if (!name) {
+        return "빈 코어";
+    }
+
+    return name
+        .replace(" 마스터리", "")
+        .replace(" 강화", "")
+        .trim();
+}
+
+function mergeLinkedCores(cores) {
+    const coreMap = new Map();
+
+    for (const core of cores) {
+        if (!core) {
+            continue;
+        }
+
+        const key = [
+            core.type ?? "UNKNOWN",
+            core.name ?? "이름 없음",
+        ].join("::");
+
+        const savedCore =
+            coreMap.get(key);
+
+        if (!savedCore) {
+            coreMap.set(key, {
+                ...core,
+
+                linkedSkillIds: [
+                    ...new Set(
+                        core.linkedSkillIds ??
+                        []
+                    ),
+                ],
+            });
+
+            continue;
+        }
+
+        coreMap.set(key, {
+            ...savedCore,
+
+            /*
+             * 중복 데이터가 있으면 높은 레벨을 사용합니다.
+             */
+            level: Math.max(
+                savedCore.level ?? 0,
+                core.level ?? 0
+            ),
+
+            maxLevel:
+                savedCore.maxLevel ||
+                core.maxLevel,
+
+            /*
+             * 연계 스킬은 중복을 제거하고 합칩니다.
+             */
+            linkedSkillIds: [
+                ...new Set([
+                    ...(
+                        savedCore.linkedSkillIds ??
+                        []
+                    ),
+                    ...(
+                        core.linkedSkillIds ??
+                        []
+                    ),
+                ]),
+            ],
+        });
+    }
+
+    return [...coreMap.values()];
+}
+
+function HexaCoreDetail({ core }) {
+    if (!core) {
+        return (
+            <aside className="hexa-core-detail hexa-core-detail--empty">
+                육각 코어를 선택하면 연계 스킬을
+                확인할 수 있습니다.
+            </aside>
+        );
+    }
+
+    return (
+        <aside className="hexa-core-detail">
+            <header>
+                <div>
+                    <span>
+                        {core.originalType}
+                    </span>
+
+                    <h3>{core.name}</h3>
+                </div>
+
+                <strong>
+                    {core.maxLevel
+                        ? "MAX"
+                        : `Lv. ${
+                            core.level ?? 0
+                        }`}
+                </strong>
+            </header>
+
+            <section>
+                <h4>연계 스킬</h4>
+
+                {core.linkedSkillIds?.length >
+                0 ? (
+                    <ul>
+                        {core.linkedSkillIds.map(
+                            (skillName) => (
+                                <li
+                                    key={
+                                        skillName
+                                    }
+                                >
+                                    <span className="hexa-core-detail__skill-icon">
+                                        ✦
+                                    </span>
+
+                                    <span>
+                                        {
+                                            skillName
+                                        }
+                                    </span>
+                                </li>
+                            )
+                        )}
+                    </ul>
+                ) : (
+                    <p>
+                        별도의 연계 스킬 정보가
+                        없습니다.
+                    </p>
+                )}
+            </section>
+        </aside>
     );
 }
