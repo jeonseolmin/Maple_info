@@ -8,9 +8,12 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.beauty.Nexon
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.cash.NexonCharacterCashItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment.NexonCharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.hexa.NexonCharacterHexaMatrixResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.hexa.NexonCharacterHexaStatResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.pet.NexonCharacterPetEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.skill.NexonCharacterSkillResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.symbol.NexonCharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
@@ -446,6 +449,93 @@ public class MapleCharacterClient {
         } catch (RestClientException e) {
             throw new NexonApiException(
                     "넥슨 심볼 장비 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
+
+    public NexonCharacterSkillResponse getSixthJobSkills(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/skill"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .queryParam(
+                                    "character_skill_grade",
+                                    "6"
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterSkillResponse.class
+                    );
+
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 6차 스킬 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
+
+    public NexonCharacterHexaMatrixResponse getHexaMatrix(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/hexamatrix"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterHexaMatrixResponse.class
+                    );
+
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 HEXA 매트릭스 API 호출에 실패했습니다.",
+                    e
+            );
+        }
+    }
+    public NexonCharacterHexaStatResponse getHexaStat(
+            String ocid
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/hexamatrix-stat"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterHexaStatResponse.class
+                    );
+
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 HEXA 스탯 API 호출에 실패했습니다.",
                     e
             );
         }

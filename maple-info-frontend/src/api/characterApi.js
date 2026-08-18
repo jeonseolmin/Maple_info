@@ -90,3 +90,16 @@ export const getCharacterSymbolEquipment = async (ocid) => {
 
     return response.data;
 };
+
+export const getCharacterSixthJob = async (ocid) => {
+    const response = await axiosInstance.get(
+        "/characters/sixth-job",
+        {
+            params: {
+                ocid,
+            },
+        }
+    );
+
+    return response.data;
+};

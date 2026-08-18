@@ -1,0 +1,536 @@
+.sixth-job-loading {
+    display: flex;
+    width: 100%;
+    min-height: 530px;
+    align-items: center;
+    justify-content: center;
+}
+
+.sixth-job-panel {
+    padding: 20px;
+
+    color: var(--color-text);
+    background: var(--color-surface-soft);
+
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+}
+
+.sixth-job-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.sixth-job-panel__header h2 {
+    margin: 0;
+
+    color: var(--color-text);
+    font-size: 20px;
+}
+
+.sixth-job-panel__header p {
+    margin: 6px 0 0;
+
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.sixth-job-panel__header > span {
+    flex-shrink: 0;
+    padding: 7px 11px;
+
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.sixth-job-sections {
+    display: flex;
+    gap: 7px;
+    margin-bottom: 14px;
+    padding: 5px;
+
+    background: var(--equipment-grid-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 12px;
+}
+
+.sixth-job-sections button {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 12px;
+
+    color: var(--color-text-secondary);
+    background: transparent;
+
+    border: 1px solid transparent;
+    border-radius: 9px;
+
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.sixth-job-sections button:hover {
+    color: var(--color-text);
+    border-color: var(--color-border);
+}
+
+.sixth-job-sections button.is-active {
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+    border-color: var(--color-primary);
+}
+
+.sixth-job-content {
+    min-width: 0;
+}
+
+.sixth-job-empty {
+    display: flex;
+    min-height: 180px;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+
+    color: var(--color-text-secondary);
+    background: var(--equipment-grid-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 14px;
+
+    font-size: 13px;
+}
+
+/* 6차 스킬 */
+
+.sixth-skill-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.sixth-skill-card {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 11px;
+    padding: 13px;
+
+    background: var(--equipment-grid-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 12px;
+}
+
+.sixth-skill-card__header {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+}
+
+.sixth-skill-card__icon {
+    display: flex;
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    background: var(--equipment-slot-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 10px;
+}
+
+.sixth-skill-card__icon img {
+    width: 82%;
+    height: 82%;
+    object-fit: contain;
+}
+
+.sixth-skill-card__icon span {
+    color: var(--color-text-secondary);
+    font-size: 7px;
+    text-align: center;
+}
+
+.sixth-skill-card__header > div:last-child {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sixth-skill-card__header strong {
+    overflow: hidden;
+
+    color: var(--color-text);
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sixth-skill-card__header span {
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.sixth-skill-card__effect {
+    margin: 0;
+
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    line-height: 1.5;
+    white-space: pre-line;
+}
+
+.sixth-skill-card__detail {
+    margin-top: auto;
+    padding-top: 9px;
+
+    border-top: 1px solid
+    var(--equipment-tooltip-divider);
+}
+
+.sixth-skill-card__detail summary {
+    color: var(--color-primary);
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.sixth-skill-card__detail p {
+    margin: 8px 0 0;
+
+    color: var(--color-text-secondary);
+    font-size: 10px;
+    line-height: 1.5;
+    white-space: pre-line;
+}
+
+/* HEXA 코어 */
+
+.hexa-core-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hexa-core-group {
+    padding: 13px;
+
+    background: var(--equipment-grid-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 13px;
+}
+
+.hexa-core-group > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 11px;
+}
+
+.hexa-core-group h3 {
+    margin: 0;
+
+    color: var(--color-text);
+    font-size: 14px;
+}
+
+.hexa-core-group > header span {
+    padding: 5px 8px;
+
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.hexa-core-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.hexa-core-card {
+    min-width: 0;
+    padding: 11px;
+
+    background: var(--equipment-slot-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 10px;
+}
+
+.hexa-core-card__header {
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.hexa-core-card__header > div {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.hexa-core-card__header strong {
+    overflow: hidden;
+
+    color: var(--color-text);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hexa-core-card__header span {
+    color: var(--color-text-secondary);
+    font-size: 9px;
+}
+
+.hexa-core-card__header b {
+    flex-shrink: 0;
+
+    color: var(--color-primary);
+    font-size: 10px;
+}
+
+.hexa-core-card__progress {
+    width: 100%;
+    height: 7px;
+    margin-top: 10px;
+    overflow: hidden;
+
+    background: var(--equipment-grid-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 999px;
+}
+
+.hexa-core-card__progress > span {
+    display: block;
+    height: 100%;
+
+    background: linear-gradient(
+            90deg,
+            var(--color-primary),
+            #60a5fa
+    );
+
+    border-radius: inherit;
+    transition: width 0.35s ease;
+}
+
+.hexa-core-card__skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 9px;
+}
+
+.hexa-core-card__skills span {
+    padding: 3px 6px;
+
+    color: var(--color-text-secondary);
+    background: var(--equipment-grid-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 999px;
+
+    font-size: 8px;
+}
+
+/* HEXA 스탯 */
+
+.hexa-stat__mode {
+    display: flex;
+    gap: 7px;
+    margin-bottom: 12px;
+}
+
+.hexa-stat__mode button {
+    padding: 7px 12px;
+
+    color: var(--color-text-secondary);
+    background: transparent;
+
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.hexa-stat__mode button.is-active {
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+    border-color: var(--color-primary);
+}
+
+.hexa-stat-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.hexa-stat-card {
+    min-width: 0;
+    padding: 13px;
+
+    background: var(--equipment-grid-bg);
+
+    border: 1px solid var(--equipment-slot-border);
+    border-radius: 12px;
+}
+
+.hexa-stat-card > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 9px;
+}
+
+.hexa-stat-card > header span {
+    color: var(--color-text-secondary);
+    font-size: 10px;
+}
+
+.hexa-stat-card > header strong {
+    color: var(--color-primary);
+    font-size: 11px;
+}
+
+.hexa-stat-card__total {
+    margin-bottom: 9px;
+    padding: 7px 9px;
+
+    color: var(--color-text-secondary);
+    background: var(--equipment-slot-bg);
+
+    border-radius: 8px;
+
+    font-size: 11px;
+}
+
+.hexa-stat-card__total strong {
+    color: var(--color-primary);
+}
+
+.hexa-stat-row {
+    display: grid;
+    grid-template-columns:
+        42px minmax(0, 1fr) auto;
+    gap: 7px;
+    align-items: center;
+    padding: 7px 0;
+
+    border-top: 1px solid
+    var(--equipment-tooltip-divider);
+}
+
+.hexa-stat-row > span {
+    color: var(--color-text-secondary);
+    font-size: 9px;
+}
+
+.hexa-stat-row > p {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+
+    color: var(--color-text);
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hexa-stat-row > strong {
+    color: var(--color-text-secondary);
+    font-size: 10px;
+}
+
+.hexa-stat-row--main > p,
+.hexa-stat-row--main > strong {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+@media (max-width: 1000px) {
+    .sixth-skill-grid,
+    .hexa-core-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .sixth-job-loading {
+        min-height: 380px;
+    }
+
+    .sixth-job-panel {
+        padding: 14px;
+    }
+
+    .sixth-job-panel__header {
+        align-items: flex-start;
+    }
+
+    .sixth-job-panel__header h2 {
+        font-size: 18px;
+    }
+
+    .sixth-job-panel__header p {
+        font-size: 11px;
+    }
+
+    .sixth-job-panel__header > span {
+        padding: 6px 8px;
+        font-size: 10px;
+    }
+
+    .sixth-job-sections {
+        gap: 4px;
+    }
+
+    .sixth-job-sections button {
+        padding: 7px 5px;
+        font-size: 10px;
+    }
+
+    .sixth-skill-grid,
+    .hexa-core-grid,
+    .hexa-stat-grid {
+        grid-template-columns: 1fr;
+    }
+}

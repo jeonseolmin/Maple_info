@@ -6,6 +6,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.android.Char
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty.CharacterBeautyResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.hexa.CharacterSixthJobResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.pet.CharacterPetEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.symbol.CharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.service.MapleCharacterService;
@@ -80,4 +81,14 @@ public class MapleCharacterController {
                 ocid
         );
     }
+
+    @GetMapping("/sixth-job")
+    public CharacterSixthJobResponse getSixthJob(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getSixthJob(
+                ocid
+        );
+    }
+
 }
