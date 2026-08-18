@@ -24,6 +24,38 @@ const SECTIONS = [
     },
 ];
 
+const HEXA_CORE_LAYOUT = {
+    MASTERY: [
+        { x: 12, y: 10 },
+        { x: 26, y: 10 },
+        { x: 19, y: 22 },
+        { x: 33, y: 22 },
+        { x: 26, y: 34 },
+        { x: 40, y: 34 },
+    ],
+
+    ENHANCEMENT: [
+        { x: 88, y: 10 },
+        { x: 74, y: 22 },
+        { x: 88, y: 22 },
+        { x: 61, y: 34 },
+        { x: 75, y: 34 },
+    ],
+
+    SKILL: [
+        { x: 39, y: 66 },
+        { x: 26, y: 78 },
+        { x: 12, y: 79 },
+        { x: 5, y: 91 },
+    ],
+
+    COMMON: [
+        { x: 61, y: 66 },
+        { x: 74, y: 78 },
+        { x: 88, y: 79 },
+        { x: 95, y: 91 },
+    ],
+};
 
 export default function CharacterSixthJob({
                                               character,
@@ -39,54 +71,6 @@ export default function CharacterSixthJob({
 
     const [error, setError] =
         useState("");
-
-    const SECTIONS = [
-        {
-            id: "skills",
-            label: "6차 스킬",
-        },
-        {
-            id: "cores",
-            label: "HEXA 코어",
-        },
-        {
-            id: "stats",
-            label: "HEXA 스탯",
-        },
-    ];
-
-    const HEXA_CORE_LAYOUT = {
-        MASTERY: [
-            { x: 12, y: 10 },
-            { x: 26, y: 10 },
-            { x: 19, y: 22 },
-            { x: 33, y: 22 },
-            { x: 26, y: 34 },
-            { x: 40, y: 34 },
-        ],
-
-        ENHANCEMENT: [
-            { x: 88, y: 10 },
-            { x: 74, y: 22 },
-            { x: 88, y: 22 },
-            { x: 61, y: 34 },
-            { x: 75, y: 34 },
-        ],
-
-        SKILL: [
-            { x: 39, y: 66 },
-            { x: 26, y: 78 },
-            { x: 12, y: 79 },
-            { x: 5, y: 91 },
-        ],
-
-        COMMON: [
-            { x: 61, y: 66 },
-            { x: 74, y: 78 },
-            { x: 88, y: 79 },
-            { x: 95, y: 91 },
-        ],
-    };
 
     useEffect(() => {
         if (!character?.ocid) {
@@ -141,10 +125,19 @@ export default function CharacterSixthJob({
     }, [character?.ocid]);
 
     const groupedCores = useMemo(() => {
+        const skills =
+            sixthJobData?.skills ?? [];
+
         const mergedCores =
             mergeLinkedCores(
                 sixthJobData?.cores ?? []
-            );
+            ).map((core) => ({
+                ...core,
+                icon: findCoreIcon(
+                    core,
+                    skills
+                ),
+            }));
 
         return {
             MASTERY: mergedCores.filter(
@@ -152,12 +145,11 @@ export default function CharacterSixthJob({
                     core.type === "MASTERY"
             ),
 
-            ENHANCEMENT:
-                mergedCores.filter(
-                    (core) =>
-                        core.type ===
-                        "ENHANCEMENT"
-                ),
+            ENHANCEMENT: mergedCores.filter(
+                (core) =>
+                    core.type ===
+                    "ENHANCEMENT"
+            ),
 
             SKILL: mergedCores.filter(
                 (core) =>
@@ -170,7 +162,10 @@ export default function CharacterSixthJob({
                     core.type === "UNKNOWN"
             ),
         };
-    }, [sixthJobData?.cores]);
+    }, [
+        sixthJobData?.cores,
+        sixthJobData?.skills,
+    ]);
 
     if (loading) {
         return (
@@ -554,29 +549,37 @@ function HexaCoreNode({
             aria-label={`${core.name} 상세정보`}
         >
             <span className="hexa-core-node__inner">
-                <strong>
-                    {shortenCoreName(
-                        core.name
-                    )}
-                </strong>
-
-                <span>
-                    {core.maxLevel
-                        ? "MAX"
-                        : `Lv.${
-                            core.level ??
-                            0
-                        }`}
-                </span>
-
-                <span className="hexa-core-node__progress">
-                    <i
-                        style={{
-                            width: `${progress}%`,
-                        }}
-                    />
-                </span>
+    <span className="hexa-core-node__image">
+        {core.icon ? (
+            <img
+                src={core.icon}
+                alt=""
+                loading="lazy"
+            />
+        ) : (
+            <span
+                className="hexa-core-node__fallback"
+                aria-hidden="true"
+            >
+                V
             </span>
+        )}
+    </span>
+
+    <span className="hexa-core-node__level">
+        {core.maxLevel
+            ? "MAX"
+            : `Lv.${core.level ?? 0}`}
+    </span>
+
+    <span className="hexa-core-node__progress">
+        <i
+            style={{
+                width: `${progress}%`,
+            }}
+        />
+    </span>
+</span>
         </button>
     );
 }
@@ -947,4 +950,98 @@ function HexaCoreDetail({ core }) {
             </section>
         </aside>
     );
+}
+function findCoreIcon(core, skills) {
+    if (!core || skills.length === 0) {
+        return null;
+    }
+
+    const coreName =
+        normalizeSkillName(core.name);
+
+    /*
+     * 1순위: 코어 이름과 스킬 이름이 같은 경우
+     */
+    const exactSkill = skills.find(
+        (skill) =>
+            normalizeSkillName(
+                skill.name
+            ) === coreName
+    );
+
+    if (exactSkill?.icon) {
+        return exactSkill.icon;
+    }
+
+    /*
+     * 2순위: 한쪽 이름에 다른 이름이 포함된 경우
+     */
+    const includedSkill = skills.find(
+        (skill) => {
+            const skillName =
+                normalizeSkillName(
+                    skill.name
+                );
+
+            if (!skillName) {
+                return false;
+            }
+
+            return (
+                coreName.includes(
+                    skillName
+                ) ||
+                skillName.includes(
+                    coreName
+                )
+            );
+        }
+    );
+
+    if (includedSkill?.icon) {
+        return includedSkill.icon;
+    }
+
+    /*
+     * 3순위: 연계 스킬 값과 이름이 일치하는 경우
+     */
+    const linkedSkill = skills.find(
+        (skill) =>
+            core.linkedSkillIds?.some(
+                (linkedSkillName) =>
+                    normalizeSkillName(
+                        linkedSkillName
+                    ) ===
+                    normalizeSkillName(
+                        skill.name
+                    )
+            )
+    );
+
+    return linkedSkill?.icon ?? null;
+}
+
+function normalizeSkillName(name) {
+    if (!name) {
+        return "";
+    }
+
+    return name
+        .toLowerCase()
+        .replace(/\s+/g, "")
+        .replace(/vi/g, "")
+        .replace(/v/g, "")
+        .replace(/hexa/g, "")
+        .replace(/헥사/g, "")
+        .replace(/마스터리코어/g, "")
+        .replace(/강화코어/g, "")
+        .replace(/스킬코어/g, "")
+        .replace(/공용코어/g, "")
+        .replace(/공통코어/g, "")
+        .replace(/마스터리/g, "")
+        .replace(/강화/g, "")
+        .replace(/코어/g, "")
+        .replace(/:/g, "")
+        .replace(/-/g, "")
+        .trim();
 }
