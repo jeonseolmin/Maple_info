@@ -3,12 +3,13 @@ import CharacterEquipment from "./equipment/CharacterEquipment";
 import CharacterCash from "./cash/CharacterCash";
 import CharacterSymbol from "./symbol/CharacterSymbol.jsx";
 import "./CharacterContentTabs.css";
+import CharacterSixthJob from "./hexa/CharacterSixthJob.jsx";
 
 const TABS = [
     { id: "equipment", label: "장착 장비" },
     { id: "cashPet", label: "캐시 · 펫" },
     { id: "symbol", label: "심볼" },
-    { id: "skill", label: "6차" },
+    { id: "sixthJob", label: "6차 · HEXA" },
 ];
 
 export default function CharacterContentTabs({ character }) {
@@ -51,6 +52,11 @@ export default function CharacterContentTabs({ character }) {
 
                 {activeTab === "symbol" && (
                     <CharacterSymbol character={character} />
+                )}
+                {activeTab === "sixthJob" && (
+                    <CharacterSixthJob
+                        character={character}
+                    />
                 )}
             </div>
         </section>

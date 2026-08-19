@@ -1,12 +1,15 @@
+/* src/components/menu/AppMenu.css */
+
 .app-menu {
     position: absolute;
     inset: 0;
-    z-index: 100;
+    z-index: 1000;
+
+    width: 100%;
+    height: 100%;
 
     visibility: hidden;
     pointer-events: none;
-    width: 100%;
-    height: 100%;
 }
 
 .app-menu--open {
@@ -14,7 +17,8 @@
     pointer-events: auto;
 }
 
-/* 뒤쪽 콘텐츠를 어둡고 흐리게 처리 */
+/* 배경 */
+
 .app-menu-backdrop {
     position: absolute;
     inset: 0;
@@ -24,202 +28,765 @@
     padding: 0;
     border: 0;
 
-    background: rgba(10, 16, 28, 0.35);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    opacity: 0;
-    transition: opacity 0.25s ease;
+    background: rgba(15, 20, 31, 0.42);
     cursor: default;
 }
 
-.app-menu--open .app-menu-backdrop {
-    opacity: 1;
-}
+/* 메뉴 패널 */
 
-/* 아래에서 올라오는 앱 메뉴 */
 .app-menu-panel {
-    position: relative;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
+    position: absolute;
+    inset: 14px;
 
-    max-height: calc(100% - 32px);
-    padding: 12px 22px 28px;
-    overflow-y: auto;
+    display: flex;
+    min-height: 0;
+    padding: 22px 26px 18px;
 
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 30px;
+    flex-direction: column;
+    overflow: hidden;
 
-    background: rgba(245, 248, 255, 0.82);
-    box-shadow:
-            0 24px 60px rgba(15, 23, 42, 0.25),
-            inset 0 1px 0 rgba(255, 255, 255, 0.75);
+    color: var(--color-text);
 
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--color-border);
+    border-radius: 26px;
 
-    opacity: 0;
-    transform: translateY(40px) scale(0.97);
-    transition:
-            opacity 0.25s ease,
-            transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.app-menu--open .app-menu-panel {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    background: var(--color-surface);
 }
 
 .app-menu-handle {
+    display: none;
+
     width: 42px;
-    height: 5px;
-    margin: 0 auto 22px;
+    height: 4px;
+    margin: 0 auto 14px;
+
+    flex: 0 0 auto;
 
     border-radius: 999px;
-    background: rgba(71, 85, 105, 0.35);
+    background: var(--color-border);
 }
 
-.app-menu-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 24px 16px;
+/* 상단 제목 */
 
-    width: 100%;
-    margin: 0;
-    padding: 0;
+.app-menu-header {
+    position: relative;
 
-    direction: ltr;
-    justify-content: stretch;
-    justify-items: center;
+    display: flex;
+    padding: 2px 52px 18px 2px;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    flex: 0 0 auto;
+
+    border-bottom: 1px solid var(--color-border);
 }
 
-.app-menu-item {
+.app-menu-heading {
     display: flex;
     min-width: 0;
-    padding: 0;
-    border: 0;
 
-    flex-direction: column;
-    align-items: center;
-    gap: 9px;
-
-    color: #172033;
-    background: transparent;
-    cursor: pointer;
+    align-items: flex-start;
+    gap: 16px;
 }
+
+.app-menu-title-group {
+    min-width: 0;
+}
+
+.app-menu-eyebrow {
+    display: block;
+    margin-bottom: 5px;
+
+    color: var(--color-primary);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.14em;
+}
+
+.app-menu-title {
+    margin: 0;
+
+    color: var(--color-text);
+    font-size: clamp(22px, 2.3vw, 30px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+}
+
+.app-menu-subtitle {
+    margin: 7px 0 0;
+
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+/* 닫기 버튼 */
 
 .app-menu-close-button {
     position: absolute;
-    top: 16px;
-    right: 16px;
-    z-index: 10;
+    top: 0;
+    right: 0;
 
     display: grid;
     width: 40px;
     height: 40px;
     padding: 0;
+
     place-items: center;
 
-    color: var(--color-text);
-    font-size: 28px;
-    line-height: 1;
+    color: var(--color-icon);
 
-    border: 0;
+    border: 1px solid var(--color-border);
     border-radius: 12px;
-    background: transparent;
+
+    background: var(--color-surface-soft);
     cursor: pointer;
 }
 
-.app-menu-icon {
+.app-menu-close-button:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
+}
+
+.app-menu-close-button svg {
+    width: 19px;
+    height: 19px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+}
+
+/* 뒤로 버튼 */
+
+.app-menu-back-button {
+    display: inline-flex;
+    min-height: 38px;
+    padding: 0 13px;
+
+    align-items: center;
+    gap: 7px;
+
+    flex: 0 0 auto;
+
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    font-weight: 700;
+
+    border: 1px solid var(--color-border);
+    border-radius: 11px;
+
+    background: var(--color-surface-soft);
+    cursor: pointer;
+}
+
+.app-menu-back-button:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
+}
+
+/* 스크롤 영역 */
+
+.app-menu-content {
+    min-height: 0;
+    padding: 20px 4px 8px;
+
+    flex: 1 1 auto;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color:
+            var(--color-border)
+            transparent;
+}
+
+.app-menu-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.app-menu-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.app-menu-content::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--color-border);
+}
+
+/* 구역 */
+
+.app-menu-section + .app-menu-section {
+    margin-top: 26px;
+}
+
+.app-menu-section-header {
+    display: flex;
+    margin-bottom: 13px;
+
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.app-menu-section-header > div {
+    display: flex;
+
+    align-items: center;
+    gap: 9px;
+}
+
+.app-menu-section-number {
     display: grid;
-    width: clamp(58px, 7vw, 76px);
-    aspect-ratio: 1;
+    width: 28px;
+    height: 21px;
+
     place-items: center;
 
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 22%;
+    color: var(--color-primary);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
 
-    color: #ffffff;
-    font-size: clamp(24px, 3vw, 34px);
-    background:
-            linear-gradient(
-                    145deg,
-                    color-mix(in srgb, var(--app-color) 75%, white),
-                    var(--app-color)
-            );
+    border: 1px solid var(--color-primary);
+    border-radius: 6px;
 
-    box-shadow:
-            0 10px 20px color-mix(in srgb, var(--app-color) 25%, transparent),
-            inset 0 1px 1px rgba(255, 255, 255, 0.45);
+    background: var(--color-primary-soft);
+}
 
-    transition:
-            transform 0.18s ease,
-            filter 0.18s ease;
+.app-menu-section-title {
+    margin: 0;
+
+    color: var(--color-text);
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+}
+
+.app-menu-section-description {
+    margin: 0;
+
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* 바로가기 4개 */
+
+.app-menu-quick-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.app-menu-quick-card {
+    position: relative;
+
+    display: flex;
+    min-width: 0;
+    min-height: 106px;
+    padding: 14px;
+
+    align-items: center;
+    gap: 12px;
+
+    text-align: left;
+    color: var(--color-text);
+
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+
+    background: var(--color-surface-soft);
+    cursor: pointer;
+}
+
+.app-menu-quick-card:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
+}
+
+.app-menu-quick-card::before {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+
+    width: 5px;
+    height: 5px;
+
+    content: "";
+
+    border-radius: 50%;
+    background: var(--color-primary);
+}
+
+/* 메뉴 아이콘 */
+
+.app-menu-icon {
+    display: grid;
+    width: 64px;
+    height: 64px;
+
+    place-items: center;
+    flex: 0 0 auto;
+
+    overflow: hidden;
+
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+
+    background: var(--color-surface);
 }
 
 .app-menu-icon img {
-    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.3));
+    display: block;
+    width: 88%;
+    height: 88%;
+
+    object-fit: contain;
+    object-position: center;
+
+    user-select: none;
 }
 
-.app-menu-label {
+/* 카드 글자 */
+
+.app-menu-card-text,
+.app-menu-feature-content,
+.app-menu-child-content {
+    display: flex;
+    min-width: 0;
+
+    flex-direction: column;
+    gap: 6px;
+}
+
+.app-menu-card-label {
+    display: block;
     max-width: 100%;
 
     overflow: hidden;
-    color: inherit;
-    font-size: 13px;
-    font-weight: 600;
+
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: -0.025em;
+
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.app-menu-item:hover .app-menu-icon {
-    filter: brightness(1.06);
-    transform: translateY(-4px) scale(1.04);
+.app-menu-card-action {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 5px;
+
+    color: var(--color-primary);
+    font-size: 10px;
+    font-weight: 700;
 }
 
-.app-menu-item:active .app-menu-icon {
-    transform: scale(0.94);
+/* 전체 기능 */
+
+.app-menu-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
 }
 
-.app-menu-item:focus-visible {
-    border-radius: 12px;
-    outline: 3px solid rgba(80, 120, 255, 0.45);
-    outline-offset: 6px;
+.app-menu-feature-card {
+    position: relative;
+
+    display: grid;
+    min-width: 0;
+    min-height: 84px;
+    padding: 11px 34px 11px 11px;
+
+    grid-template-columns: 52px minmax(0, 1fr);
+    align-items: center;
+    gap: 11px;
+
+    text-align: left;
+    color: var(--color-text);
+
+    border: 1px solid var(--color-border);
+    border-radius: 15px;
+
+    background: var(--color-surface-soft);
+    cursor: pointer;
 }
 
-/* 다크 모드 */
-.dark .app-menu-panel {
-    border-color: rgba(255, 255, 255, 0.12);
-    background: rgba(20, 26, 39, 0.84);
-    box-shadow:
-            0 24px 60px rgba(0, 0, 0, 0.5),
-            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+.app-menu-feature-card:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
 }
 
-.dark .app-menu-item {
-    color: #f2f5fa;
+.app-menu-feature-card .app-menu-icon {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 14px;
 }
 
-.dark .app-menu-handle {
-    background: rgba(255, 255, 255, 0.3);
+.app-menu-description {
+    display: -webkit-box;
+    overflow: hidden;
+
+    color: var(--color-text-secondary);
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.4;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
-@media (max-width: 700px) {
+.app-menu-arrow {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+
+    color: var(--color-text-secondary);
+    font-size: 15px;
+    font-weight: 600;
+
+    transform: translateY(-50%);
+}
+
+.app-menu-feature-card:hover .app-menu-arrow,
+.app-menu-child-card:hover .app-menu-arrow {
+    color: var(--color-primary);
+}
+
+/* 카테고리 내부 메뉴 */
+
+.app-menu-child-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+}
+
+.app-menu-child-card {
+    position: relative;
+
+    display: grid;
+    min-width: 0;
+    min-height: 86px;
+    padding: 11px 42px 11px 12px;
+
+    grid-template-columns: 56px minmax(0, 1fr);
+    align-items: center;
+    gap: 13px;
+
+    text-align: left;
+    color: var(--color-text);
+
+    border: 1px solid var(--color-border);
+    border-radius: 15px;
+
+    background: var(--color-surface-soft);
+    cursor: pointer;
+}
+
+.app-menu-child-card:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
+}
+
+.app-menu-child-card .app-menu-icon {
+    width: 56px;
+    height: 56px;
+
+    border-radius: 14px;
+}
+
+/* 키보드 포커스 */
+
+.app-menu-quick-card:focus-visible,
+.app-menu-feature-card:focus-visible,
+.app-menu-child-card:focus-visible,
+.app-menu-close-button:focus-visible,
+.app-menu-back-button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* 하단 로고 */
+
+.app-menu-footer {
+    display: flex;
+    min-height: 30px;
+    padding-top: 11px;
+
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+
+    flex: 0 0 auto;
+
+    color: var(--color-text-secondary);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+
+    border-top: 1px solid var(--color-border);
+}
+
+.app-menu-footer-mark {
+    display: grid;
+    width: 20px;
+    height: 20px;
+
+    place-items: center;
+
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0;
+
+    border-radius: 5px;
+    background: var(--color-primary);
+}
+
+/* 태블릿 */
+
+@media (max-width: 1000px) {
     .app-menu-panel {
-        right: 10px;
-        bottom: 10px;
-        left: 10px;
+        padding: 20px 20px 16px;
+    }
 
-        padding: 12px 16px 24px;
-        border-radius: 24px;
+    .app-menu-quick-grid {
+        gap: 9px;
+    }
+
+    .app-menu-quick-card {
+        min-height: 96px;
+        padding: 11px;
+
+        gap: 9px;
+    }
+
+    .app-menu-quick-card .app-menu-icon {
+        width: 54px;
+        height: 54px;
+
+        border-radius: 14px;
+    }
+
+    .app-menu-feature-grid {
+        grid-template-columns: repeat(
+            2,
+            minmax(0, 1fr)
+        );
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .app-menu-backdrop,
-    .app-menu-panel,
-    .app-menu-icon {
-        transition: none;
+/* 모바일 */
+
+@media (max-width: 700px) {
+    .app-menu-panel {
+        inset: 8px;
+
+        padding: 10px 13px 13px;
+        border-radius: 21px;
+    }
+
+    .app-menu-handle {
+        display: block;
+    }
+
+    .app-menu-header {
+        padding: 0 46px 14px 0;
+    }
+
+    .app-menu-heading {
+        gap: 9px;
+    }
+
+    .app-menu-eyebrow {
+        font-size: 8px;
+    }
+
+    .app-menu-title {
+        font-size: 21px;
+    }
+
+    .app-menu-subtitle {
+        margin-top: 5px;
+        font-size: 11px;
+    }
+
+    .app-menu-close-button {
+        width: 37px;
+        height: 37px;
+
+        border-radius: 11px;
+    }
+
+    .app-menu-back-button {
+        min-height: 34px;
+        padding: 0 10px;
+
+        font-size: 10px;
+    }
+
+    .app-menu-content {
+        padding: 16px 1px 7px;
+    }
+
+    .app-menu-section + .app-menu-section {
+        margin-top: 22px;
+    }
+
+    .app-menu-section-header {
+        margin-bottom: 10px;
+    }
+
+    .app-menu-section-description {
+        display: none;
+    }
+
+    .app-menu-quick-grid {
+        grid-template-columns: repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+        gap: 8px;
+    }
+
+    .app-menu-quick-card {
+        min-height: 80px;
+        padding: 9px;
+
+        gap: 8px;
+
+        border-radius: 14px;
+    }
+
+    .app-menu-quick-card .app-menu-icon {
+        width: 46px;
+        height: 46px;
+
+        border-radius: 12px;
+    }
+
+    .app-menu-quick-card::before {
+        top: 10px;
+        right: 10px;
+
+        width: 4px;
+        height: 4px;
+    }
+
+    .app-menu-card-label {
+        font-size: 12px;
+    }
+
+    .app-menu-card-action {
+        font-size: 9px;
+    }
+
+    .app-menu-feature-grid {
+        grid-template-columns: repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+        gap: 8px;
+    }
+
+    .app-menu-feature-card {
+        min-height: 70px;
+        padding: 8px 27px 8px 8px;
+
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 8px;
+
+        border-radius: 13px;
+    }
+
+    .app-menu-feature-card .app-menu-icon {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 11px;
+    }
+
+    .app-menu-feature-card .app-menu-description {
+        display: none;
+    }
+
+    .app-menu-arrow {
+        right: 9px;
+        font-size: 12px;
+    }
+
+    .app-menu-child-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .app-menu-child-card {
+        min-height: 68px;
+        padding: 8px 36px 8px 9px;
+
+        grid-template-columns: 46px minmax(0, 1fr);
+        gap: 10px;
+
+        border-radius: 13px;
+    }
+
+    .app-menu-child-card .app-menu-icon {
+        width: 46px;
+        height: 46px;
+
+        border-radius: 12px;
+    }
+
+    .app-menu-footer {
+        min-height: 27px;
+        padding-top: 8px;
+    }
+}
+
+/* 작은 모바일 */
+
+@media (max-width: 390px) {
+    .app-menu-panel {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .app-menu-quick-card {
+        padding: 8px;
+    }
+
+    .app-menu-quick-card .app-menu-icon {
+        width: 41px;
+        height: 41px;
+    }
+
+    .app-menu-card-label {
+        font-size: 11px;
+    }
+
+    .app-menu-feature-card {
+        grid-template-columns: 38px minmax(0, 1fr);
+    }
+
+    .app-menu-feature-card .app-menu-icon {
+        width: 38px;
+        height: 38px;
     }
 }

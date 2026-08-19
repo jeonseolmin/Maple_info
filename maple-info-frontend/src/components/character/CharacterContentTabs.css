@@ -1,48 +1,95 @@
 .character-content {
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
     overflow: hidden;
-    background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: 20px;
-    width: 90%;
-    margin-left:auto;
-    margin-right: auto;
+    background: var(--color-surface);
 }
 
+/* 상단 4개 카테고리 */
+
 .character-content__tabs {
-    display: flex;
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
     gap: 6px;
-    padding: 12px 14px;
-    background: var(--color-surface-soft);
     border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface-soft);
 }
 
 .character-content__tab {
-    min-width: 110px;
-    padding: 10px 18px;
-
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 9px 10px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 10px;
     color: var(--color-text-muted);
     background: transparent;
-    border: 0;
-    border-radius: 10px;
-
-    font-size: 14px;
+    box-shadow: none;
+    font-size: clamp(11px, 1.2vw, 14px);
     font-weight: 700;
+    line-height: 1.25;
+    text-align: center;
+    white-space: nowrap;
     cursor: pointer;
+    transition:
+            color 150ms ease,
+            border-color 150ms ease,
+            background 150ms ease,
+            box-shadow 150ms ease,
+            transform 150ms ease;
 }
 
 .character-content__tab:hover {
+    border-color: var(--color-border);
     color: var(--color-text);
     background: var(--color-surface);
 }
 
 .character-content__tab.is-active {
-    color: #fff;
-    background: var(--color-primary);
+    border-color: transparent;
+    color: #ffffff;
+    background:
+            linear-gradient(
+                    135deg,
+                    var(--color-primary),
+                    var(--color-primary-dark)
+            );
+    box-shadow:
+            0 6px 15px
+            color-mix(
+                    in srgb,
+                    var(--color-primary) 22%,
+                    transparent
+            );
 }
 
+.character-content__tab:active {
+    transform: scale(0.985);
+}
+
+.character-content__tab:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+}
+
+/* 내용 영역 */
+
 .character-content__panel {
+    min-width: 0;
     min-height: 360px;
     padding: 24px;
+    box-sizing: border-box;
 }
 
 .character-content__empty {
@@ -51,19 +98,78 @@
     text-align: center;
 }
 
-@media (max-width: 640px) {
+/* 태블릿 */
+
+@media (max-width: 820px) {
+    .character-content {
+        width: 94%;
+    }
+
     .character-content__tabs {
-        padding: 10px;
+        padding: 8px;
+        gap: 5px;
     }
 
     .character-content__tab {
-        min-width: 0;
-        flex: 1;
-        padding: 9px 6px;
+        min-height: 40px;
+        padding: 8px 6px;
         font-size: 12px;
     }
 
     .character-content__panel {
-        padding: 16px;
+        padding: 18px;
+    }
+}
+
+/* 모바일에서도 네 칸 유지 */
+
+@media (max-width: 520px) {
+    .character-content {
+        width: calc(100% - 16px);
+        border-radius: 16px;
+    }
+
+    .character-content__tabs {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+        padding: 6px;
+        gap: 4px;
+    }
+
+    .character-content__tab {
+        min-height: 38px;
+        padding: 7px 2px;
+        border-radius: 8px;
+        font-size: clamp(9px, 2.6vw, 11px);
+        letter-spacing: -0.04em;
+    }
+
+    .character-content__panel {
+        padding: 14px;
+    }
+
+    .character-content__empty {
+        margin: 90px 0;
+    }
+}
+
+@media (max-width: 360px) {
+    .character-content {
+        width: calc(100% - 10px);
+    }
+
+    .character-content__tabs {
+        padding: 5px;
+        gap: 3px;
+    }
+
+    .character-content__tab {
+        min-height: 36px;
+        padding: 6px 1px;
+        font-size: 9px;
+    }
+
+    .character-content__panel {
+        padding: 10px;
     }
 }

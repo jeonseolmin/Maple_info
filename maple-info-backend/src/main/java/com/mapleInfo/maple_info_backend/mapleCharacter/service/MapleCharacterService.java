@@ -9,10 +9,13 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.beauty.Nexon
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.cash.NexonCharacterCashItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.dojang.NexonCharacterDojangResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.equipment.NexonCharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.hexa.NexonCharacterHexaMatrixResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.hexa.NexonCharacterHexaStatResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.pet.NexonCharacterPetEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.skill.NexonCharacterSkillResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.symbol.NexonCharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionResponse;
@@ -21,6 +24,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.android.Char
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.beauty.CharacterBeautyResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.CharacterCashEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.hexa.CharacterSixthJobResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.pet.CharacterPetEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.symbol.CharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
@@ -777,6 +781,53 @@ public class MapleCharacterService {
 
         return CharacterSymbolEquipmentResponse.from(
                 nexonResponse
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public CharacterSixthJobResponse getSixthJob(
+            String ocid
+    ) {
+        log.info(
+                "6차·HEXA 정보 조회 시작 - ocidLength={}",
+                ocid != null ? ocid.length() : 0
+        );
+
+        NexonCharacterSkillResponse skillResponse =
+                mapleCharacterClient.getSixthJobSkills(
+                        ocid
+                );
+
+        NexonCharacterHexaMatrixResponse matrixResponse =
+                mapleCharacterClient.getHexaMatrix(
+                        ocid
+                );
+
+        NexonCharacterHexaStatResponse statResponse =
+                mapleCharacterClient.getHexaStat(
+                        ocid
+                );
+
+        log.info(
+                "6차·HEXA 정보 조회 완료 - skills={}, cores={}, activeStatCores={}",
+                skillResponse != null &&
+                        skillResponse.skills() != null
+                        ? skillResponse.skills().size()
+                        : 0,
+                matrixResponse != null &&
+                        matrixResponse.cores() != null
+                        ? matrixResponse.cores().size()
+                        : 0,
+                statResponse != null &&
+                        statResponse.activeCores() != null
+                        ? statResponse.activeCores().size()
+                        : 0
+        );
+
+        return CharacterSixthJobResponse.from(
+                skillResponse,
+                matrixResponse,
+                statResponse
         );
     }
 }
