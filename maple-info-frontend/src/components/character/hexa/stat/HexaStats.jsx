@@ -5,11 +5,11 @@ import {
 import {
     calculateHexaCoreCost,
     formatMaterialNumber,
-} from "./hexaCoreCost.js";
+} from "../material/hexaCoreCost.js";
 
 import {
     mergeLinkedCores,
-} from "./hexaUtils.js";
+} from "../utils/hexaUtils.js";
 
 export default function HexaMaterialSummary({
                                                 cores = [],
