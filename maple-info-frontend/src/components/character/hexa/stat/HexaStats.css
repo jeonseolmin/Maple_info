@@ -1,0 +1,384 @@
+.hexa-stat-selector {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    padding: 16px;
+    overflow: hidden;
+    box-sizing: border-box;
+    border: 1px solid rgba(102, 157, 224, 0.18);
+    border-radius: 17px;
+    background:
+            linear-gradient(
+                    145deg,
+                    rgba(29, 42, 70, 0.78),
+                    rgba(13, 20, 38, 0.9)
+            );
+    box-shadow:
+            inset 0 1px rgba(255, 255, 255, 0.035),
+            0 10px 25px rgba(0, 0, 0, 0.13);
+}
+
+.hexa-stat-selector::before {
+    position: absolute;
+    top: 0;
+    left: 16px;
+    width: 68px;
+    height: 2px;
+    border-radius: 0 0 999px 999px;
+    background:
+            linear-gradient(
+                    90deg,
+                    #5e8eff,
+                    #6fd7ff
+            );
+    box-shadow:
+            0 0 9px rgba(82, 167, 255, 0.6);
+    content: "";
+}
+
+.hexa-stat-selector__header {
+    display: flex;
+    margin-bottom: 14px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.hexa-stat-selector__title {
+    min-width: 0;
+}
+
+.hexa-stat-selector__title > span {
+    display: block;
+    margin-bottom: 3px;
+    color: #6f96ce;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+}
+
+.hexa-stat-selector__title h3 {
+    margin: 0;
+    color: #f0f5ff;
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+/* I / II / III 선택 버튼 */
+
+.hexa-stat-selector__tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 34px);
+    padding: 3px;
+    flex-shrink: 0;
+    gap: 3px;
+    border: 1px solid rgba(112, 151, 208, 0.14);
+    border-radius: 10px;
+    background: rgba(4, 10, 24, 0.36);
+}
+
+.hexa-stat-selector__tab {
+    position: relative;
+    display: flex;
+    width: 34px;
+    min-width: 0;
+    max-width: none;
+    height: 28px;
+    min-height: 0;
+    max-height: none;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    appearance: none;
+    color: #718198;
+    background: transparent;
+    box-shadow: none;
+    font: inherit;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+            color 150ms ease,
+            border-color 150ms ease,
+            background 150ms ease,
+            box-shadow 150ms ease;
+}
+
+.hexa-stat-selector__tab span {
+    color: inherit;
+    font-size: 9px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.hexa-stat-selector__tab:hover {
+    color: #b4c9e5;
+    background: rgba(87, 132, 196, 0.09);
+}
+
+.hexa-stat-selector__tab.is-active {
+    border-color: rgba(95, 175, 255, 0.32);
+    color: #d9edff;
+    background:
+            linear-gradient(
+                    145deg,
+                    rgba(54, 133, 222, 0.3),
+                    rgba(76, 92, 190, 0.22)
+            );
+    box-shadow:
+            0 0 10px rgba(68, 154, 239, 0.16),
+            inset 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.hexa-stat-selector__tab i {
+    position: absolute;
+    right: 4px;
+    bottom: 3px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #59c5ff;
+    box-shadow: 0 0 5px #59c5ff;
+}
+
+.hexa-stat-selector__tab.is-empty {
+    opacity: 0.5;
+}
+
+.hexa-stat-selector__tab.is-empty.is-active {
+    opacity: 0.82;
+}
+
+.hexa-stat-selector__tab:focus-visible {
+    outline: 2px solid #77bcff;
+    outline-offset: 2px;
+}
+
+/* 선택된 스탯 내용 */
+
+.hexa-stat-selector__panel {
+    min-width: 0;
+}
+
+.hexa-stat-selector__content {
+    min-width: 0;
+}
+
+.hexa-stat-selector__summary {
+    display: flex;
+    margin-bottom: 10px;
+    padding: 8px 10px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1px solid rgba(81, 152, 229, 0.1);
+    border-radius: 9px;
+    background: rgba(73, 137, 213, 0.08);
+}
+
+.hexa-stat-selector__summary span {
+    color: #9cb8da;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.hexa-stat-selector__summary strong {
+    color: #7fc9ff;
+    font-size: 9px;
+}
+
+.hexa-stat-selector__cores {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.hexa-stat-selector__core {
+    min-width: 0;
+}
+
+.hexa-stat-selector__core.has-divider {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(120, 143, 190, 0.12);
+}
+
+.hexa-stat-selector__meta {
+    display: flex;
+    margin-bottom: 8px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.hexa-stat-selector__meta span {
+    padding: 4px 7px;
+    border-radius: 6px;
+    color: #7f8ea6;
+    background: rgba(104, 126, 171, 0.07);
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.hexa-stat-selector__rows {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.hexa-stat-selector__row {
+    display: grid;
+    grid-template-columns:
+        43px
+        minmax(0, 1fr)
+        auto;
+    min-width: 0;
+    min-height: 27px;
+    padding: 5px 7px;
+    box-sizing: border-box;
+    align-items: center;
+    gap: 7px;
+    border-radius: 7px;
+}
+
+.hexa-stat-selector__row > span {
+    color: #73829a;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.hexa-stat-selector__row > p {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: #aab7ca;
+    font-size: 9px;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hexa-stat-selector__row > strong {
+    color: #9aa9c0;
+    font-size: 9px;
+    white-space: nowrap;
+}
+
+.hexa-stat-selector__row.is-main {
+    border: 1px solid rgba(99, 161, 237, 0.12);
+    background:
+            linear-gradient(
+                    90deg,
+                    rgba(59, 124, 211, 0.12),
+                    rgba(81, 84, 185, 0.05)
+            );
+}
+
+.hexa-stat-selector__row.is-main > span,
+.hexa-stat-selector__row.is-main > strong {
+    color: #73c2ff;
+}
+
+.hexa-stat-selector__row.is-main > p {
+    color: #dceaff;
+    font-weight: 700;
+}
+
+/* 데이터가 없는 스탯 */
+
+.hexa-stat-selector__empty {
+    display: flex;
+    min-height: 76px;
+    padding: 12px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px dashed rgba(127, 147, 191, 0.16);
+    border-radius: 11px;
+    background: rgba(5, 10, 23, 0.25);
+}
+
+.hexa-stat-selector__empty-icon {
+    display: flex;
+    width: 29px;
+    min-width: 29px;
+    height: 33px;
+    align-items: center;
+    justify-content: center;
+    color: #61738d;
+    background: rgba(91, 123, 174, 0.13);
+    font-size: 10px;
+    font-weight: 900;
+    font-style: italic;
+    clip-path: polygon(
+            50% 0,
+            100% 25%,
+            100% 75%,
+            50% 100%,
+            0 75%,
+            0 25%
+    );
+}
+
+.hexa-stat-selector__empty strong {
+    display: block;
+    color: #9dabc0;
+    font-size: 10px;
+}
+
+.hexa-stat-selector__empty p {
+    margin: 3px 0 0;
+    color: #68778d;
+    font-size: 9px;
+}
+
+/* 모바일 */
+
+@media (max-width: 520px) {
+    .hexa-stat-selector {
+        padding: 13px;
+        border-radius: 14px;
+    }
+
+    .hexa-stat-selector__header {
+        margin-bottom: 11px;
+    }
+
+    .hexa-stat-selector__tabs {
+        grid-template-columns: repeat(3, 32px);
+    }
+
+    .hexa-stat-selector__tab {
+        width: 32px;
+        height: 27px;
+    }
+
+    .hexa-stat-selector__row {
+        grid-template-columns:
+            39px
+            minmax(0, 1fr)
+            auto;
+        padding: 5px;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 360px) {
+    .hexa-stat-selector__header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .hexa-stat-selector__tabs {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .hexa-stat-selector__tab {
+        width: 100%;
+    }
+}
