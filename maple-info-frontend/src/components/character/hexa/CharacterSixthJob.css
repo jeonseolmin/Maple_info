@@ -1500,3 +1500,456 @@
         border-radius: 9px;
     }
 }
+
+/* HEXA 대시보드 */
+
+.hexa-dashboard {
+    display: grid;
+
+    grid-template-columns:
+        minmax(300px, 430px)
+        minmax(320px, 1fr);
+
+    gap: 16px;
+    align-items: start;
+}
+
+/* 왼쪽 HEXA 매트릭스 */
+
+.hexa-dashboard__matrix {
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.hexa-dashboard__matrix
+.hexa-matrix-wrapper {
+    width: 100%;
+}
+
+.hexa-dashboard__matrix
+.hexa-matrix {
+    width: 100%;
+    max-width: 430px;
+    margin: 0;
+}
+
+/*
+ * 기존 육각형은 매트릭스가 작아져도
+ * min-width 때문에 충분히 줄어들지 않습니다.
+ */
+.hexa-dashboard
+.hexa-core-node {
+    width: 9.2%;
+    min-width: 30px;
+    max-width: 48px;
+}
+
+.hexa-dashboard
+.hexa-core-node::before {
+    inset: 2px;
+}
+
+/* 육각형 안쪽 이미지와 정보 축소 */
+
+.hexa-dashboard
+.hexa-core-node__inner {
+    inset: 13% 8%;
+    gap: 2px;
+}
+
+.hexa-dashboard
+.hexa-core-node__image {
+    width: 62%;
+    border-radius: 5px;
+}
+
+.hexa-dashboard
+.hexa-core-node__level {
+    font-size: clamp(
+            5px,
+            0.72vw,
+            8px
+    );
+}
+
+.hexa-dashboard
+.hexa-core-node__progress {
+    width: 68%;
+    height: 2px;
+}
+
+.hexa-dashboard
+.hexa-core-node__fallback {
+    font-size: clamp(
+            9px,
+            1.4vw,
+            15px
+    );
+}
+
+/* 중앙 V도 매트릭스 크기에 맞게 축소 */
+
+.hexa-dashboard
+.hexa-matrix__center {
+    width: 21%;
+    height: 21%;
+}
+
+.hexa-dashboard
+.hexa-matrix__emblem {
+    width: 54%;
+}
+
+.hexa-dashboard
+.hexa-matrix__emblem span {
+    font-size: clamp(
+            18px,
+            3vw,
+            32px
+    );
+}
+
+/* 중앙 색상 막대 */
+
+.hexa-dashboard
+.hexa-matrix__core-line {
+    width: 32%;
+    height: 4px;
+}
+
+/* 오른쪽 카드 세로 배치 */
+
+.hexa-dashboard__summary {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hexa-summary-card {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    box-sizing: border-box;
+}
+
+/* 누적 재료 카드 */
+
+.hexa-material-summary {
+    padding: 14px;
+
+    color: var(--color-text);
+
+    background:
+            linear-gradient(
+                    145deg,
+                    rgba(
+                            118,
+                            92,
+                            255,
+                            0.12
+                    ),
+                    rgba(
+                            54,
+                            175,
+                            255,
+                            0.06
+                    )
+            ),
+            var(--equipment-grid-bg);
+
+    border: 1px solid
+    rgba(
+            120,
+            135,
+            255,
+            0.32
+    );
+
+    border-radius: 13px;
+}
+
+.hexa-material-summary__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.hexa-material-summary__header
+span {
+    display: block;
+
+    color:
+            var(
+                    --color-text-secondary
+            );
+
+    font-size: 9px;
+}
+
+.hexa-material-summary__header
+h3 {
+    margin: 3px 0 0;
+
+    color: var(--color-text);
+    font-size: 14px;
+}
+
+.hexa-material-summary__header
+> strong {
+    flex-shrink: 0;
+    padding: 5px 7px;
+
+    color: var(--color-primary);
+
+    background:
+            var(
+                    --color-primary-soft
+            );
+
+    border-radius: 7px;
+
+    font-size: 9px;
+}
+
+.hexa-material-summary__row
++ .hexa-material-summary__row {
+    margin-top: 12px;
+}
+
+.hexa-material-summary__row
+> header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.hexa-material-summary__row
+> header
+> span {
+    color:
+            var(
+                    --color-text-secondary
+            );
+
+    font-size: 9px;
+}
+
+.hexa-material-summary__row
+p {
+    margin: 0;
+
+    color:
+            var(
+                    --color-text-secondary
+            );
+
+    font-size: 9px;
+    white-space: nowrap;
+}
+
+.hexa-material-summary__row
+p strong {
+    color: var(--color-text);
+    font-size: 11px;
+}
+
+.hexa-material-summary__progress {
+    height: 5px;
+    margin-top: 7px;
+}
+
+.hexa-material-summary__progress--purple
+> span {
+    background: linear-gradient(
+            90deg,
+            #7867ff,
+            #b36cff
+    );
+}
+
+.hexa-material-summary__progress--blue
+> span {
+    background: linear-gradient(
+            90deg,
+            #3baeff,
+            #55d2e8
+    );
+}
+
+.hexa-material-summary__notice {
+    margin: 12px 0 0;
+
+    color:
+            var(
+                    --color-text-secondary
+            );
+
+    font-size: 8px;
+    line-height: 1.5;
+}
+
+.hexa-material-summary__empty {
+    display: flex;
+    min-height: 90px;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+
+    color:
+            var(
+                    --color-text-secondary
+            );
+
+    font-size: 9px;
+    text-align: center;
+}
+
+/* HEXA 스탯 카드 가로로 길게 */
+
+.hexa-dashboard__summary
+.hexa-stat-summary-card {
+    width: 100%;
+    margin: 0;
+    padding: 13px 14px;
+}
+
+/*
+ * 카드가 가로로 길어졌으므로
+ * 코어 정보도 내부 공간을 넓게 사용합니다.
+ */
+.hexa-dashboard__summary
+.hexa-stat-summary-card__header {
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.hexa-dashboard__summary
+.hexa-stat-summary-card__header
+h4 {
+    font-size: 18px;
+}
+
+.hexa-dashboard__summary
+.hexa-stat-summary-card__empty {
+    min-height: 58px;
+}
+
+/* 스탯 이름과 레벨 공간 확대 */
+
+.hexa-dashboard__summary
+.hexa-stat-summary-row {
+    grid-template-columns:
+        44px
+        minmax(0, 1fr)
+        auto;
+
+    gap: 8px;
+    padding: 6px 0;
+}
+
+.hexa-dashboard__summary
+.hexa-stat-summary-row
+> span {
+    font-size: 9px;
+}
+
+.hexa-dashboard__summary
+.hexa-stat-summary-row
+> p {
+    font-size: 10px;
+}
+
+.hexa-dashboard__summary
+.hexa-stat-summary-row
+> strong {
+    font-size: 10px;
+}
+
+/* 화면이 좁아지면 위아래 배치 */
+
+@media (max-width: 1000px) {
+    .hexa-dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .hexa-dashboard__matrix {
+        justify-content: center;
+    }
+
+    .hexa-dashboard__matrix
+    .hexa-matrix {
+        max-width: 470px;
+        margin: 0 auto;
+    }
+
+    .hexa-dashboard__summary {
+        width: 100%;
+    }
+}
+
+/* 모바일 */
+
+@media (max-width: 620px) {
+    .hexa-dashboard {
+        gap: 12px;
+    }
+
+    .hexa-dashboard__matrix
+    .hexa-matrix {
+        max-width: 100%;
+    }
+
+    .hexa-dashboard
+    .hexa-core-node {
+        width: 9.5%;
+        min-width: 26px;
+        max-width: 38px;
+    }
+
+    .hexa-dashboard
+    .hexa-core-node__inner {
+        inset: 12% 6%;
+        gap: 1px;
+    }
+
+    .hexa-dashboard
+    .hexa-core-node__image {
+        width: 64%;
+        border-radius: 3px;
+    }
+
+    .hexa-dashboard
+    .hexa-core-node__level {
+        font-size: clamp(
+                4px,
+                1.3vw,
+                7px
+        );
+    }
+
+    .hexa-dashboard
+    .hexa-core-node__fallback {
+        font-size: clamp(
+                8px,
+                2.5vw,
+                13px
+        );
+    }
+
+    .hexa-dashboard
+    .hexa-matrix__core-line {
+        height: 3px;
+    }
+
+    .hexa-material-summary,
+    .hexa-dashboard__summary
+    .hexa-stat-summary-card {
+        padding: 11px;
+    }
+}

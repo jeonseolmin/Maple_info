@@ -1,4 +1,8 @@
-const GROUP_NUMBERS = [1, 2, 3];
+const GROUP_NUMBERS = [
+    1,
+    2,
+    3,
+];
 
 export default function HexaStats({
                                       activeCores1 = [],
@@ -12,34 +16,23 @@ export default function HexaStats({
     };
 
     return (
-        <section className="hexa-stat-section">
-            <header className="hexa-stat-section__header">
-                <div>
-                    <h3>HEXA 스탯</h3>
-
-                    <p>
-                        HEXA 스탯 I·II·III을
-                        한눈에 비교할 수 있습니다.
-                    </p>
-                </div>
-            </header>
-
-            <div className="hexa-stat-summary-grid">
-                {GROUP_NUMBERS.map(
-                    (number) => (
-                        <HexaStatGroupCard
-                            key={number}
-                            number={number}
-                            cores={
-                                groups[
-                                    number
-                                    ] ?? []
-                            }
-                        />
-                    )
-                )}
-            </div>
-        </section>
+        <>
+            {GROUP_NUMBERS.map(
+                (number) => (
+                    <HexaStatGroupCard
+                        key={number}
+                        number={
+                            number
+                        }
+                        cores={
+                            groups[
+                                number
+                                ] ?? []
+                        }
+                    />
+                )
+            )}
+        </>
     );
 }
 
@@ -47,12 +40,14 @@ function HexaStatGroupCard({
                                number,
                                cores,
                            }) {
-    const totalLevel = cores.reduce(
-        (sum, core) =>
-            sum +
-            (core.totalLevel ?? 0),
-        0
-    );
+    const totalLevel =
+        cores.reduce(
+            (sum, core) =>
+                sum +
+                (core.totalLevel ??
+                    0),
+            0
+        );
 
     const empty =
         cores.length === 0;
@@ -60,6 +55,7 @@ function HexaStatGroupCard({
     return (
         <article
             className={[
+                "hexa-summary-card",
                 "hexa-stat-summary-card",
                 empty
                     ? "is-empty"
@@ -81,16 +77,11 @@ function HexaStatGroupCard({
                     </h4>
                 </div>
 
-                {empty ? (
-                    <strong>
-                        미활성
-                    </strong>
-                ) : (
-                    <strong>
-                        총 Lv.{" "}
-                        {totalLevel}
-                    </strong>
-                )}
+                <strong>
+                    {empty
+                        ? "미활성"
+                        : `총 Lv. ${totalLevel}`}
+                </strong>
             </header>
 
             {empty ? (
@@ -107,7 +98,9 @@ function HexaStatGroupCard({
                         ) => (
                             <HexaStatCore
                                 key={`${core.slotId ?? "slot"}-${index}`}
-                                core={core}
+                                core={
+                                    core
+                                }
                                 showDivider={
                                     index >
                                     0
@@ -203,7 +196,9 @@ function StatRow({
         >
             <span>{label}</span>
 
-            <p>{name || "-"}</p>
+            <p title={name || "-"}>
+                {name || "-"}
+            </p>
 
             <strong>
                 Lv. {level ?? 0}
