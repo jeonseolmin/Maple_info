@@ -9,6 +9,7 @@ import HexaMaterialSummary from "./material/HexaMaterialSummary.jsx";
 import { groupHexaCores } from "./utils/hexaUtils.js";
 
 import "./CharacterSixthJob.css";
+import "./HexaTheme.css";
 
 export default function CharacterSixthJob({ character }) {
     const [sixthJobData, setSixthJobData] = useState(null);
@@ -115,10 +116,6 @@ export default function CharacterSixthJob({ character }) {
         <section className="sixth-job-panel">
             <header className="sixth-job-panel__header">
                 <div>
-                    <span className="sixth-job-panel__eyebrow">
-                        SIXTH JOB
-                    </span>
-
                     <h2 className="sixth-job-panel__title">
                         HEXA 매트릭스
                     </h2>

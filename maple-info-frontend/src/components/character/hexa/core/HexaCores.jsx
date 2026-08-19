@@ -9,7 +9,8 @@ export default function HexaCores({
                                       groupedCores,
                                       skills = [],
                                   }) {
-    const [selectedCore, setSelectedCore] = useState(null);
+    const [selectedCore, setSelectedCore] =
+        useState(null);
 
     const closeModal = useCallback(() => {
         setSelectedCore(null);
@@ -17,7 +18,8 @@ export default function HexaCores({
 
     const hasCore = HEXA_CORE_GROUPS.some(
         ({ type }) =>
-            (groupedCores?.[type] ?? []).length > 0,
+            (groupedCores?.[type] ?? [])
+                .length > 0,
     );
 
     if (!hasCore) {
@@ -35,17 +37,34 @@ export default function HexaCores({
                     <HexaMatrixBackground />
 
                     {HEXA_CORE_GROUPS.flatMap(
-                        ({ id, type, positions }) => {
+                        ({
+                             id,
+                             type,
+                             positions,
+                         }) => {
                             const cores =
-                                groupedCores?.[type] ?? [];
+                                groupedCores?.[
+                                    type
+                                    ] ?? [];
 
                             return positions.map(
-                                (position, index) => (
+                                (
+                                    position,
+                                    index,
+                                ) => (
                                     <HexaCoreNode
                                         key={`${id}-${index}`}
-                                        core={cores[index]}
-                                        type={type}
-                                        position={position}
+                                        core={
+                                            cores[
+                                                index
+                                                ]
+                                        }
+                                        type={
+                                            type
+                                        }
+                                        position={
+                                            position
+                                        }
                                         onSelect={
                                             setSelectedCore
                                         }
@@ -95,7 +114,8 @@ function HexaCoreNode({
                           position,
                           onSelect,
                       }) {
-    const typeClass = type.toLowerCase();
+    const typeClass =
+        type.toLowerCase();
 
     const positionStyle = {
         left: `${position.x}%`,
@@ -132,12 +152,6 @@ function HexaCoreNode({
         core.maxLevel === true ||
         level >= maxLevel;
 
-    const progress = isMax
-        ? 100
-        : Math.min(
-            100,
-            Math.max(0, (level / maxLevel) * 100),
-        );
 
     return (
         <button
@@ -172,19 +186,11 @@ function HexaCoreNode({
                 </span>
 
                 <span className="hexa-core-node__level">
-                    {isMax ? "MAX" : `Lv.${level}`}
+                    {isMax
+                        ? "MAX"
+                        : `Lv.${level}`}
                 </span>
 
-                <span
-                    className="hexa-core-node__progress"
-                    aria-hidden="true"
-                >
-                    <i
-                        style={{
-                            width: `${progress}%`,
-                        }}
-                    />
-                </span>
             </span>
         </button>
     );

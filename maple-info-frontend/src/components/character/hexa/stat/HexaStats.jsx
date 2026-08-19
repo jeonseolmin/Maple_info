@@ -1,271 +1,329 @@
-import {
-    useMemo,
-} from "react";
+import { useMemo, useState } from "react";
 
-import {
-    calculateHexaCoreCost,
-    formatMaterialNumber,
-} from "../material/hexaCoreCost.js";
+import "./HexaStats.css";
 
-import {
-    mergeLinkedCores,
-} from "../utils/hexaUtils.js";
+const STAT_GROUP_NUMBERS = [1, 2, 3];
 
-export default function HexaMaterialSummary({
-                                                cores = [],
-                                            }) {
-    const summary = useMemo(
-        () =>
-            calculateMaterialSummary(
-                cores
-            ),
-        [cores]
+export default function HexaStats({
+                                      activeCores1 = [],
+                                      activeCores2 = [],
+                                      activeCores3 = [],
+                                  }) {
+    const [selectedGroup, setSelectedGroup] =
+        useState(1);
+
+    const groups = useMemo(
+        () => ({
+            1: normalizeCores(activeCores1),
+            2: normalizeCores(activeCores2),
+            3: normalizeCores(activeCores3),
+        }),
+        [
+            activeCores1,
+            activeCores2,
+            activeCores3,
+        ],
     );
 
-    return (
-        <article className="hexa-summary-card hexa-material-summary">
-            <header className="hexa-material-summary__header">
-                <div>
-                    <span>
-                        HEXA 코어
-                    </span>
+    const selectedCores =
+        groups[selectedGroup] ?? [];
 
-                    <h3>
-                        누적 강화 재료
-                    </h3>
+    return (
+        <section className="hexa-stat-selector">
+            <header className="hexa-stat-selector__header">
+                <div className="hexa-stat-selector__title">
+                    <span>HEXA STAT</span>
+                    <h3>HEXA 스탯</h3>
                 </div>
 
-                <strong>
-                    계산{" "}
-                    {
-                        summary.supportedCount
+                <StatTabs
+                    groups={groups}
+                    selectedGroup={
+                        selectedGroup
                     }
-                    /
-                    {
-                        summary.totalCount
+                    onSelect={
+                        setSelectedGroup
                     }
-                </strong>
-            </header>
-
-            {summary.supportedCount ===
-            0 ? (
-                <p className="hexa-material-summary__empty">
-                    계산 가능한 코어
-                    비용표가 없습니다.
-                </p>
-            ) : (
-                <>
-                    <MaterialTotalRow
-                        label="솔 에르다"
-                        used={
-                            summary.used
-                                .solErda
-                        }
-                        total={
-                            summary.total
-                                .solErda
-                        }
-                        percent={
-                            summary
-                                .solErdaPercent
-                        }
-                        color="purple"
-                    />
-
-                    <MaterialTotalRow
-                        label="솔 에르다 조각"
-                        used={
-                            summary.used
-                                .fragments
-                        }
-                        total={
-                            summary.total
-                                .fragments
-                        }
-                        percent={
-                            summary
-                                .fragmentPercent
-                        }
-                        color="blue"
-                    />
-
-                    <p className="hexa-material-summary__notice">
-                        현재 레벨 기준
-                        이론상 누적 필요량이며,
-                        비용표가 확인된
-                        코어만 합산합니다.
-                    </p>
-                </>
-            )}
-        </article>
-    );
-}
-
-function MaterialTotalRow({
-                              label,
-                              used,
-                              total,
-                              percent,
-                              color,
-                          }) {
-    const normalizedPercent =
-        Math.min(
-            100,
-            Math.max(
-                0,
-                Number(percent) ||
-                0
-            )
-        );
-
-    return (
-        <div className="hexa-material-summary__row">
-            <header>
-                <span>
-                    {label}
-                </span>
-
-                <p>
-                    <strong>
-                        {formatMaterialNumber(
-                            used
-                        )}
-                    </strong>
-
-                    <span>
-                        {" / "}
-                        {formatMaterialNumber(
-                            total
-                        )}
-                        개
-                    </span>
-                </p>
+                />
             </header>
 
             <div
-                className={[
-                    "hexa-progress",
-                    "hexa-material-summary__progress",
-                    `hexa-material-summary__progress--${color}`,
-                ].join(" ")}
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                aria-valuenow={Math.round(
-                    normalizedPercent
-                )}
+                id={`hexa-stat-panel-${selectedGroup}`}
+                className="hexa-stat-selector__panel"
+                role="tabpanel"
+                aria-labelledby={`hexa-stat-tab-${selectedGroup}`}
             >
-                <span
-                    style={{
-                        width: `${normalizedPercent}%`,
-                    }}
+                <HexaStatGroup
+                    number={selectedGroup}
+                    cores={selectedCores}
                 />
+            </div>
+        </section>
+    );
+}
+
+function StatTabs({
+                      groups,
+                      selectedGroup,
+                      onSelect,
+                  }) {
+    return (
+        <div
+            className="hexa-stat-selector__tabs"
+            role="tablist"
+            aria-label="HEXA 스탯 선택"
+        >
+            {STAT_GROUP_NUMBERS.map(
+                (number) => {
+                    const active =
+                        selectedGroup === number;
+
+                    const empty =
+                        groups[number].length === 0;
+
+                    return (
+                        <button
+                            id={`hexa-stat-tab-${number}`}
+                            key={number}
+                            type="button"
+                            role="tab"
+                            aria-selected={active}
+                            aria-controls={`hexa-stat-panel-${number}`}
+                            tabIndex={
+                                active ? 0 : -1
+                            }
+                            className={[
+                                "hexa-stat-selector__tab",
+                                active
+                                    ? "is-active"
+                                    : "",
+                                empty
+                                    ? "is-empty"
+                                    : "",
+                            ]
+                                .filter(Boolean)
+                                .join(" ")}
+                            onClick={() =>
+                                onSelect(number)
+                            }
+                        >
+                            <span>
+                                {toRomanNumber(
+                                    number,
+                                )}
+                            </span>
+
+                            {!empty && (
+                                <i
+                                    aria-hidden="true"
+                                />
+                            )}
+                        </button>
+                    );
+                },
+            )}
+        </div>
+    );
+}
+
+function HexaStatGroup({
+                           number,
+                           cores,
+                       }) {
+    if (cores.length === 0) {
+        return (
+            <EmptyStatGroup
+                number={number}
+            />
+        );
+    }
+
+    const totalLevel = cores.reduce(
+        (sum, core) =>
+            sum + getCoreTotalLevel(core),
+        0,
+    );
+
+    return (
+        <div className="hexa-stat-selector__content">
+            <div className="hexa-stat-selector__summary">
+                <span>
+                    HEXA 스탯{" "}
+                    {toRomanNumber(number)}
+                </span>
+
+                <strong>
+                    총 Lv. {totalLevel}
+                </strong>
+            </div>
+
+            <div className="hexa-stat-selector__cores">
+                {cores.map((core, index) => (
+                    <HexaStatCore
+                        key={`${core.slotId ?? "slot"}-${index}`}
+                        core={core}
+                        showDivider={index > 0}
+                    />
+                ))}
             </div>
         </div>
     );
 }
 
-function calculateMaterialSummary(
-    cores
-) {
-    /*
-     * 연계 스킬로 인해 중복된 코어를
-     * 먼저 하나로 합칩니다.
-     */
-    const uniqueCores =
-        mergeLinkedCores(cores);
+function HexaStatCore({
+                          core,
+                          showDivider,
+                      }) {
+    return (
+        <article
+            className={[
+                "hexa-stat-selector__core",
+                showDivider
+                    ? "has-divider"
+                    : "",
+            ]
+                .filter(Boolean)
+                .join(" ")}
+        >
+            <div className="hexa-stat-selector__meta">
+                <span>
+                    슬롯 {core.slotId ?? "-"}
+                </span>
 
-    const supportedCosts =
-        uniqueCores
-            .map(
-                calculateHexaCoreCost
-            )
-            .filter(
-                (cost) =>
-                    cost.supported
-            );
+                <span>
+                    등급 {core.grade ?? 0}
+                </span>
+            </div>
 
-    const used =
-        supportedCosts.reduce(
-            (
-                total,
-                current
-            ) => ({
-                solErda:
-                    total.solErda +
-                    current.used
-                        .solErda,
+            <div className="hexa-stat-selector__rows">
+                <StatRow
+                    label="메인"
+                    name={core.mainStatName}
+                    level={
+                        core.mainStatLevel
+                    }
+                    main
+                />
 
-                fragments:
-                    total.fragments +
-                    current.used
-                        .fragments,
-            }),
-            {
-                solErda: 0,
-                fragments: 0,
-            }
-        );
+                <StatRow
+                    label="서브 1"
+                    name={
+                        core.firstSubStatName
+                    }
+                    level={
+                        core.firstSubStatLevel
+                    }
+                />
 
-    const total =
-        supportedCosts.reduce(
-            (
-                result,
-                current
-            ) => ({
-                solErda:
-                    result.solErda +
-                    current.total
-                        .solErda,
-
-                fragments:
-                    result.fragments +
-                    current.total
-                        .fragments,
-            }),
-            {
-                solErda: 0,
-                fragments: 0,
-            }
-        );
-
-    return {
-        totalCount:
-        uniqueCores.length,
-
-        supportedCount:
-        supportedCosts.length,
-
-        used,
-        total,
-
-        solErdaPercent:
-            calculatePercent(
-                used.solErda,
-                total.solErda
-            ),
-
-        fragmentPercent:
-            calculatePercent(
-                used.fragments,
-                total.fragments
-            ),
-    };
+                <StatRow
+                    label="서브 2"
+                    name={
+                        core.secondSubStatName
+                    }
+                    level={
+                        core.secondSubStatLevel
+                    }
+                />
+            </div>
+        </article>
+    );
 }
 
-function calculatePercent(
-    used,
-    total
-) {
-    if (total <= 0) {
-        return 0;
+function StatRow({
+                     label,
+                     name,
+                     level,
+                     main = false,
+                 }) {
+    return (
+        <div
+            className={[
+                "hexa-stat-selector__row",
+                main ? "is-main" : "",
+            ]
+                .filter(Boolean)
+                .join(" ")}
+        >
+            <span>{label}</span>
+
+            <p title={name || "-"}>
+                {name || "-"}
+            </p>
+
+            <strong>
+                Lv. {toNumber(level)}
+            </strong>
+        </div>
+    );
+}
+
+function EmptyStatGroup({ number }) {
+    return (
+        <div className="hexa-stat-selector__empty">
+            <span
+                className="hexa-stat-selector__empty-icon"
+                aria-hidden="true"
+            >
+                V
+            </span>
+
+            <div>
+                <strong>
+                    HEXA 스탯{" "}
+                    {toRomanNumber(number)}
+                </strong>
+
+                <p>
+                    활성화된 스탯 코어가
+                    없습니다.
+                </p>
+            </div>
+        </div>
+    );
+}
+
+function normalizeCores(cores) {
+    return Array.isArray(cores)
+        ? cores
+        : [];
+}
+
+function getCoreTotalLevel(core) {
+    const providedTotal =
+        Number(core?.totalLevel);
+
+    if (Number.isFinite(providedTotal)) {
+        return providedTotal;
     }
 
-    return Math.min(
-        100,
-        Math.max(
-            0,
-            (used / total) * 100
+    return (
+        toNumber(core?.mainStatLevel) +
+        toNumber(
+            core?.firstSubStatLevel,
+        ) +
+        toNumber(
+            core?.secondSubStatLevel,
         )
+    );
+}
+
+function toNumber(value) {
+    const number = Number(value);
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+}
+
+function toRomanNumber(number) {
+    const romanNumbers = {
+        1: "I",
+        2: "II",
+        3: "III",
+    };
+
+    return (
+        romanNumbers[number] ??
+        String(number)
     );
 }
