@@ -26,9 +26,10 @@
     width: 100%;
     height: 100%;
     padding: 0;
-    border: 0;
 
+    border: 0;
     background: rgba(15, 20, 31, 0.42);
+
     cursor: default;
 }
 
@@ -36,11 +37,12 @@
 
 .app-menu-panel {
     position: absolute;
-    inset: 14px;
+    inset: 10px;
 
     display: flex;
+    min-width: 0;
     min-height: 0;
-    padding: 22px 26px 18px;
+    padding: 20px 24px 15px;
 
     flex-direction: column;
     overflow: hidden;
@@ -48,17 +50,19 @@
     color: var(--color-text);
 
     border: 1px solid var(--color-border);
-    border-radius: 26px;
+    border-radius: 24px;
 
     background: var(--color-surface);
 }
 
+/* 모바일 핸들 */
+
 .app-menu-handle {
     display: none;
 
-    width: 42px;
+    width: 40px;
     height: 4px;
-    margin: 0 auto 14px;
+    margin: 0 auto 12px;
 
     flex: 0 0 auto;
 
@@ -66,13 +70,14 @@
     background: var(--color-border);
 }
 
-/* 상단 제목 */
+/* 메뉴 헤더 */
 
 .app-menu-header {
     position: relative;
 
     display: flex;
-    padding: 2px 52px 18px 2px;
+    min-width: 0;
+    padding: 1px 52px 16px 2px;
 
     align-items: flex-start;
     justify-content: space-between;
@@ -80,14 +85,6 @@
     flex: 0 0 auto;
 
     border-bottom: 1px solid var(--color-border);
-}
-
-.app-menu-heading {
-    display: flex;
-    min-width: 0;
-
-    align-items: flex-start;
-    gap: 16px;
 }
 
 .app-menu-title-group {
@@ -99,7 +96,7 @@
     margin-bottom: 5px;
 
     color: var(--color-primary);
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 800;
     line-height: 1;
     letter-spacing: 0.14em;
@@ -109,19 +106,19 @@
     margin: 0;
 
     color: var(--color-text);
-    font-size: clamp(22px, 2.3vw, 30px);
+    font-size: clamp(22px, 2.1vw, 28px);
     font-weight: 800;
     line-height: 1.15;
     letter-spacing: -0.04em;
 }
 
 .app-menu-subtitle {
-    margin: 7px 0 0;
+    margin: 6px 0 0;
 
     color: var(--color-text-secondary);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
-    line-height: 1.45;
+    line-height: 1.4;
 }
 
 /* 닫기 버튼 */
@@ -132,8 +129,8 @@
     right: 0;
 
     display: grid;
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     padding: 0;
 
     place-items: center;
@@ -141,7 +138,7 @@
     color: var(--color-icon);
 
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: 11px;
 
     background: var(--color-surface-soft);
     cursor: pointer;
@@ -154,8 +151,8 @@
 }
 
 .app-menu-close-button svg {
-    width: 19px;
-    height: 19px;
+    width: 18px;
+    height: 18px;
 
     fill: none;
     stroke: currentColor;
@@ -163,40 +160,12 @@
     stroke-linecap: round;
 }
 
-/* 뒤로 버튼 */
-
-.app-menu-back-button {
-    display: inline-flex;
-    min-height: 38px;
-    padding: 0 13px;
-
-    align-items: center;
-    gap: 7px;
-
-    flex: 0 0 auto;
-
-    color: var(--color-text-secondary);
-    font-size: 12px;
-    font-weight: 700;
-
-    border: 1px solid var(--color-border);
-    border-radius: 11px;
-
-    background: var(--color-surface-soft);
-    cursor: pointer;
-}
-
-.app-menu-back-button:hover {
-    color: var(--color-primary);
-    border-color: var(--color-primary);
-    background: var(--color-primary-soft);
-}
-
-/* 스크롤 영역 */
+/* 메뉴 콘텐츠 */
 
 .app-menu-content {
+    min-width: 0;
     min-height: 0;
-    padding: 20px 4px 8px;
+    padding: 17px 3px 10px;
 
     flex: 1 1 auto;
 
@@ -205,8 +174,8 @@
 
     scrollbar-width: thin;
     scrollbar-color:
-            var(--color-border)
-            transparent;
+        var(--color-border)
+        transparent;
 }
 
 .app-menu-content::-webkit-scrollbar {
@@ -222,39 +191,38 @@
     background: var(--color-border);
 }
 
-/* 구역 */
+/* 메뉴 구역 */
 
 .app-menu-section + .app-menu-section {
-    margin-top: 26px;
+    margin-top: 23px;
 }
 
 .app-menu-section-header {
     display: flex;
-    margin-bottom: 13px;
+    margin-bottom: 11px;
 
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 12px;
 }
 
-.app-menu-section-header > div {
+.app-menu-section-heading {
     display: flex;
 
     align-items: center;
-    gap: 9px;
+    gap: 8px;
 }
 
 .app-menu-section-number {
     display: grid;
-    width: 28px;
-    height: 21px;
+    width: 27px;
+    height: 20px;
 
     place-items: center;
 
     color: var(--color-primary);
     font-size: 9px;
     font-weight: 800;
-    letter-spacing: 0.04em;
 
     border: 1px solid var(--color-primary);
     border-radius: 6px;
@@ -266,7 +234,7 @@
     margin: 0;
 
     color: var(--color-text);
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 800;
     line-height: 1.2;
     letter-spacing: -0.025em;
@@ -276,16 +244,16 @@
     margin: 0;
 
     color: var(--color-text-secondary);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 500;
 }
 
-/* 바로가기 4개 */
+/* 바로가기 */
 
 .app-menu-quick-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
+    gap: 9px;
 }
 
 .app-menu-quick-card {
@@ -293,17 +261,19 @@
 
     display: flex;
     min-width: 0;
-    min-height: 106px;
-    padding: 14px;
+    min-height: 84px;
+    padding: 10px 28px 10px 10px;
 
     align-items: center;
-    gap: 12px;
+    gap: 9px;
 
+    font: inherit;
     text-align: left;
+
     color: var(--color-text);
 
     border: 1px solid var(--color-border);
-    border-radius: 16px;
+    border-radius: 14px;
 
     background: var(--color-surface-soft);
     cursor: pointer;
@@ -314,10 +284,10 @@
     background: var(--color-primary-soft);
 }
 
-.app-menu-quick-card::before {
+.app-menu-quick-card::after {
     position: absolute;
-    top: 13px;
-    right: 13px;
+    top: 12px;
+    right: 12px;
 
     width: 5px;
     height: 5px;
@@ -328,12 +298,18 @@
     background: var(--color-primary);
 }
 
-/* 메뉴 아이콘 */
+.app-menu-quick-content {
+    display: flex;
+    min-width: 0;
+
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 공통 아이콘 */
 
 .app-menu-icon {
     display: grid;
-    width: 64px;
-    height: 64px;
 
     place-items: center;
     flex: 0 0 auto;
@@ -341,8 +317,6 @@
     overflow: hidden;
 
     border: 1px solid var(--color-border);
-    border-radius: 16px;
-
     background: var(--color-surface);
 }
 
@@ -355,18 +329,14 @@
     object-position: center;
 
     user-select: none;
+    pointer-events: none;
 }
 
-/* 카드 글자 */
+.app-menu-icon--quick {
+    width: 54px;
+    height: 54px;
 
-.app-menu-card-text,
-.app-menu-feature-content,
-.app-menu-child-content {
-    display: flex;
-    min-width: 0;
-
-    flex-direction: column;
-    gap: 6px;
+    border-radius: 14px;
 }
 
 .app-menu-card-label {
@@ -376,218 +346,266 @@
     overflow: hidden;
 
     color: var(--color-text);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 800;
-    line-height: 1.35;
+    line-height: 1.3;
     letter-spacing: -0.025em;
 
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.app-menu-card-action {
-    display: inline-flex;
+/* 전체 기능 카테고리 */
 
-    align-items: center;
-    gap: 5px;
-
-    color: var(--color-primary);
-    font-size: 10px;
-    font-weight: 700;
-}
-
-/* 전체 기능 */
-
-.app-menu-feature-grid {
+.app-menu-category-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
 }
 
-.app-menu-feature-card {
-    position: relative;
-
-    display: grid;
+.app-menu-category-card {
     min-width: 0;
-    min-height: 84px;
-    padding: 11px 34px 11px 11px;
-
-    grid-template-columns: 52px minmax(0, 1fr);
-    align-items: center;
-    gap: 11px;
-
-    text-align: left;
-    color: var(--color-text);
+    padding: 12px;
 
     border: 1px solid var(--color-border);
     border-radius: 15px;
 
     background: var(--color-surface-soft);
-    cursor: pointer;
 }
 
-.app-menu-feature-card:hover {
-    border-color: var(--color-primary);
-    background: var(--color-primary-soft);
+.app-menu-category-header {
+    position: relative;
+
+    display: grid;
+    min-width: 0;
+    padding-right: 35px;
+
+    grid-template-columns: 48px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
 }
 
-.app-menu-feature-card .app-menu-icon {
-    width: 52px;
-    height: 52px;
+.app-menu-icon--category {
+    width: 48px;
+    height: 48px;
 
-    border-radius: 14px;
+    border-radius: 13px;
 }
 
-.app-menu-description {
+.app-menu-category-heading {
+    min-width: 0;
+}
+
+.app-menu-category-title {
+    display: block;
+
+    overflow: hidden;
+
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.app-menu-category-description {
     display: -webkit-box;
+    margin: 4px 0 0;
+
     overflow: hidden;
 
     color: var(--color-text-secondary);
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 500;
     line-height: 1.4;
 
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
 }
 
-.app-menu-arrow {
+.app-menu-category-count {
     position: absolute;
-    top: 50%;
-    right: 12px;
+    top: 0;
+    right: 0;
 
-    color: var(--color-text-secondary);
-    font-size: 15px;
-    font-weight: 600;
-
-    transform: translateY(-50%);
-}
-
-.app-menu-feature-card:hover .app-menu-arrow,
-.app-menu-child-card:hover .app-menu-arrow {
-    color: var(--color-primary);
-}
-
-/* 카테고리 내부 메뉴 */
-
-.app-menu-child-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 11px;
+    min-width: 25px;
+    height: 20px;
+    padding: 0 5px;
+
+    place-items: center;
+
+    color: var(--color-primary);
+    font-size: 9px;
+    font-weight: 800;
+
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+
+    background: var(--color-surface);
 }
 
-.app-menu-child-card {
+/* 카테고리 하위 기능 */
+
+.app-menu-category-links {
+    display: grid;
+    margin-top: 10px;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.app-menu-category-link {
     position: relative;
 
     display: grid;
     min-width: 0;
-    min-height: 86px;
-    padding: 11px 42px 11px 12px;
+    min-height: 34px;
+    padding: 6px 25px 6px 9px;
 
-    grid-template-columns: 56px minmax(0, 1fr);
+    grid-template-columns: 5px minmax(0, 1fr);
     align-items: center;
-    gap: 13px;
+    gap: 7px;
 
+    font: inherit;
     text-align: left;
-    color: var(--color-text);
+
+    color: var(--color-text-secondary);
 
     border: 1px solid var(--color-border);
-    border-radius: 15px;
+    border-radius: 9px;
 
-    background: var(--color-surface-soft);
+    background: var(--color-surface);
     cursor: pointer;
 }
 
-.app-menu-child-card:hover {
+.app-menu-category-link:hover {
+    color: var(--color-primary);
     border-color: var(--color-primary);
     background: var(--color-primary-soft);
 }
 
-.app-menu-child-card .app-menu-icon {
-    width: 56px;
-    height: 56px;
+.app-menu-category-link-dot {
+    width: 5px;
+    height: 5px;
 
-    border-radius: 14px;
+    border-radius: 50%;
+    background: var(--color-primary);
+}
+
+.app-menu-category-link-label {
+    display: block;
+    min-width: 0;
+
+    overflow: hidden;
+
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.25;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.app-menu-category-link-arrow {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+
+    color: var(--color-text-secondary);
+    font-size: 11px;
+
+    transform: translateY(-50%);
+}
+
+.app-menu-category-link:hover
+.app-menu-category-link-arrow {
+    color: var(--color-primary);
 }
 
 /* 키보드 포커스 */
 
 .app-menu-quick-card:focus-visible,
-.app-menu-feature-card:focus-visible,
-.app-menu-child-card:focus-visible,
-.app-menu-close-button:focus-visible,
-.app-menu-back-button:focus-visible {
+.app-menu-category-link:focus-visible,
+.app-menu-close-button:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 }
 
-/* 하단 로고 */
+/* 메뉴 하단 */
 
 .app-menu-footer {
     display: flex;
-    min-height: 30px;
-    padding-top: 11px;
+    min-height: 28px;
+    padding-top: 9px;
 
     align-items: center;
     justify-content: flex-end;
-    gap: 7px;
+    gap: 6px;
 
     flex: 0 0 auto;
 
     color: var(--color-text-secondary);
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 800;
     letter-spacing: 0.14em;
 
     border-top: 1px solid var(--color-border);
 }
 
-.app-menu-footer-mark {
-    display: grid;
-    width: 20px;
-    height: 20px;
+.app-menu-footer-logo {
+    display: block;
+    width: 23px;
+    height: 23px;
 
-    place-items: center;
+    flex: 0 0 auto;
 
-    color: #ffffff;
-    font-size: 10px;
-    font-weight: 900;
-    letter-spacing: 0;
+    object-fit: contain;
+    object-position: center;
 
-    border-radius: 5px;
-    background: var(--color-primary);
+    user-select: none;
+    pointer-events: none;
 }
 
-/* 태블릿 */
+/* 중간 화면 */
 
-@media (max-width: 1000px) {
+@media (max-width: 900px) {
     .app-menu-panel {
-        padding: 20px 20px 16px;
-    }
-
-    .app-menu-quick-grid {
-        gap: 9px;
+        padding: 18px 18px 14px;
     }
 
     .app-menu-quick-card {
-        min-height: 96px;
-        padding: 11px;
-
-        gap: 9px;
+        min-height: 76px;
+        padding: 9px 23px 9px 9px;
     }
 
-    .app-menu-quick-card .app-menu-icon {
-        width: 54px;
-        height: 54px;
+    .app-menu-icon--quick {
+        width: 46px;
+        height: 46px;
 
-        border-radius: 14px;
+        border-radius: 12px;
     }
 
-    .app-menu-feature-grid {
-        grid-template-columns: repeat(
-            2,
-            minmax(0, 1fr)
-        );
+    .app-menu-card-label {
+        font-size: 11px;
+    }
+
+    .app-menu-category-card {
+        padding: 10px;
+    }
+
+    .app-menu-category-header {
+        grid-template-columns: 43px minmax(0, 1fr);
+    }
+
+    .app-menu-icon--category {
+        width: 43px;
+        height: 43px;
+
+        border-radius: 11px;
     }
 }
 
@@ -595,10 +613,10 @@
 
 @media (max-width: 700px) {
     .app-menu-panel {
-        inset: 8px;
+        inset: 7px;
 
-        padding: 10px 13px 13px;
-        border-radius: 21px;
+        padding: 10px 12px 12px;
+        border-radius: 20px;
     }
 
     .app-menu-handle {
@@ -606,50 +624,30 @@
     }
 
     .app-menu-header {
-        padding: 0 46px 14px 0;
-    }
-
-    .app-menu-heading {
-        gap: 9px;
-    }
-
-    .app-menu-eyebrow {
-        font-size: 8px;
+        padding: 0 45px 13px 0;
     }
 
     .app-menu-title {
-        font-size: 21px;
+        font-size: 20px;
     }
 
     .app-menu-subtitle {
-        margin-top: 5px;
-        font-size: 11px;
-    }
-
-    .app-menu-close-button {
-        width: 37px;
-        height: 37px;
-
-        border-radius: 11px;
-    }
-
-    .app-menu-back-button {
-        min-height: 34px;
-        padding: 0 10px;
-
         font-size: 10px;
     }
 
+    .app-menu-close-button {
+        width: 36px;
+        height: 36px;
+
+        border-radius: 10px;
+    }
+
     .app-menu-content {
-        padding: 16px 1px 7px;
+        padding: 14px 1px 8px;
     }
 
     .app-menu-section + .app-menu-section {
-        margin-top: 22px;
-    }
-
-    .app-menu-section-header {
-        margin-bottom: 10px;
+        margin-top: 20px;
     }
 
     .app-menu-section-description {
@@ -662,131 +660,113 @@
             minmax(0, 1fr)
         );
 
-        gap: 8px;
+        gap: 7px;
     }
 
     .app-menu-quick-card {
-        min-height: 80px;
-        padding: 9px;
+        min-height: 68px;
+        padding: 8px 22px 8px 8px;
 
-        gap: 8px;
-
-        border-radius: 14px;
-    }
-
-    .app-menu-quick-card .app-menu-icon {
-        width: 46px;
-        height: 46px;
+        gap: 7px;
 
         border-radius: 12px;
     }
 
-    .app-menu-quick-card::before {
-        top: 10px;
-        right: 10px;
+    .app-menu-quick-card::after {
+        top: 9px;
+        right: 9px;
 
         width: 4px;
         height: 4px;
     }
 
-    .app-menu-card-label {
-        font-size: 12px;
-    }
-
-    .app-menu-card-action {
-        font-size: 9px;
-    }
-
-    .app-menu-feature-grid {
-        grid-template-columns: repeat(
-            2,
-            minmax(0, 1fr)
-        );
-
-        gap: 8px;
-    }
-
-    .app-menu-feature-card {
-        min-height: 70px;
-        padding: 8px 27px 8px 8px;
-
-        grid-template-columns: 42px minmax(0, 1fr);
-        gap: 8px;
-
-        border-radius: 13px;
-    }
-
-    .app-menu-feature-card .app-menu-icon {
+    .app-menu-icon--quick {
         width: 42px;
         height: 42px;
 
         border-radius: 11px;
     }
 
-    .app-menu-feature-card .app-menu-description {
-        display: none;
-    }
-
-    .app-menu-arrow {
-        right: 9px;
-        font-size: 12px;
-    }
-
-    .app-menu-child-grid {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-
-    .app-menu-child-card {
-        min-height: 68px;
-        padding: 8px 36px 8px 9px;
-
-        grid-template-columns: 46px minmax(0, 1fr);
-        gap: 10px;
-
-        border-radius: 13px;
-    }
-
-    .app-menu-child-card .app-menu-icon {
-        width: 46px;
-        height: 46px;
-
-        border-radius: 12px;
-    }
-
-    .app-menu-footer {
-        min-height: 27px;
-        padding-top: 8px;
-    }
-}
-
-/* 작은 모바일 */
-
-@media (max-width: 390px) {
-    .app-menu-panel {
-        padding-right: 10px;
-        padding-left: 10px;
-    }
-
-    .app-menu-quick-card {
-        padding: 8px;
-    }
-
-    .app-menu-quick-card .app-menu-icon {
-        width: 41px;
-        height: 41px;
-    }
-
     .app-menu-card-label {
         font-size: 11px;
     }
 
-    .app-menu-feature-card {
-        grid-template-columns: 38px minmax(0, 1fr);
+    .app-menu-category-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
     }
 
-    .app-menu-feature-card .app-menu-icon {
+    .app-menu-category-card {
+        padding: 9px;
+
+        border-radius: 13px;
+    }
+
+    .app-menu-category-header {
+        grid-template-columns: 42px minmax(0, 1fr);
+    }
+
+    .app-menu-icon--category {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 11px;
+    }
+
+    .app-menu-category-title {
+        font-size: 12px;
+    }
+
+    .app-menu-category-description {
+        font-size: 9px;
+    }
+
+    .app-menu-category-links {
+        margin-top: 8px;
+        gap: 5px;
+    }
+
+    .app-menu-category-link {
+        min-height: 32px;
+        padding:
+            5px
+            23px
+            5px
+            8px;
+
+        gap: 6px;
+
+        border-radius: 8px;
+    }
+
+    .app-menu-category-link-label {
+        font-size: 9px;
+    }
+
+    .app-menu-footer {
+        min-height: 25px;
+        padding-top: 7px;
+    }
+}
+
+/* 아주 작은 모바일 */
+
+@media (max-width: 390px) {
+    .app-menu-panel {
+        padding-right: 9px;
+        padding-left: 9px;
+    }
+
+    .app-menu-quick-card {
+        padding-left: 7px;
+    }
+
+    .app-menu-icon--quick {
         width: 38px;
         height: 38px;
+    }
+
+    .app-menu-category-links {
+        grid-template-columns: 1fr;
     }
 }
