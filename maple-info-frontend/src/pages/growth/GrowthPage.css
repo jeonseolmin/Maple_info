@@ -67,7 +67,7 @@
     padding: 4px;
 
     grid-template-columns: repeat(
-        4,
+        5,
         minmax(0, 1fr)
     );
     gap: 4px;

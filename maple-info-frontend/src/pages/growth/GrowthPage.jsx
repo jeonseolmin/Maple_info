@@ -7,7 +7,6 @@ import {
 import StarforceExpectation from "../../components/starforceCalculator/StarforceExpectation";
 import CubeExpectation from "../../components/cubeCalculator/CubeExpectation";
 import SymbolCalculator from "../../components/symbolCalculator/SymbolCalculator";
-import FlameCalculator from "../../components/flame/FlameExpectation";
 
 import "./GrowthPage.css";
 import FlameExpectation from "../../components/flame/FlameExpectation";
