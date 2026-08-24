@@ -39,18 +39,21 @@ export default function CharacterProfile({ character }) {
             cancelled = true;
         };
     }, [character?.ocid]);
-    const mainSetEffect = useMemo(() => {
+    const displayedSetEffects = useMemo(() => {
         const sets = setEffectData?.sets ?? [];
 
-        if (sets.length === 0) {
-            return null;
-        }
-
-        return [...sets].sort(
-            (a, b) =>
-                (b.setCount ?? 0) -
-                (a.setCount ?? 0)
-        )[0];
+        return [...sets]
+            .filter(
+                (set) =>
+                    set?.setName &&
+                    set?.setCount != null
+            )
+            .sort(
+                (a, b) =>
+                    (b.setCount ?? 0) -
+                    (a.setCount ?? 0)
+            )
+            .slice(0, 2);
     }, [setEffectData]);
     const profileStats = [
         {
@@ -168,14 +171,20 @@ export default function CharacterProfile({ character }) {
                     </strong>
                 </div>
 
-                <div className="character-summary-card">
-                    <span>장비 세트</span>
+                <div className="character-summary-card character-summary-card--sets">
 
-                    <strong>
-                        {mainSetEffect
-                            ? `${mainSetEffect.setName} ${mainSetEffect.setCount}세트`
-                            : "-"}
-                    </strong>
+                    <div className="character-summary-card__sets">
+                        {displayedSetEffects.length > 0 ? (
+                            displayedSetEffects.map((set) => (
+                                <strong key={set.setName}>
+                                    {formatSetName(set.setName)}
+                                    <em>{set.setCount}세트</em>
+                                </strong>
+                            ))
+                        ) : (
+                            <strong>-</strong>
+                        )}
+                    </div>
                 </div>
 
                 <div className="character-summary-card">
@@ -185,4 +194,10 @@ export default function CharacterProfile({ character }) {
             </div>
         </section>
     );
+}
+
+function formatSetName(setName) {
+    return String(setName ?? "")
+        .replace(/\s*세트$/, "")
+        .trim();
 }
