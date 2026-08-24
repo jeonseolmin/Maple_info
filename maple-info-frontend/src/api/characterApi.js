@@ -103,3 +103,16 @@ export const getCharacterSixthJob = async (ocid) => {
 
     return response.data;
 };
+
+export const getCharacterSetEffect = async (ocid) => {
+    const response = await axiosInstance.get(
+        "/characters/set-effect",
+        {
+            params: {
+                ocid,
+            },
+        }
+    );
+
+    return response.data;
+};

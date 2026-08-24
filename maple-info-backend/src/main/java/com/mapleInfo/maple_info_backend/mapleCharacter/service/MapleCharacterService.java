@@ -15,6 +15,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.pet.NexonCha
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingItemResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.seteffect.NexonCharacterSetEffectResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.skill.NexonCharacterSkillResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.symbol.NexonCharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
@@ -26,6 +27,8 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.Charact
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.hexa.CharacterSixthJobResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.pet.CharacterPetEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.seteffect.CharacterSetEffectResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.seteffect.CharacterSetEffectSummaryResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.symbol.CharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.entity.MapleCharacter;
 import com.mapleInfo.maple_info_backend.mapleCharacter.repository.MapleCharacterRepository;
@@ -38,6 +41,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -829,5 +833,39 @@ public class MapleCharacterService {
                 matrixResponse,
                 statResponse
         );
+    }
+    public CharacterSetEffectResponse getSetEffect(
+            String ocid
+    ) {
+        NexonCharacterSetEffectResponse response =
+                mapleCharacterClient.getSetEffect(ocid);
+
+        if (response == null || response.setEffect() == null) {
+            return new CharacterSetEffectResponse(
+                    List.of()
+            );
+        }
+
+        List<CharacterSetEffectSummaryResponse> sets =
+                response.setEffect()
+                        .stream()
+                        .filter(set -> set != null)
+                        .filter(set ->
+                                set.setName() != null &&
+                                        !set.setName().isBlank()
+                        )
+                        .filter(set ->
+                                set.totalSetCount() != null &&
+                                        set.totalSetCount() > 0
+                        )
+                        .map(set ->
+                                new CharacterSetEffectSummaryResponse(
+                                        set.setName(),
+                                        set.totalSetCount()
+                                )
+                        )
+                        .toList();
+
+        return new CharacterSetEffectResponse(sets);
     }
 }

@@ -8,6 +8,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.cash.Charact
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.equipment.CharacterEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.hexa.CharacterSixthJobResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.pet.CharacterPetEquipmentResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.seteffect.CharacterSetEffectResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.response.symbol.CharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.service.MapleCharacterService;
 import lombok.RequiredArgsConstructor;
@@ -87,6 +88,15 @@ public class MapleCharacterController {
             @RequestParam String ocid
     ) {
         return mapleCharacterService.getSixthJob(
+                ocid
+        );
+    }
+
+    @GetMapping("/set-effect")
+    public CharacterSetEffectResponse getSetEffect(
+            @RequestParam String ocid
+    ) {
+        return mapleCharacterService.getSetEffect(
                 ocid
         );
     }

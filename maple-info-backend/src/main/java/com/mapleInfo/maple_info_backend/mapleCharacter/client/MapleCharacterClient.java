@@ -13,6 +13,7 @@ import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.hexa.NexonCh
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.pet.NexonCharacterPetEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.popularity.NexonCharacterPopularityResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.ranking.NexonOverallRankingResponse;
+import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.seteffect.NexonCharacterSetEffectResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.skill.NexonCharacterSkillResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.symbol.NexonCharacterSymbolEquipmentResponse;
 import com.mapleInfo.maple_info_backend.mapleCharacter.dto.nexonApi.union.NexonUnionArtifactResponse;
@@ -541,9 +542,31 @@ public class MapleCharacterClient {
         }
     }
 
-    public NexonCharacterEquipmentSetEffectResponse getSetEffect (
+    public NexonCharacterSetEffectResponse getSetEffect(
             String ocid
-    ){
+    ) {
+        try {
+            return restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(
+                                    "/maplestory/v1/character/set-effect"
+                            )
+                            .queryParam(
+                                    "ocid",
+                                    normalizeOcid(ocid)
+                            )
+                            .build()
+                    )
+                    .retrieve()
+                    .body(
+                            NexonCharacterSetEffectResponse.class
+                    );
 
+        } catch (RestClientException e) {
+            throw new NexonApiException(
+                    "넥슨 세트 효과 API 호출에 실패했습니다.",
+                    e
+            );
+        }
     }
 }

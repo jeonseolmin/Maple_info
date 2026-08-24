@@ -1,5 +1,57 @@
-import "./CharacterProfile.css"
+import { useEffect, useMemo, useState } from "react";
+import { getCharacterSetEffect } from "../../api/characterApi";
+import "./CharacterProfile.css";
 export default function CharacterProfile({ character }) {
+    const [setEffectData, setSetEffectData] = useState(null);
+
+    useEffect(() => {
+        if (!character?.ocid) {
+            setSetEffectData(null);
+            return;
+        }
+
+        let cancelled = false;
+
+        const fetchSetEffect = async () => {
+            try {
+                const data = await getCharacterSetEffect(
+                    character.ocid
+                );
+
+                if (!cancelled) {
+                    setSetEffectData(data);
+                }
+            } catch (error) {
+                console.error(
+                    "세트 효과 조회 실패:",
+                    error
+                );
+
+                if (!cancelled) {
+                    setSetEffectData(null);
+                }
+            }
+        };
+
+        fetchSetEffect();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [character?.ocid]);
+    const mainSetEffect = useMemo(() => {
+        const sets = setEffectData?.sets ?? [];
+
+        if (sets.length === 0) {
+            return null;
+        }
+
+        return [...sets].sort(
+            (a, b) =>
+                (b.setCount ?? 0) -
+                (a.setCount ?? 0)
+        )[0];
+    }, [setEffectData]);
     const profileStats = [
         {
             label: "레벨",
@@ -106,17 +158,28 @@ export default function CharacterProfile({ character }) {
             {/* 오른쪽: 추후 데이터 3개 표시 영역 */}
             <div className="character-profile__summary">
                 <div className="character-summary-card">
-                    <span>정보 1</span>
-                    <strong>-</strong>
+                    <span>전투력</span>
+                    <strong>
+                        {character.combatPower != null
+                            ? Number(
+                                character.combatPower
+                            ).toLocaleString()
+                            : "-"}
+                    </strong>
                 </div>
 
                 <div className="character-summary-card">
-                    <span>정보 2</span>
-                    <strong>-</strong>
+                    <span>장비 세트</span>
+
+                    <strong>
+                        {mainSetEffect
+                            ? `${mainSetEffect.setName} ${mainSetEffect.setCount}세트`
+                            : "-"}
+                    </strong>
                 </div>
 
                 <div className="character-summary-card">
-                    <span>정보 3</span>
+                    <span>심볼</span>
                     <strong>-</strong>
                 </div>
             </div>
