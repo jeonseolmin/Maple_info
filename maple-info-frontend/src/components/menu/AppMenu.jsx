@@ -1,6 +1,10 @@
 // src/components/menu/AppMenu.jsx
 
-import { useEffect, useState } from "react";
+import {
+    useCallback,
+    useEffect,
+} from "react";
+
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -9,40 +13,25 @@ import {
 } from "./MenuItems";
 
 import "./AppMenu.css";
-
-export default function AppMenu({ isOpen, onClose }) {
+import mabletSilverIcon from "../../assets/icons/mablet-silver-icon.png";
+export default function AppMenu({
+                                    isOpen,
+                                    onClose,
+                                }) {
     const navigate = useNavigate();
 
-    const [selectedFolder, setSelectedFolder] =
-        useState(null);
-
-    const closeMenu = () => {
-        setSelectedFolder(null);
+    const closeMenu = useCallback(() => {
         onClose();
-    };
+    }, [onClose]);
 
-    const handleMenuClick = (item) => {
-        if (item.type === "folder") {
-            setSelectedFolder(item);
+    const navigateTo = (path) => {
+        if (!path) {
             return;
         }
 
         closeMenu();
-        navigate(item.path);
+        navigate(path);
     };
-
-    const handleBack = () => {
-        setSelectedFolder(null);
-    };
-
-    /*
-     * 메뉴가 닫힐 때 선택한 폴더 초기화
-     */
-    useEffect(() => {
-        if (!isOpen) {
-            setSelectedFolder(null);
-        }
-    }, [isOpen]);
 
     /*
      * ESC 키로 메뉴 닫기
@@ -69,10 +58,11 @@ export default function AppMenu({ isOpen, onClose }) {
                 handleKeyDown
             );
         };
-    }, [isOpen, onClose]);
+    }, [isOpen, closeMenu]);
 
     /*
-     * 메뉴가 열려 있는 동안 배경 스크롤 방지
+     * 메뉴가 열려 있을 때
+     * 바깥 페이지 스크롤 방지
      */
     useEffect(() => {
         if (!isOpen) {
@@ -90,10 +80,18 @@ export default function AppMenu({ isOpen, onClose }) {
         };
     }, [isOpen]);
 
-    const renderIcon = (item) => {
+    const renderIcon = (
+        item,
+        additionalClassName = ""
+    ) => {
         return (
             <span
-                className="app-menu-icon"
+                className={[
+                    "app-menu-icon",
+                    additionalClassName,
+                ]
+                    .filter(Boolean)
+                    .join(" ")}
                 aria-hidden="true"
             >
                 <img
@@ -105,6 +103,9 @@ export default function AppMenu({ isOpen, onClose }) {
         );
     };
 
+    /*
+     * 바로가기 카드
+     */
     const renderQuickMenuItem = (item) => {
         return (
             <button
@@ -112,74 +113,99 @@ export default function AppMenu({ isOpen, onClose }) {
                 type="button"
                 className="app-menu-quick-card"
                 onClick={() =>
-                    handleMenuClick(item)
+                    navigateTo(item.path)
                 }
+                aria-label={`${item.label} 페이지로 이동`}
             >
-                {renderIcon(item)}
+                {renderIcon(
+                    item,
+                    "app-menu-icon--quick"
+                )}
 
-                <span className="app-menu-card-text">
+                <span className="app-menu-quick-content">
                     <strong className="app-menu-card-label">
                         {item.label}
                     </strong>
+                </span>
+            </button>
+        );
+    };
 
+    /*
+     * 카테고리 내부 기능 버튼
+     */
+    const renderCategoryLink = (
+        child,
+        category
+    ) => {
+        return (
+            <button
+                key={child.id}
+                type="button"
+                className="app-menu-category-link"
+                onClick={() =>
+                    navigateTo(child.path)
+                }
+                title={`${category.label} - ${child.label}`}
+            >
+                <span
+                    className="app-menu-category-link-dot"
+                    aria-hidden="true"
+                />
+
+                <span className="app-menu-category-link-label">
+                    {child.label}
+                </span>
+
+                <span
+                    className="app-menu-category-link-arrow"
+                    aria-hidden="true"
+                >
 
                 </span>
             </button>
         );
     };
 
-    const renderFolderMenuItem = (item) => {
+    /*
+     * 전체 기능 카테고리 카드
+     */
+    const renderCategoryCard = (category) => {
         return (
-            <button
-                key={item.id}
-                type="button"
-                className="app-menu-feature-card"
-                onClick={() =>
-                    handleMenuClick(item)
-                }
+            <article
+                key={category.id}
+                className="app-menu-category-card"
             >
-                {renderIcon(item)}
-
-                <span className="app-menu-feature-content">
-                    <strong className="app-menu-card-label">
-                        {item.label}
-                    </strong>
-
-                    {item.description && (
-                        <span className="app-menu-description">
-                            {item.description}
-                        </span>
+                <header className="app-menu-category-header">
+                    {renderIcon(
+                        category,
+                        "app-menu-icon--category"
                     )}
-                </span>
 
+                    <div className="app-menu-category-heading">
+                        <strong className="app-menu-category-title">
+                            {category.label}
+                        </strong>
 
-            </button>
-        );
-    };
+                        {category.description && (
+                            <p className="app-menu-category-description">
+                                {category.description}
+                            </p>
+                        )}
+                    </div>
 
-    const renderChildMenuItem = (item) => {
-        return (
-            <button
-                key={item.id}
-                type="button"
-                className="app-menu-child-card"
-                onClick={() =>
-                    handleMenuClick(item)
-                }
-            >
-                {renderIcon(item)}
+                </header>
 
-                <span className="app-menu-child-content">
-                    <strong className="app-menu-card-label">
-                        {item.label}
-                    </strong>
-
-                    <span className="app-menu-card-action">
-                        페이지 열기
-                    </span>
-                </span>
-
-            </button>
+                <div className="app-menu-category-links">
+                    {category.children.map(
+                        (child) =>
+                            renderCategoryLink(
+                                child,
+                                category
+                            )
+                    )}
+                </div>
+            </article>
         );
     };
 
@@ -187,7 +213,9 @@ export default function AppMenu({ isOpen, onClose }) {
         <div
             className={[
                 "app-menu",
-                isOpen ? "app-menu--open" : "",
+                isOpen
+                    ? "app-menu--open"
+                    : "",
             ]
                 .filter(Boolean)
                 .join(" ")}
@@ -213,42 +241,21 @@ export default function AppMenu({ isOpen, onClose }) {
                 />
 
                 <header className="app-menu-header">
-                    <div className="app-menu-heading">
-                        {selectedFolder && (
-                            <button
-                                type="button"
-                                className="app-menu-back-button"
-                                onClick={handleBack}
-                                aria-label="전체 메뉴로 돌아가기"
-                            >
-                                <span aria-hidden="true">
-                                    ←
-                                </span>
+                    <div className="app-menu-title-group">
+                        <span className="app-menu-eyebrow">
+                            MABLET MENU
+                        </span>
 
-                                <span>전체 메뉴</span>
-                            </button>
-                        )}
+                        <h2
+                            id="app-menu-title"
+                            className="app-menu-title"
+                        >
+                            전체 메뉴
+                        </h2>
 
-                        <div className="app-menu-title-group">
-                            <span className="app-menu-eyebrow">
-                                MAPLIT MENU
-                            </span>
-
-                            <h2
-                                id="app-menu-title"
-                                className="app-menu-title"
-                            >
-                                {selectedFolder
-                                    ? selectedFolder.label
-                                    : "전체 메뉴"}
-                            </h2>
-
-                            <p className="app-menu-subtitle">
-                                {selectedFolder
-                                    ? selectedFolder.description
-                                    : "필요한 기능을 빠르게 찾아보세요."}
-                            </p>
-                        </div>
+                        <p className="app-menu-subtitle">
+                            필요한 기능을 한 번에 찾아보세요.
+                        </p>
                     </div>
 
                     <button
@@ -268,83 +275,64 @@ export default function AppMenu({ isOpen, onClose }) {
                 </header>
 
                 <div className="app-menu-content">
-                    {selectedFolder ? (
-                        <section className="app-menu-section">
-                            <div className="app-menu-section-header">
-                                <div>
-                                    <span className="app-menu-section-number">
-                                        {String(
-                                            selectedFolder
-                                                .children
-                                                .length
-                                        ).padStart(2, "0")}
-                                    </span>
+                    <section className="app-menu-section">
+                        <div className="app-menu-section-header">
+                            <div className="app-menu-section-heading">
+                                <span className="app-menu-section-number">
+                                    01
+                                </span>
 
-                                    <h3 className="app-menu-section-title">
-                                        {selectedFolder.label} 기능
-                                    </h3>
-                                </div>
+                                <h3 className="app-menu-section-title">
+                                    바로가기
+                                </h3>
                             </div>
 
-                            <div className="app-menu-child-grid">
-                                {selectedFolder.children.map(
-                                    renderChildMenuItem
-                                )}
+                            <p className="app-menu-section-description">
+                                자주 사용하는 기능
+                            </p>
+                        </div>
+
+                        <div className="app-menu-quick-grid">
+                            {quickMenuItems.map(
+                                renderQuickMenuItem
+                            )}
+                        </div>
+                    </section>
+
+                    <section className="app-menu-section">
+                        <div className="app-menu-section-header">
+                            <div className="app-menu-section-heading">
+                                <span className="app-menu-section-number">
+                                    02
+                                </span>
+
+                                <h3 className="app-menu-section-title">
+                                    전체 기능
+                                </h3>
                             </div>
-                        </section>
-                    ) : (
-                        <>
-                            <section className="app-menu-section">
-                                <div className="app-menu-section-header">
-                                    <div>
-                                        <h3 className="app-menu-section-title">
-                                            바로가기
-                                        </h3>
 
-                                    </div>
+                            <p className="app-menu-section-description">
+                                원하는 기능을 바로 선택하세요
+                            </p>
+                        </div>
 
-                                    <p className="app-menu-section-description">
-                                        자주 사용하는 기능
-                                    </p>
-                                </div>
-
-                                <div className="app-menu-quick-grid">
-                                    {quickMenuItems.map(
-                                        renderQuickMenuItem
-                                    )}
-                                </div>
-                            </section>
-
-                            <section className="app-menu-section">
-                                <div className="app-menu-section-header">
-                                    <div>
-
-                                        <h3 className="app-menu-section-title">
-                                            전체 기능
-                                        </h3>
-                                    </div>
-
-                                    <p className="app-menu-section-description">
-                                        카테고리를 선택하세요
-                                    </p>
-                                </div>
-
-                                <div className="app-menu-feature-grid">
-                                    {folderMenuItems.map(
-                                        renderFolderMenuItem
-                                    )}
-                                </div>
-                            </section>
-                        </>
-                    )}
+                        <div className="app-menu-category-grid">
+                            {folderMenuItems.map(
+                                renderCategoryCard
+                            )}
+                        </div>
+                    </section>
                 </div>
 
                 <footer className="app-menu-footer">
-                    <span className="app-menu-footer-mark">
-                        M
-                    </span>
-
-                    <span>MAPLIT</span>
+                    <img
+                        className="app-menu-footer-logo"
+                        src={mabletSilverIcon}
+                        alt=""
+                        aria-hidden="true"
+                        draggable="false"
+                    />
+                    <span>MABLET</span>
                 </footer>
             </section>
         </div>
