@@ -179,7 +179,7 @@ const CubeExpectation = () => {
 
     return (
         <div className="modern-calc-container">
-            <h2 className="page-title">잠재능력 기댓값 계산기 🎲</h2>
+            <h2 className="page-title">잠재능력 기댓값 계산기</h2>
             <p className="page-subtitle">원하는 잠재능력을 띄우기 위해 필요한 횟수와 예상 메소를 확인하세요.</p>
 
             <div className="toss-card">
@@ -233,7 +233,7 @@ const CubeExpectation = () => {
                             placeholder="예: 40000000"
                         />
                         <small style={{ color: '#8b95a1', marginTop: '5px', display: 'block' }}>
-                            💡 레벨과 등급에 맞춰 공식 1회 재설정 비용이 자동 입력됩니다.
+                             레벨과 등급에 맞춰 공식 1회 재설정 비용이 자동 입력됩니다.
                         </small>
                     </div>
                 </div>

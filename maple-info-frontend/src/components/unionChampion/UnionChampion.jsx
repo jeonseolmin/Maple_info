@@ -25,7 +25,6 @@ const UnionChampion = () => {
 
         setIsLoading(true);
         try {
-            // Spring Boot가 List<String>으로 받을 수 있도록 쿼리 파라미터 조합 (names=캐릭터1&names=캐릭터2)
             const params = new URLSearchParams();
             namesArray.forEach(name => params.append('names', name));
 

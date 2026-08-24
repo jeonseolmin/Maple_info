@@ -92,7 +92,7 @@ const ExpCalculator = () => {
 
     return (
         <div className="modern-calc-container">
-            <h2 className="page-title">사냥 효율 & 레벨업 계산기 ⏱️</h2>
+            <h2 className="page-title">사냥 효율 & 레벨업 계산기</h2>
             <p className="page-subtitle">전투 분석 결과를 바탕으로 레벨업까지 남은 시간을 정확하게 예측합니다.</p>
 
             <div className="toss-card">
@@ -141,7 +141,7 @@ const ExpCalculator = () => {
                             placeholder="숫자만 입력하세요"
                         />
                         <small style={{ color: '#8b95a1', marginTop: '5px', display: 'block' }}>
-                            💡 인게임 전투분석 창에 찍힌 총 경험치를 입력하세요.
+                             인게임 전투분석 창에 찍힌 총 경험치를 입력하세요.
                         </small>
                     </div>
                 </div>

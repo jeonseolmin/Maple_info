@@ -1,0 +1,67 @@
+.mulung-container {
+    padding: 20px;
+    color: #e2e8f0;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.mulung-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background-color: #2d3748;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mulung-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.mulung-table th, .mulung-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #4a5568;
+}
+
+.mulung-table th {
+    background-color: #1a202c;
+    color: #a0aec0;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+}
+
+.mulung-table tbody tr:hover {
+    background-color: #4a5568;
+    transition: background-color 0.2s;
+}
+
+/* 10층 단위 보스층 강조 */
+.boss-floor {
+    background-color: #2c313c;
+    font-weight: bold;
+}
+.boss-floor td:first-child {
+    color: #f6ad55; /* 층수 주황색 강조 */
+}
+
+/* 방어율/속성 뱃지 */
+.badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    display: inline-block;
+    margin: 2px;
+}
+
+.badge-armor-high {
+    background-color: #c53030;
+    color: white;
+}
+
+.badge-element {
+    background-color: #4299e1;
+    color: white;
+}
