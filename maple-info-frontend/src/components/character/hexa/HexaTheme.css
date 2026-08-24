@@ -343,3 +343,242 @@ html:not(.dark)
 .hexa-stat-selector__empty p {
     color: #7b8596;
 }
+/* ========================================
+   HEXA MATERIAL SUMMARY - LIGHT
+======================================== */
+
+html:not(.dark) .hexa-material-summary {
+    border-color:
+        rgba(66, 124, 194, 0.15);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.98),
+            rgba(239, 246, 255, 0.98)
+        );
+
+    box-shadow:
+        0 10px 25px
+        rgba(56, 79, 119, 0.08);
+}
+
+html:not(.dark) .hexa-material-summary::before {
+    background:
+        linear-gradient(
+            90deg,
+            #5e8eff,
+            #6fd7ff
+        );
+
+    box-shadow:
+        0 0 9px
+        rgba(82, 167, 255, 0.35);
+}
+
+
+/* HEADER */
+
+html:not(.dark)
+.hexa-material-summary__header span {
+    color: #527bae;
+}
+
+html:not(.dark)
+.hexa-material-summary__header h3 {
+    color: #252d3e;
+}
+
+html:not(.dark)
+.hexa-material-summary__header > strong {
+    border-color:
+        rgba(64, 135, 211, 0.2);
+
+    color: #3178b8;
+
+    background:
+        rgba(80, 137, 204, 0.08);
+}
+
+
+/* MODE */
+
+html:not(.dark)
+.hexa-material-summary__modes {
+    border-color:
+        rgba(66, 104, 161, 0.12);
+
+    background:
+        rgba(221, 232, 247, 0.65);
+}
+
+html:not(.dark)
+.hexa-material-summary__modes button {
+    color: #728096;
+}
+
+html:not(.dark)
+.hexa-material-summary__modes button:hover {
+    color: #3d5f8a;
+
+    background:
+        rgba(80, 137, 204, 0.09);
+}
+
+html:not(.dark)
+.hexa-material-summary__modes button.is-active {
+    border-color:
+        rgba(64, 135, 211, 0.26);
+
+    color: #2b5f99;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(104, 171, 237, 0.26),
+            rgba(120, 130, 221, 0.17)
+        );
+
+    box-shadow:
+        0 4px 10px
+        rgba(68, 125, 184, 0.1),
+        inset 0 1px
+        rgba(255, 255, 255, 0.65);
+}
+
+html:not(.dark)
+.hexa-material-summary__modes button:focus-visible {
+    outline-color: #4d6fff;
+}
+
+
+/* BREAKDOWN */
+
+html:not(.dark)
+.hexa-material-summary__breakdown > div {
+    border-color:
+        rgba(73, 127, 185, 0.1);
+
+    background:
+        rgba(214, 231, 248, 0.52);
+}
+
+html:not(.dark)
+.hexa-material-summary__breakdown span {
+    color: #526d8d;
+}
+
+html:not(.dark)
+.hexa-material-summary__breakdown strong {
+    color: #3178b8;
+}
+
+
+/* MATERIAL ROW */
+
+html:not(.dark)
+.hexa-material-summary__row {
+    border-color:
+        rgba(72, 87, 132, 0.1);
+
+    background:
+        rgba(238, 241, 250, 0.76);
+}
+
+html:not(.dark)
+.hexa-material-summary__row > header > span {
+    color: #738096;
+}
+
+html:not(.dark)
+.hexa-material-summary__row > header strong {
+    color: #293044;
+}
+
+html:not(.dark)
+.hexa-material-summary__row > header p span {
+    color: #7c8598;
+}
+
+
+/* PROGRESS */
+
+html:not(.dark)
+.hexa-material-summary__progress {
+    background:
+        rgba(88, 108, 148, 0.12);
+}
+
+html:not(.dark)
+.hexa-material-summary__progress--purple > span {
+    background:
+        linear-gradient(
+            90deg,
+            #6478df,
+            #819aff
+        );
+
+    box-shadow:
+        0 0 7px
+        rgba(93, 120, 226, 0.28);
+}
+
+html:not(.dark)
+.hexa-material-summary__progress--blue > span {
+    background:
+        linear-gradient(
+            90deg,
+            #438fd7,
+            #68c7ef
+        );
+
+    box-shadow:
+        0 0 7px
+        rgba(70, 167, 218, 0.28);
+}
+
+
+/* REMAINING */
+
+html:not(.dark)
+.hexa-material-summary__remaining span {
+    color: #7d8799;
+}
+
+html:not(.dark)
+.hexa-material-summary__remaining strong {
+    color: #536077;
+}
+
+
+/* NOTICE */
+
+html:not(.dark)
+.hexa-material-summary__notice {
+    color: #7e8798;
+}
+
+
+/* EMPTY */
+
+html:not(.dark)
+.hexa-material-summary__empty {
+    border-color:
+        rgba(86, 111, 158, 0.16);
+
+    background:
+        rgba(231, 237, 247, 0.65);
+}
+
+html:not(.dark)
+.hexa-material-summary__empty > span {
+    color: #527bae;
+
+    background:
+        rgba(104, 142, 196, 0.13);
+}
+
+html:not(.dark)
+.hexa-material-summary__empty p {
+    color: #7b8596;
+}

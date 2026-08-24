@@ -75,6 +75,7 @@ export default function HexaMaterialSummary({
                     }
                 >
                     전체 강화
+                    <i aria-hidden="true" />
                 </button>
 
                 <button
@@ -93,6 +94,7 @@ export default function HexaMaterialSummary({
                     }
                 >
                     스펙 반영
+                    <i aria-hidden="true" />
                 </button>
             </div>
 
