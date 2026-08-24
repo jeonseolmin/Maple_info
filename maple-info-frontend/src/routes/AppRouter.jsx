@@ -15,6 +15,7 @@ import UnionChampion from "../components/unionChampion/UnionChampion.jsx";
 import MuLungDojo from "../components/mulungDojo/MuLungDojo.jsx";
 import HuntingOptimization from "../components/character/hunting/HuntingOptimization.jsx";
 import FlameExpectation from "../components/flame/FlameExpectation.jsx";
+import GrowthPage from "../pages/growth/GrowthPage.jsx";
 
 export default function AppRouter() {
   return (
@@ -40,6 +41,7 @@ export default function AppRouter() {
           <Route path="/flame" element={<FlameExpectation />} />
 
 
+          <Route path="/growth/:growthType" element={<GrowthPage />}/>
           
         </Route>
       </Routes>
