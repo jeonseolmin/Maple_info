@@ -123,17 +123,27 @@ export const folderMenuItems = [
         label: "성장 효율",
         description: "캐릭터 성장에 필요한 효율을 계산합니다.",
         icon: growthImg,
+        path: "/growth/starforce",
         children: [
-            starforceMenu,
-            potentialMenu,
+            {
+                ...starforceMenu,
+                path: "/growth/starforce",
+            },
+            {
+                ...potentialMenu,
+                path: "/growth/potential",
+            },
             {
                 id: "symbol-efficiency",
                 type: "app",
                 label: "심볼 계산",
                 icon: growthImg,
-                path: "/symbol",
+                path: "/growth/symbol",
             },
-            growthOrderMenu,
+            {
+                ...growthOrderMenu,
+                path: "/growth/order",
+            },
         ],
     },
     {
