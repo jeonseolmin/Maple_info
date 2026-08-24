@@ -540,4 +540,10 @@ public class MapleCharacterClient {
             );
         }
     }
+
+    public NexonCharacterEquipmentSetEffectResponse getSetEffect (
+            String ocid
+    ){
+
+    }
 }

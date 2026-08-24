@@ -138,7 +138,14 @@ export default function CharacterSixthJob({ character }) {
                     className="hexa-dashboard__summary"
                     aria-label="HEXA 요약 정보"
                 >
-                    <HexaMaterialSummary cores={cores} />
+                    <HexaMaterialSummary
+                        cores={cores}
+                        statCoreGroups={[
+                            activeCores1,
+                            activeCores2,
+                            activeCores3,
+                        ]}
+                    />
 
                     <HexaStats
                         activeCores1={activeCores1}
