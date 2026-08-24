@@ -7,8 +7,10 @@ import {
 import StarforceExpectation from "../../components/starforceCalculator/StarforceExpectation";
 import CubeExpectation from "../../components/cubeCalculator/CubeExpectation";
 import SymbolCalculator from "../../components/symbolCalculator/SymbolCalculator";
+import FlameCalculator from "../../components/flame/FlameExpectation";
 
 import "./GrowthPage.css";
+import FlameExpectation from "../../components/flame/FlameExpectation";
 
 const GROWTH_TABS = [
     {
@@ -25,6 +27,11 @@ const GROWTH_TABS = [
         id: "symbol",
         label: "심볼",
         description: "심볼 성장 비용과 필요한 개수를 계산합니다.",
+    },
+    {
+        id: "flame",
+        label: "추가옵션",
+        description: "추가옵션 비용과 필요한 개수를 계산합니다.",
     },
     {
         id: "order",
@@ -94,6 +101,9 @@ export default function GrowthPage() {
 
             case "symbol":
                 return <SymbolCalculator />;
+
+            case "flame":
+                return <FlameExpectation />;
 
             case "order":
                 return <GrowthOrderPlaceholder />;

@@ -23,7 +23,7 @@ const ResultCard = ({ title, probability, isCalculating }) => {
 };
 
 // --- 메인 컴포넌트 ---
-const FlameCalculator = () => {
+const FlameExpectation = () => {
     const [equipType, setEquipType] = useState('방어구');
     const [isBossDrop, setIsBossDrop] = useState(true);
     const [equipLevel, setEquipLevel] = useState(200);
@@ -72,21 +72,11 @@ const FlameCalculator = () => {
             const double = Math.floor(equipLevel / 40) + 1;
             
             const M = [
-                single * (Number(eff.str) || 0),
-                single * (Number(eff.dex) || 0),
-                single * (Number(eff.int) || 0),
-                single * (Number(eff.luk) || 0),
-                double * (Number(eff.str) || 0) + double * (Number(eff.dex) || 0),
-                double * (Number(eff.str) || 0) + double * (Number(eff.int) || 0),
-                double * (Number(eff.str) || 0) + double * (Number(eff.luk) || 0),
-                double * (Number(eff.dex) || 0) + double * (Number(eff.int) || 0),
-                double * (Number(eff.dex) || 0) + double * (Number(eff.luk) || 0),
-                double * (Number(eff.int) || 0) + double * (Number(eff.luk) || 0),
-                0, 0, 0, 0, 
-                1 * (Number(eff.attack) || 0),
-                1 * (Number(eff.magic) || 0),
-                0, 0,
-                1 * (Number(eff.allStat) || 0)
+                single * (Number(eff.str) || 0), single * (Number(eff.dex) || 0), single * (Number(eff.int) || 0), single * (Number(eff.luk) || 0),
+                double * (Number(eff.str) || 0) + double * (Number(eff.dex) || 0), double * (Number(eff.str) || 0) + double * (Number(eff.int) || 0),
+                double * (Number(eff.str) || 0) + double * (Number(eff.luk) || 0), double * (Number(eff.dex) || 0) + double * (Number(eff.int) || 0),
+                double * (Number(eff.dex) || 0) + double * (Number(eff.luk) || 0), double * (Number(eff.int) || 0) + double * (Number(eff.luk) || 0),
+                0, 0, 0, 0, 1 * (Number(eff.attack) || 0), 1 * (Number(eff.magic) || 0), 0, 0, 1 * (Number(eff.allStat) || 0)
             ];
 
             const kangRates = [0.20, 0.30, 0.36, 0.14, 0];
@@ -143,89 +133,94 @@ const FlameCalculator = () => {
     }, [equipLevel, targetScore, eff]);
 
     return (
-        <div style={{ maxWidth: '1000px', margin: '20px auto', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-            
-            {/* 좌측 영역 */}
-            <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div className="modern-calc-container">
+            <h2 className="page-title">추가옵션 시뮬레이터</h2>
+            <p className="page-subtitle">환생의 불꽃 종류별 목표 추옵 달성 확률과 기댓값을 확인하세요.</p>
+
+            <div style={{ display: 'flex', gap: '20px', flexWrap: 'nowrap', alignItems: 'flex-start', marginTop: '20px' }}>
                 
-                <div className="toss-card">
-                    <h2 style={{ color: '#7c8cfa', fontSize: '1.2rem', fontWeight: 'bold', margin: '0 0 20px 0' }}>설정</h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '15px' }}>
-                        <div className="input-group" style={{ marginBottom: 0 }}>
-                            <label>장비 종류</label>
-                            <select value={equipType} onChange={(e) => setEquipType(e.target.value)}>
-                                <option>방어구</option>
-                                <option>무기</option>
-                            </select>
+                <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', gap: '20px', minWidth: '400px' }}>
+                    
+                    <div className="toss-card">
+                        <h2 style={{ color: '#7c8cfa', fontSize: '1.2rem', fontWeight: 'bold', margin: '0 0 20px 0' }}>설정</h2>
+                        <div className="input-grid">
+                            <div className="input-group" style={{ marginBottom: 0 }}>
+                                <label>장비 종류</label>
+                                <select value={equipType} onChange={(e) => setEquipType(e.target.value)}>
+                                    <option>방어구</option>
+                                    <option>무기</option>
+                                </select>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingTop: '15px' }}>
+                                <label style={{ display: 'flex', alignItems: 'center', color: '#7c8cfa', fontWeight: 'bold', cursor: 'pointer' }}>
+                                    <input type="checkbox" checked={isBossDrop} onChange={(e) => setIsBossDrop(e.target.checked)} style={{ marginRight: '8px', accentColor: '#7c8cfa', width: '18px', height: '18px' }} />
+                                    보스 드랍
+                                </label>
+                            </div>
+                            <div className="input-group" style={{ marginBottom: 0 }}>
+                                <label>장비 레벨</label>
+                                <input type="number" value={equipLevel} onChange={(e) => setEquipLevel(Number(e.target.value))} />
+                            </div>
+                            <div className="input-group" style={{ marginBottom: 0 }}>
+                                <label style={{ opacity: 0.5 }}>무기 추옵 등급</label>
+                                <select disabled style={{ opacity: 0.5 }}>
+                                    <option>선택안함</option>
+                                </select>
+                            </div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingTop: '15px' }}>
-                            <label style={{ display: 'flex', alignItems: 'center', color: '#7c8cfa', fontWeight: 'bold', cursor: 'pointer' }}>
-                                <input type="checkbox" checked={isBossDrop} onChange={(e) => setIsBossDrop(e.target.checked)} style={{ marginRight: '8px', accentColor: '#7c8cfa', width: '18px', height: '18px' }} />
-                                보스 드랍
-                            </label>
+                        <div className="input-group" style={{ marginTop: '20px' }}>
+                            <label>목표 추가옵션 값</label>
+                            <input type="number" value={targetScore} onChange={(e) => setTargetScore(Number(e.target.value))} placeholder="예: 131" />
                         </div>
-                        <div className="input-group" style={{ marginBottom: 0 }}>
-                            <label>장비 레벨</label>
-                            <input type="number" value={equipLevel} onChange={(e) => setEquipLevel(Number(e.target.value))} />
+                        <button 
+                            className="primary-calc-btn"
+                            onClick={() => setIsEffModalOpen(true)} 
+                            style={{ marginTop: '15px', width: '100%', padding: '15px', fontSize: '1rem' }}
+                        >
+                            스탯 효율 세팅
+                        </button>
+                    </div>
+
+                    <div className="toss-card">
+                        <h2 style={{ color: '#7c8cfa', fontSize: '1.2rem', fontWeight: 'bold', margin: '0 0 20px 0' }}>스탯 환산치 계산</h2>
+                        <div style={{ textAlign: 'center', marginBottom: '25px' }}>
+                            <span style={{ fontSize: '3rem', color: '#7c8cfa', fontWeight: 'bold' }}>{currentScore}</span>
+                            <span style={{ fontSize: '1.2rem', marginLeft: '5px', opacity: 0.8 }}>급</span>
                         </div>
-                        <div className="input-group" style={{ marginBottom: 0 }}>
-                            <label style={{ opacity: 0.5 }}>무기 추옵 등급</label>
-                            <select disabled style={{ opacity: 0.5 }}>
-                                <option>선택안함</option>
-                            </select>
+                        <div className="input-grid">
+                            {['str', 'dex', 'int', 'luk', 'hp', 'allStat', 'attack', 'magic', 'damage'].map((key) => {
+                                const labelMap = { str: 'STR', dex: 'DEX', int: 'INT', luk: 'LUK', hp: 'HP', allStat: '올스탯 %', attack: '공격력', magic: '마력', damage: '데미지 %' };
+                                const isActive = Number(currentStats[key]) > 0;
+                                return (
+                                    <div className="input-group" key={key} style={{ marginBottom: 0 }}>
+                                        <label style={{ color: isActive ? '#7c8cfa' : 'inherit' }}>{labelMap[key]}</label>
+                                        <input 
+                                            name={key} type="number" value={currentStats[key]} onChange={handleStatChange} 
+                                            style={isActive ? { border: '1px solid #7c8cfa' } : {}}
+                                        />
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
-                    <div className="input-group" style={{ marginBottom: '20px' }}>
-                        <label>목표 추가옵션 값</label>
-                        <input type="number" value={targetScore} onChange={(e) => setTargetScore(Number(e.target.value))} placeholder="예: 131" />
-                    </div>
-                    <button 
-                        onClick={() => setIsEffModalOpen(true)} 
-                        style={{ width: '100%', padding: '15px', backgroundColor: '#7c8cfa', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '1rem' }}
-                    >
-                        스탯 효율 세팅
-                    </button>
                 </div>
 
-                <div className="toss-card">
-                    <h2 style={{ color: '#7c8cfa', fontSize: '1.2rem', fontWeight: 'bold', margin: '0 0 20px 0' }}>스탯 환산치 계산</h2>
-                    <div style={{ textAlign: 'center', marginBottom: '25px' }}>
-                        <span style={{ fontSize: '3rem', color: '#7c8cfa', fontWeight: 'bold' }}>{currentScore}</span>
-                        <span style={{ fontSize: '1.2rem', marginLeft: '5px', opacity: 0.8 }}>급</span>
-                    </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                        {['str', 'dex', 'int', 'luk', 'hp', 'allStat', 'attack', 'magic', 'damage'].map((key) => {
-                            const labelMap = { str: 'STR', dex: 'DEX', int: 'INT', luk: 'LUK', hp: 'HP', allStat: '올스탯 %', attack: '공격력', magic: '마력', damage: '데미지 %' };
-                            const isActive = Number(currentStats[key]) > 0;
-                            return (
-                                <div className="input-group" key={key} style={{ marginBottom: 0 }}>
-                                    <label style={{ color: isActive ? '#7c8cfa' : 'inherit' }}>{labelMap[key]}</label>
-                                    <input 
-                                        name={key} type="number" value={currentStats[key]} onChange={handleStatChange} 
-                                        style={isActive ? { border: '1px solid #7c8cfa' } : {}}
-                                    />
-                                </div>
-                            );
-                        })}
-                    </div>
+                <div className="toss-card" style={{ flex: '0 0 400px', alignSelf: 'flex-start' }}>
+                    <h2 style={{ color: '#7c8cfa', fontSize: '1.2rem', fontWeight: 'bold', margin: '0 0 25px 0' }}>계산 결과</h2>
+                    <ResultCard title="강력한 환생의 불꽃" probability={probabilities.kang} isCalculating={isCalculating} />
+                    <ResultCard title="영원한 환생의 불꽃" probability={probabilities.young} isCalculating={isCalculating} />
+                    <ResultCard title="심연의 환생의 불꽃" probability={probabilities.shim} isCalculating={isCalculating} />
                 </div>
+
             </div>
 
-            {/* 우측 영역 */}
-            <div className="toss-card" style={{ flex: '1 1 400px', alignSelf: 'flex-start' }}>
-                <h2 style={{ color: '#7c8cfa', fontSize: '1.2rem', fontWeight: 'bold', margin: '0 0 25px 0' }}>계산 결과</h2>
-                <ResultCard title="강력한 환생의 불꽃" probability={probabilities.kang} isCalculating={isCalculating} />
-                <ResultCard title="영원한 환생의 불꽃" probability={probabilities.young} isCalculating={isCalculating} />
-                <ResultCard title="심연의 환생의 불꽃" probability={probabilities.shim} isCalculating={isCalculating} />
-            </div>
-
-            {/* 스탯 효율 모달 */}
+            {/* 스탯 효율 모달창 */}
             {isEffModalOpen && (
                 <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
                     <div className="toss-card" style={{ width: '420px', position: 'relative' }}>
                         <button onClick={() => setIsEffModalOpen(false)} style={{ position: 'absolute', top: '15px', right: '15px', border: 'none', background: 'transparent', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.6 }}>✕</button>
-                        <h3 style={{ margin: '0 0 25px 0', textAlign: 'center', fontSize: '1.3rem' }}>스탯 효율 입력</h3>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                        <h3 className="card-title" style={{ textAlign: 'center', marginBottom: '25px' }}>스탯 효율 입력</h3>
+                        <div className="input-grid">
                             {['str', 'dex', 'int', 'luk', 'hp', 'allStat', 'attack', 'magic', 'damage'].map((key) => {
                                 const labelMap = { str: 'STR', dex: 'DEX', int: 'INT', luk: 'LUK', hp: 'HP', allStat: '올스탯 %', attack: '공격력', magic: '마력', damage: '데미지 %' };
                                 const isActive = Number(eff[key]) > 0;
@@ -247,4 +242,4 @@ const FlameCalculator = () => {
     );
 };
 
-export default FlameCalculator;
+export default FlameExpectation;

@@ -38,7 +38,7 @@ export default function AppRouter() {
           <Route path="/champion" element={<UnionChampion />} />
           <Route path="/mulung" element={<MuLungDojo />} />
           <Route path="/hunting" element={<HuntingOptimization />} />
-          <Route path="/flame" element={<FlameExpectation />} />
+          <Route path="/growth/flame" element={<FlameExpectation />} />
 
 
           <Route path="/growth/:growthType" element={<GrowthPage />}/>

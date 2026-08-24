@@ -149,7 +149,7 @@ export const folderMenuItems = [
                 type: "app",
                 label: "추가옵션 계산",
                 icon: growthImg,
-                path: "/flame",
+                path: "/growth/flame",
             },
             growthOrderMenu,
         ],
