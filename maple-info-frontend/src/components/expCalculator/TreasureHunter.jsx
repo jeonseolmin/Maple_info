@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../layout/calculator/CalculatorExpectation.css';
+import './TreasureHunter.css';
 
 const TREASURE_MULTIPLIERS = {
     GOLD: { '레어': 3000, '에픽': 6000, '유니크': 12000, '레전드리': 24000 },
@@ -73,11 +73,11 @@ const TreasureHunter = () => {
             <button className="primary-calc-btn" onClick={handleCalculate}>계산하기</button>
 
             {result && (
-                <div className="toss-card result-card" style={{ marginTop: '20px' }}>
+                <div className="toss-card result-card">
                     <h3 className="card-title">보상 결과 🎉</h3>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                    <div className="result-total">
                         <span>총 획득 경험치</span>
-                        <span style={{ color: '#e15241' }}>{result.totalExp.toLocaleString()}</span>
+                        <span className="text-danger">{result.totalExp.toLocaleString()}</span>
                     </div>
                 </div>
             )}

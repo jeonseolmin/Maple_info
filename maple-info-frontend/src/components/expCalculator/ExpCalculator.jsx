@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import '../layout/calculator/CalculatorExpectation.css';
-import '../../api/axiosInstance.js';
 import axiosInstance from "../../api/axiosInstance.js";
+import './ExpCalculator.css';
+
 const ExpCalculator = () => {
     const [expTable, setExpTable] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -140,7 +140,7 @@ const ExpCalculator = () => {
                             onChange={handleChange}
                             placeholder="숫자만 입력하세요"
                         />
-                        <small style={{ color: '#8b95a1', marginTop: '5px', display: 'block' }}>
+                        <small>
                              인게임 전투분석 창에 찍힌 총 경험치를 입력하세요.
                         </small>
                     </div>
@@ -156,28 +156,28 @@ const ExpCalculator = () => {
             </button>
 
             {resultData && (
-                <div className="toss-card result-card" style={{ marginTop: '20px', backgroundColor: '#f2f4f6' }}>
-                    <h3 className="card-title" style={{ color: '#3182f6' }}>분석 완료! 🎯</h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div className="toss-card result-card">
+                    <h3 className="card-title">분석 완료!</h3>
+                    <div className="result-content">
                         
-                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#4e5968' }}>
+                        <div className="result-row">
                             <span>1시간(재획) 예상 경험치</span>
                             <strong>{resultData.hourlyExp.toLocaleString()}</strong>
                         </div>
                         
-                        <hr style={{ borderTop: '1px solid #d1d6db', margin: '5px 0' }} />
+                        <hr className="result-divider" />
                         
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                        <div className="result-total">
                             <span>다음 레벨업까지 남은 시간</span>
                             {resultData.isMaxLevel ? (
-                                <span style={{ color: '#e15241' }}>만렙입니다!</span>
+                                <span className="text-danger">만렙입니다!</span>
                             ) : (
-                                <span style={{ color: '#e15241' }}>약 {resultData.hoursLeft}시간 {resultData.minutesLeft}분</span>
+                                <span className="text-danger">약 {resultData.hoursLeft}시간 {resultData.minutesLeft}분</span>
                             )}
                         </div>
-                        <small style={{ textAlign: 'right', color: '#8b95a1' }}>
+                        <div className="result-note">
                             (현재 사냥 속도를 꾸준히 유지했을 경우)
-                        </small>
+                        </div>
                     </div>
                 </div>
             )}

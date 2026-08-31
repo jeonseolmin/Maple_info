@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../../api/axiosInstance';
-import '../layout/calculator/CalculatorExpectation.css';
+import './ExpPointCalculator.css';
 
 const ExpPointCalculator = () => {
     const [expTable, setExpTable] = useState([]);
@@ -59,43 +59,35 @@ const ExpPointCalculator = () => {
         const startLevel = currentLevel;
         const startPercent = currentPercent;
 
-        // 시작 레벨의 데이터 찾기
         let levelData = expTable.find(d => d.level === currentLevel);
         if (!levelData) {
             alert("해당 레벨의 데이터가 없습니다.");
             return;
         }
 
-        // 현재 경험치를 실제 수치(Raw)로 변환
         let currentExpRaw = levelData.requiredExp * (currentPercent / 100);
 
-        // 핵심 로직: 포인트가 남아있고 만렙(300)이 아닐 때까지 반복
         while (remainingPoints > 0 && currentLevel < 300) {
             levelData = expTable.find(d => d.level === currentLevel);
             
             if (!levelData || !levelData.expPointValue) {
-                break; // 데이터가 없으면 중단
+                break;
             }
 
-            // 다음 레벨업까지 필요한 남은 경험치
             let expNeeded = levelData.requiredExp - currentExpRaw;
             
-            // 다음 레벨업까지 필요한 포인트 개수 (소수점 포함 정밀 계산)
             let pointsNeededForLevelUp = expNeeded / levelData.expPointValue;
 
             if (remainingPoints >= pointsNeededForLevelUp) {
-                // 남은 포인트로 레벨업이 가능한 경우
                 remainingPoints -= pointsNeededForLevelUp;
                 currentLevel++;
                 currentExpRaw = 0; // 레벨업 했으므로 경험치는 0으로 초기화
             } else {
-                // 포인트가 모자라서 레벨업을 못하는 경우 (잔여 포인트 모두 소진)
                 currentExpRaw += remainingPoints * levelData.expPointValue;
                 remainingPoints = 0;
             }
         }
 
-        // 최종 퍼센트 다시 계산
         levelData = expTable.find(d => d.level === currentLevel) || levelData;
         let finalPercent = (currentExpRaw / levelData.requiredExp) * 100;
 
@@ -144,8 +136,8 @@ const ExpPointCalculator = () => {
                             onChange={handleChange}
                             placeholder="예: 3000"
                         />
-                        <small style={{ color: '#8b95a1', marginTop: '5px', display: 'block' }}>
-                            💡 사용할 상급 EXP 쿠폰의 갯수를 입력하세요.
+                        <small>
+                            사용할 상급 EXP 쿠폰의 갯수를 입력하세요.
                         </small>
                     </div>
                 </div>
@@ -160,26 +152,26 @@ const ExpPointCalculator = () => {
             </button>
 
             {result && (
-                <div className="toss-card result-card" style={{ marginTop: '20px' }}>
+                <div className="toss-card result-card">
                     <h3 className="card-title">도달 레벨 예측 결과 🎯</h3>
                     
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#4e5968' }}>
+                    <div className="result-content">
+                        <div className="result-row">
                             <span>기존 레벨 / 경험치</span>
                             <span>Lv.{result.startLevel} ({result.startPercent}%)</span>
                         </div>
                         
-                        <hr style={{ borderTop: '1px solid #d1d6db', margin: '5px 0' }} />
+                        <hr className="result-divider" />
                         
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                        <div className="result-total">
                             <span>최종 예상 레벨</span>
-                            <span style={{ color: '#3182f6' }}>
+                            <span className="result-highlight">
                                 Lv.{result.finalLevel} ({result.finalPercent}%)
                             </span>
                         </div>
                         
                         {result.finalLevel > result.startLevel && (
-                            <div style={{ textAlign: 'right', color: '#e15241', fontWeight: 'bold', marginTop: '5px' }}>
+                            <div className="result-levelup">
                                 🆙 {result.finalLevel - result.startLevel} 레벨 업!
                             </div>
                         )}

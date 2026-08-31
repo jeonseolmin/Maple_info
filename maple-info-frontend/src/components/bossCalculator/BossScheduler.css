@@ -1,0 +1,282 @@
+/* 공통 색상 변수 */
+:root {
+    --color-background: transparent;
+    --color-surface: #2b2d31;
+    --color-surface-soft: #1e1f22;
+    --color-border: #3f4147;
+    --color-text: #f2f3f5;
+    --color-text-secondary: #b5bac1;
+    --color-text-muted: #8b95a1;
+    --color-primary: #7c8cfa;
+    --color-primary-dark: #5b6ae0;
+    --color-primary-soft: rgba(124, 140, 250, 0.15); /* 클리어 시 배경색 */
+    --color-placeholder: #5c5f66;
+    
+    --radius-small: 8px;
+    --radius-medium: 12px;
+    --radius-large: 16px;
+
+    --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 전체 컨테이너 */
+.modern-calc-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: "MapleStory", "Noto Sans KR", sans-serif;
+    box-sizing: border-box;
+    color: var(--color-text);
+}
+
+/* 상단 타이틀 영역 */
+.page-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.page-subtitle {
+    font-size: 15px;
+    color: var(--color-text-muted);
+    margin-bottom: 32px;
+}
+
+/* 둥글고 깔끔한 카드 스타일 */
+.toss-card {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-large);
+    padding: 32px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 24px;
+    border: 1px solid var(--color-border);
+    box-sizing: border-box;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+/* 총 수익 카드 강조 */
+.profit-card {
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-primary-soft);
+}
+
+.profit-card .card-title {
+    margin-bottom: 10px;
+}
+
+.profit-amount {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-primary);
+}
+
+.profit-unit {
+    font-size: 1.2rem;
+    color: var(--color-text);
+}
+
+/* 입력 그리드 (2칸 배치) */
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* 개별 입력 그룹 */
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+}
+
+/* 폼 컨트롤 (Input, Select) */
+input[type="text"] {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 15px;
+    color: var(--color-text);
+    background-color: var(--color-surface-soft);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    outline: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+input[type="text"]:hover {
+    background-color: var(--color-surface);
+}
+
+input[type="text"]:focus {
+    background-color: var(--color-surface);
+    border-color: var(--color-primary);
+}
+
+/* 메인 실행 버튼 */
+.primary-calc-btn {
+    width: 100%;
+    padding: 18px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-medium);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.primary-calc-btn.add-btn {
+    margin-top: 16px;
+}
+
+.primary-calc-btn:hover {
+    background-color: var(--color-primary-dark);
+}
+
+/* 로딩 텍스트 */
+.loading-text {
+    text-align: center;
+    padding: 20px;
+    color: var(--color-text-muted);
+}
+
+/* 캐릭터별 보스 목록 컨테이너 */
+.character-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+}
+
+.character-job {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    font-weight: bold;
+}
+
+.character-name {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--color-text);
+}
+
+.character-profit {
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+/* 보스 아이템 그리드 */
+.boss-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 12px;
+}
+
+/* 개별 보스 아이템 */
+.boss-item {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface-soft);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.boss-item.cleared {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-soft);
+}
+
+.boss-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.boss-name {
+    font-weight: bold;
+    color: var(--color-text);
+    font-size: 14px;
+}
+
+.boss-name.cleared {
+    color: var(--color-primary);
+}
+
+.boss-difficulty {
+    font-size: 11px;
+    color: var(--color-text-muted);
+}
+
+/* 커스텀 체크박스 */
+.custom-checkbox {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 2px solid var(--color-placeholder);
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-checkbox.cleared {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
+}
+
+.check-icon {
+    color: white;
+    font-size: 12px;
+}
+
+/* 보스 아이템 푸터 (가격 및 셀렉트) */
+.boss-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+}
+
+.boss-price {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+.party-size-select {
+    width: 55px;
+    padding: 2px 4px;
+    font-size: 11px;
+    background-color: var(--color-surface);
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    outline: none;
+    cursor: pointer;
+}
+
+/* 모바일 화면 대응 */
+@media (max-width: 650px) {
+    .toss-card {
+        padding: 20px;
+    }
+}

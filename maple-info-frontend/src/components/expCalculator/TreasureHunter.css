@@ -1,21 +1,38 @@
+/* 공통 색상 변수 */
+:root {
+    --color-background: transparent;
+    --color-surface: #2b2d31;
+    --color-surface-soft: #1e1f22;
+    --color-border: #3f4147;
+    --color-text: #f2f3f5;
+    --color-text-secondary: #b5bac1;
+    --color-text-muted: #8b95a1;
+    --color-primary: #7c8cfa;
+    --color-primary-dark: #5b6ae0;
+    --color-danger: #e15241;
+    
+    --radius-small: 8px;
+    --radius-medium: 12px;
+    --radius-large: 16px;
+
+    --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 전체 컨테이너 */
 .modern-calc-container {
     max-width: 800px;
     margin: 40px auto;
     padding: 0 20px;
     font-family: "MapleStory", "Noto Sans KR", sans-serif;
+    box-sizing: border-box;
+    color: var(--color-text);
 }
 
+/* 상단 타이틀 영역 */
 .page-title {
     font-size: 28px;
     font-weight: 800;
-    color: var(--color-text);
-    margin-bottom: 8px;
-}
-
-.page-subtitle {
-    font-size: 15px;
-    color: var(--color-text-muted);
-    margin-bottom: 32px;
+    margin-bottom: 24px;
 }
 
 /* 둥글고 깔끔한 카드 스타일 */
@@ -26,21 +43,28 @@
     box-shadow: var(--shadow-card);
     margin-bottom: 24px;
     border: 1px solid var(--color-border);
+    box-sizing: border-box;
 }
 
 .card-title {
     font-size: 18px;
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-primary);
     margin-top: 0;
     margin-bottom: 24px;
 }
 
-/* 입력 그리드 (2칸씩 배치) */
+/* 입력 그리드 */
 .input-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
+}
+
+/* 개별 입력 그룹 */
+.input-group {
+    display: flex;
+    flex-direction: column;
 }
 
 .input-group label {
@@ -51,7 +75,7 @@
     margin-bottom: 8px;
 }
 
-/* 셀렉트 박스 공통 디자인 */
+/* 폼 컨트롤 (Input, Select) */
 select, 
 input[type="text"], 
 input[type="number"] {
@@ -64,71 +88,36 @@ input[type="number"] {
     border-radius: var(--radius-small);
     appearance: none;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
     box-sizing: border-box;
 }
 
-/* 마우스를 올렸을 때 살짝 배경색 변화 */
 select:hover, 
 input[type="text"]:hover, 
 input[type="number"]:hover {
-    background-color: var(--color-background);
+    background-color: var(--color-surface);
 }
 
-/* 클릭(포커스) 했을 때 강조 효과 */
 select:focus, 
 input[type="text"]:focus, 
 input[type="number"]:focus {
     outline: none;
     background-color: var(--color-surface);
     border-color: var(--color-primary);
-    box-shadow: var(--shadow-focus);
 }
 
-/* 목표 옵션 세로 스택 */
-.options-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.option-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.option-number {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background-color: var(--color-primary);
-    color: #ffffff; /* 번호 안의 숫자는 항상 흰색이 잘 어울립니다 */
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.loading-select {
-    color: var(--color-placeholder);
-    cursor: not-allowed;
-}
-
-/* 눈에 띄는 큼직한 버튼 */
+/* 메인 실행 버튼 */
 .primary-calc-btn {
     width: 100%;
     padding: 18px;
     font-size: 17px;
     font-weight: 700;
-    color: #ffffff; /* 버튼 글자는 항상 흰색 고정 */
+    color: #ffffff;
     background-color: var(--color-primary);
     border: none;
     border-radius: var(--radius-medium);
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s ease;
     margin-top: 10px;
 }
 
@@ -136,7 +125,32 @@ input[type="number"]:focus {
     background-color: var(--color-primary-dark);
 }
 
-/* 계산 완료 결과 카드 스타일 (추가) */
+/* 결과 출력 카드 전용 스타일 */
 .result-card {
-    background-color: var(--color-surface-soft) !important;
+    background-color: rgba(124, 140, 250, 0.05) !important;
+    border: 1px solid rgba(124, 140, 250, 0.2);
+    margin-top: 20px;
+}
+
+.result-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.text-danger {
+    color: var(--color-danger);
+}
+
+/* 모바일 화면 대응 */
+@media (max-width: 650px) {
+    .input-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .toss-card {
+        padding: 20px;
+    }
 }

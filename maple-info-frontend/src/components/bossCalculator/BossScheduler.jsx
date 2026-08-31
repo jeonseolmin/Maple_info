@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axiosInstance from '../../api/axiosInstance'; 
-import '../layout/calculator/CalculatorExpectation.css';
+import './BossScheduler.css';
 
 const BossScheduler = () => {
     const [bosses, setBosses] = useState([]);
@@ -98,13 +98,13 @@ const BossScheduler = () => {
 
     return (
         <div className="modern-calc-container">
-            <h2 className="page-title">주간 보스 수익 스케줄러 ⚔️</h2>
+            <h2 className="page-title">주간 보스 수익 스케줄러</h2>
             <p className="page-subtitle">다캐릭 주보돌이 수익(파티 격파 포함)을 관리하세요.</p>
 
-            <div className="toss-card result-card" style={{ border: '2px solid var(--color-primary)' }}>
-                <h3 className="card-title" style={{ marginBottom: '10px' }}>💰 이번 주 총 결정석 수익</h3>
-                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--color-primary)' }}>
-                    {totalWeeklyProfit.toLocaleString()} <span style={{ fontSize: '1.2rem', color: 'var(--color-text)' }}>메소</span>
+            <div className="toss-card profit-card">
+                <h3 className="card-title">이번 주 총 결정석 수익</h3>
+                <div className="profit-amount">
+                    {totalWeeklyProfit.toLocaleString()} <span className="profit-unit">메소</span>
                 </div>
             </div>
 
@@ -120,25 +120,25 @@ const BossScheduler = () => {
                         <input type="text" value={newCharJob} onChange={(e) => setNewCharJob(e.target.value)} placeholder="예: 히어로" />
                     </div>
                 </div>
-                <button className="primary-calc-btn" onClick={handleAddCharacter} style={{ marginTop: '16px' }}>캐릭터 추가하기</button>
+                <button className="primary-calc-btn add-btn" onClick={handleAddCharacter}>캐릭터 추가하기</button>
             </div>
 
             {isLoading ? (
-                <div style={{ textAlign: 'center', padding: '20px', color: 'var(--color-text-muted)' }}>데이터를 불러오는 중입니다...</div>
+                <div className="loading-text">데이터를 불러오는 중입니다...</div>
             ) : (
                 characters.map(character => (
                     <div key={character.id} className="toss-card">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderBottom: '1px solid var(--color-border)', paddingBottom: '12px', marginBottom: '16px' }}>
+                        <div className="character-header">
                             <div>
-                                <span style={{ fontSize: '12px', color: 'var(--color-text-muted)', fontWeight: 'bold' }}>{character.job}</span>
-                                <h3 style={{ margin: 0, fontSize: '1.4rem', color: 'var(--color-text)' }}>{character.characterName}</h3>
+                                <span className="character-job">{character.job}</span>
+                                <h3 className="character-name">{character.characterName}</h3>
                             </div>
-                            <div style={{ fontWeight: 'bold', color: 'var(--color-primary)' }}>
+                            <div className="character-profit">
                                 {getCharacterProfit(character.id).toLocaleString()} 메소
                             </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))', gap: '12px' }}>
+                        <div className="boss-grid">
                             {bosses.map(boss => {
                                 const charLogs = clearLogs[character.id] || {};
                                 const isCleared = charLogs.hasOwnProperty(boss.id);
@@ -147,31 +147,21 @@ const BossScheduler = () => {
                                 return (
                                     <div 
                                         key={boss.id}
-                                        style={{
-                                            display: 'flex', flexDirection: 'column', padding: '12px', borderRadius: '12px',
-                                            border: `1px solid ${isCleared ? 'var(--color-primary)' : 'var(--color-border)'}`,
-                                            backgroundColor: isCleared ? 'var(--color-primary-soft)' : 'var(--color-surface-soft)',
-                                            cursor: 'pointer', transition: 'all 0.2s ease'
-                                        }}
+                                        className={`boss-item ${isCleared ? 'cleared' : ''}`}
                                         // 바탕 클릭 시 토글 (1인 격파 기준)
                                         onClick={() => handleUpdateBoss(character.id, boss.id, !isCleared, isCleared ? 1 : 1)}
                                     >
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <span style={{ fontWeight: 'bold', color: isCleared ? 'var(--color-primary)' : 'var(--color-text)', fontSize: '14px' }}>
-                                                {boss.name} <span style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>({boss.difficulty})</span>
+                                        <div className="boss-item-header">
+                                            <span className={`boss-name ${isCleared ? 'cleared' : ''}`}>
+                                                {boss.name} <span className="boss-difficulty">({boss.difficulty})</span>
                                             </span>
-                                            <div style={{
-                                                width: '18px', height: '18px', borderRadius: '4px',
-                                                border: `2px solid ${isCleared ? 'var(--color-primary)' : 'var(--color-placeholder)'}`,
-                                                backgroundColor: isCleared ? 'var(--color-primary)' : 'transparent',
-                                                display: 'flex', justifyContent: 'center', alignItems: 'center'
-                                            }}>
-                                                {isCleared && <span style={{ color: 'white', fontSize: '12px' }}>✓</span>}
+                                            <div className={`custom-checkbox ${isCleared ? 'cleared' : ''}`}>
+                                                {isCleared && <span className="check-icon">✓</span>}
                                             </div>
                                         </div>
                                         
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '6px' }}>
-                                            <div style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>
+                                        <div className="boss-item-footer">
+                                            <div className="boss-price">
                                                 {Math.floor(boss.crystalPrice / partySize).toLocaleString()} 메소
                                             </div>
                                             
@@ -181,10 +171,7 @@ const BossScheduler = () => {
                                                     value={partySize}
                                                     onChange={(e) => handleUpdateBoss(character.id, boss.id, true, parseInt(e.target.value))}
                                                     onClick={(e) => e.stopPropagation()} // 클릭 시 보스 토글 방지
-                                                    style={{ 
-                                                        width: '55px', padding: '2px 4px', fontSize: '11px', 
-                                                        backgroundColor: 'var(--color-surface)', borderRadius: '4px', border: '1px solid var(--color-border)' 
-                                                    }}
+                                                    className="party-size-select"
                                                 >
                                                     {[1, 2, 3, 4, 5, 6].map(num => (
                                                         <option key={num} value={num}>{num}인</option>

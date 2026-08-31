@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../layout/calculator/CalculatorExpectation.css';
+import './AfkExperience.css';
 
 // VIP 사우나 1시간당 경험치 효율표 (%)
 const SAUNA_EXP_RATES = {
@@ -70,7 +70,7 @@ const AfkExperience = () => {
             startLevel,
             startPercent,
             finalLevel: currentLevel,
-            finalPercent: currentPercent.toFixed(3) // 소수점 3자리까지 표시
+            finalPercent: currentPercent.toFixed(3)
         });
     };
 
@@ -111,8 +111,8 @@ const AfkExperience = () => {
                             onChange={handleChange}
                             placeholder="예: 8"
                         />
-                        <small style={{ color: '#8b95a1', marginTop: '5px', display: 'block' }}>
-                            💡 보통 주무실 때 8시간 정도 세워둡니다. (소수점 입력 가능)
+                        <small>
+                            (소수점 입력 가능)
                         </small>
                     </div>
                 </div>
@@ -121,26 +121,26 @@ const AfkExperience = () => {
             <button className="primary-calc-btn" onClick={handleCalculate}>잠수 결과 확인하기</button>
 
             {result && (
-                <div className="toss-card result-card" style={{ marginTop: '20px' }}>
-                    <h3 className="card-title">기상 후 도달하는 레벨 ☀️</h3>
+                <div className="toss-card result-card">
+                    <h3 className="card-title">도달하는 레벨 </h3>
                     
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#4e5968' }}>
+                    <div className="result-content">
+                        <div className="result-row">
                             <span>기존 레벨 / 경험치</span>
                             <span>Lv.{result.startLevel} ({result.startPercent}%)</span>
                         </div>
                         
-                        <hr style={{ borderTop: '1px solid #d1d6db', margin: '5px 0' }} />
+                        <hr className="result-divider" />
                         
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                        <div className="result-total">
                             <span>최종 예상 레벨</span>
-                            <span style={{ color: '#3182f6' }}>
+                            <span className="result-highlight">
                                 Lv.{result.finalLevel} ({result.finalPercent}%)
                             </span>
                         </div>
                         
                         {result.finalLevel > result.startLevel && (
-                            <div style={{ textAlign: 'right', color: '#e15241', fontWeight: 'bold', marginTop: '5px' }}>
+                            <div className="result-levelup">
                                 🆙 {result.finalLevel - result.startLevel} 레벨 업!
                             </div>
                         )}

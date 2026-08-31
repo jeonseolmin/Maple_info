@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../../api/axiosInstance';
-import '../layout/calculator/CalculatorExpectation.css';
+import './CubeExpectation.css';
 
 const CUBE_TYPES = [
     { value: 'RED', label: '레드 큐브 (단종/캐시)' },
@@ -43,64 +43,59 @@ const CubeExpectation = () => {
             const tier = formData.tier;
             let calculatedPrice = 0;
 
-            // 1. 일반 잠재능력 재설정 (블랙 큐브 동일 기능)
             if (formData.cubeType === 'BLACK') {
-                if (level >= 250) { // 구간 1 (250~300)
+                if (level >= 250) { 
                     if (tier === '레어') calculatedPrice = 5000000;
                     else if (tier === '에픽') calculatedPrice = 20000000;
                     else if (tier === '유니크') calculatedPrice = 42500000;
                     else if (tier === '레전드리') calculatedPrice = 50000000;
-                } else if (level >= 200) { // 구간 2 (200~249)
+                } else if (level >= 200) { 
                     if (tier === '레어') calculatedPrice = 4500000;
                     else if (tier === '에픽') calculatedPrice = 18000000;
                     else if (tier === '유니크') calculatedPrice = 38250000;
                     else if (tier === '레전드리') calculatedPrice = 45000000;
-                } else if (level >= 160) { // 구간 3 (160~199)
+                } else if (level >= 160) { 
                     if (tier === '레어') calculatedPrice = 4250000;
                     else if (tier === '에픽') calculatedPrice = 17000000;
                     else if (tier === '유니크') calculatedPrice = 36125000;
                     else if (tier === '레전드리') calculatedPrice = 42500000;
-                } else { // 구간 4 (1~159)
+                } else { 
                     if (tier === '레어') calculatedPrice = 4000000;
                     else if (tier === '에픽') calculatedPrice = 16000000;
                     else if (tier === '유니크') calculatedPrice = 34000000;
                     else if (tier === '레전드리') calculatedPrice = 40000000;
                 }
             } 
-            // 2. 에디셔널 잠재능력 재설정 (화이트 에디셔널 동일 기능)
             else if (formData.cubeType === 'ADDITIONAL') {
-                if (level >= 250) { // 구간 1 (250~300)
+                if (level >= 250) { 
                     if (tier === '레어') calculatedPrice = 12250000;
                     else if (tier === '에픽') calculatedPrice = 34300000;
                     else if (tier === '유니크') calculatedPrice = 83300000;
                     else if (tier === '레전드리') calculatedPrice = 98000000;
-                } else if (level >= 200) { // 구간 2 (200~249)
+                } else if (level >= 200) { 
                     if (tier === '레어') calculatedPrice = 11000000;
                     else if (tier === '에픽') calculatedPrice = 30800000;
                     else if (tier === '유니크') calculatedPrice = 74800000;
                     else if (tier === '레전드리') calculatedPrice = 88000000;
-                } else if (level >= 160) { // 구간 3 (160~199)
+                } else if (level >= 160) { 
                     if (tier === '레어') calculatedPrice = 10375000;
                     else if (tier === '에픽') calculatedPrice = 29050000;
                     else if (tier === '유니크') calculatedPrice = 70550000;
                     else if (tier === '레전드리') calculatedPrice = 83000000;
-                } else { // 구간 4 (1~159)
+                } else { 
                     if (tier === '레어') calculatedPrice = 9750000;
                     else if (tier === '에픽') calculatedPrice = 27300000;
                     else if (tier === '유니크') calculatedPrice = 66300000;
                     else if (tier === '레전드리') calculatedPrice = 78000000;
                 }
             }
-            
-            // 계산된 값을 가격 input에 적용
             setFormData(prev => ({ ...prev, cubePrice: calculatedPrice.toString() }));
         } else if (formData.cubeType === 'RED') {
-            // 그 외 큐브는 0으로 처리 (유저가 직접 수정 가능)
             setFormData(prev => ({ ...prev, cubePrice: '0' }));
         }
     }, [formData.cubeType, formData.level, formData.tier]);
 
-    // (옵션 목록 불러오기)
+    // 옵션 목록 불러오기
     useEffect(() => {
         const fetchRealOptions = async () => {
             setIsLoading(true);
@@ -232,9 +227,7 @@ const CubeExpectation = () => {
                             onChange={handleChange}
                             placeholder="예: 40000000"
                         />
-                        <small style={{ color: '#8b95a1', marginTop: '5px', display: 'block' }}>
-                             레벨과 등급에 맞춰 공식 1회 재설정 비용이 자동 입력됩니다.
-                        </small>
+                        <small>레벨과 등급에 맞춰 공식 1회 재설정 비용이 자동 입력됩니다.</small>
                     </div>
                 </div>
             </div>
@@ -273,23 +266,23 @@ const CubeExpectation = () => {
             </button>
 
             {resultData && (
-                <div className="toss-card result-card" style={{ marginTop: '20px', backgroundColor: '#f2f4f6' }}>
-                    <h3 className="card-title" style={{ color: '#3182f6' }}>계산 완료! 🎉</h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#4e5968' }}>
+                <div className="toss-card result-card">
+                    <h3 className="card-title">계산 완료!</h3>
+                    <div className="result-content">
+                        <div className="result-row">
                             <span>선택한 옵션 동시 등장 확률</span>
                             <strong>{resultData.totalProbability.toFixed(8)}%</strong>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#4e5968' }}>
+                        <div className="result-row">
                             <span>예상 소모 횟수 (기댓값)</span>
                             <strong>{resultData.expectedCubeCount.toLocaleString()} 회</strong>
                         </div>
                         
-                        <hr style={{ borderTop: '1px solid #d1d6db', margin: '5px 0' }} />
+                        <hr className="result-divider" />
                         
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                        <div className="result-total">
                             <span>최종 예상 소모 메소</span>
-                            <span style={{ color: '#e15241' }}>{resultData.expectedMeso.toLocaleString()} 메소</span>
+                            <span className="text-danger">{resultData.expectedMeso.toLocaleString()} 메소</span>
                         </div>
                     </div>
                 </div>
