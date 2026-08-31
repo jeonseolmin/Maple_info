@@ -16,6 +16,8 @@ import MuLungDojo from "../components/mulungDojo/MuLungDojo.jsx";
 import HuntingOptimization from "../components/character/hunting/HuntingOptimization.jsx";
 import FlameExpectation from "../components/flame/FlameExpectation.jsx";
 import GrowthPage from "../pages/growth/GrowthPage.jsx";
+import BossDataAdmin from "../pages/boss/bossDataAdmin/BossDataAdmin.jsx";
+import BossDataList from "../pages/boss/bossDataList/BossDataList.jsx";
 
 export default function AppRouter() {
   return (
@@ -33,6 +35,8 @@ export default function AppRouter() {
           <Route path="experience/treasure-hunter" element={<TreasureHunter/>} />
           <Route path="experience/afk" element={<AfkExperience/>} />
           <Route path="boss/scheduler" element={<BossScheduler />} />
+          <Route path="boss/data-admin" element={<BossDataAdmin />}/>
+          <Route path="boss/data-list" element={<BossDataList />}/>
           <Route path="/gameinfo/boss" element={<BossEncyclopedia />} />
           <Route path="/symbol" element={<SymbolCalculator />} />
           <Route path="/champion" element={<UnionChampion />} />

@@ -1,0 +1,686 @@
+.boss-list-page {
+    width: min(1160px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 42px 0 80px;
+
+    color: var(--color-text);
+}
+
+.boss-list-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 24px;
+}
+
+.boss-list-eyebrow {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--color-primary);
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.boss-list-header h1 {
+    margin: 0;
+
+    color: var(--color-text);
+
+    font-size: 32px;
+}
+
+.boss-list-header p {
+    margin: 8px 0 0;
+
+    color: var(--color-text-muted);
+
+    font-size: 13px;
+}
+
+.boss-list-count {
+    color: var(--color-primary);
+
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.boss-list-count span {
+    color: var(--color-text-muted);
+
+    font-size: 12px;
+}
+
+/* =========================
+   Filter
+========================= */
+
+.boss-filter-card {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr))
+        auto;
+
+    gap: 10px;
+
+    margin-bottom: 16px;
+    padding: 16px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 15px;
+
+    background: var(--color-surface);
+}
+
+.boss-filter-card select,
+.boss-filter-card button {
+    height: 40px;
+
+    padding: 0 11px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 9px;
+
+    background: var(--color-surface-soft);
+    color: var(--color-text);
+
+    font-size: 12px;
+}
+
+.boss-filter-card button {
+    cursor: pointer;
+
+    font-weight: 700;
+}
+
+/* =========================
+   Table
+========================= */
+
+.boss-table-card {
+    overflow: hidden;
+
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+
+    background: var(--color-surface);
+}
+
+.boss-table-scroll {
+    overflow-x: auto;
+}
+
+.boss-data-table {
+    width: 100%;
+    min-width: 940px;
+
+    border-collapse: collapse;
+}
+
+.boss-data-table th,
+.boss-data-table td {
+    padding: 13px 14px;
+
+    border-bottom:
+        1px solid
+        var(--color-border);
+
+    text-align: left;
+
+    font-size: 12px;
+}
+
+.boss-data-table th {
+    background: var(--color-surface-soft);
+    color: var(--color-text-muted);
+
+    font-weight: 800;
+}
+
+.boss-data-table tbody tr {
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease;
+}
+
+.boss-data-table tbody tr:hover {
+    background: var(--color-surface-soft);
+}
+
+.boss-data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.difficulty-text {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--color-text-muted);
+
+    font-size: 10px;
+}
+
+/* =========================
+   Badges
+========================= */
+
+.result-badge,
+.verified-badge,
+.unverified-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 4px 7px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.result-badge.CLEAR {
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+}
+
+.result-badge.TIME_OUT,
+.result-badge.DEATH_OUT {
+    background:
+        rgba(229, 72, 77, 0.08);
+
+    color: #e5484d;
+}
+
+.result-badge.UNKNOWN {
+    background: var(--color-surface-soft);
+    color: var(--color-text-muted);
+}
+
+.verified-badge {
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+}
+
+.unverified-badge {
+    background: var(--color-surface-soft);
+    color: var(--color-text-muted);
+}
+
+.boss-empty {
+    padding: 60px 20px;
+
+    color: var(--color-text-muted);
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+/* =========================
+   Modal
+========================= */
+
+.boss-modal-backdrop {
+    position: fixed;
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    overflow-y: auto;
+
+    padding: 50px 20px;
+
+    background:
+        rgba(0, 0, 0, 0.48);
+}
+
+.boss-detail-modal {
+    width: min(800px, 100%);
+
+    padding: 24px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+
+    background: var(--color-surface);
+}
+
+.boss-detail-header {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+
+    border-bottom:
+        1px solid
+        var(--color-border);
+}
+
+.boss-detail-header span {
+    color: var(--color-primary);
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.boss-detail-header h2 {
+    margin: 5px 0;
+
+    color: var(--color-text);
+
+    font-size: 22px;
+}
+
+.boss-detail-header p {
+    margin: 0;
+
+    color: var(--color-text-muted);
+
+    font-size: 12px;
+}
+
+.boss-detail-header > button {
+    width: 36px;
+    height: 36px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: var(--color-surface-soft);
+    color: var(--color-text);
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+/* =========================
+   Detail
+========================= */
+
+.boss-detail-section {
+    margin-top: 22px;
+}
+
+.boss-detail-section h3 {
+    margin: 0 0 12px;
+
+    color: var(--color-text);
+
+    font-size: 14px;
+}
+
+.boss-detail-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+.boss-detail-item {
+    padding: 12px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+
+    background: var(--color-surface-soft);
+}
+
+.boss-detail-item span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--color-text-muted);
+
+    font-size: 10px;
+}
+
+.boss-detail-item strong {
+    color: var(--color-text);
+
+    font-size: 13px;
+}
+
+/* =========================
+   Source
+========================= */
+
+.source-list {
+    grid-column: 1 / -1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.source-card {
+    padding: 13px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+
+    background: var(--color-surface-soft);
+}
+
+.source-card > div {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.source-card strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: var(--color-text);
+
+    font-size: 12px;
+}
+
+.source-card span {
+    color: var(--color-text-muted);
+
+    font-size: 10px;
+}
+
+.source-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.source-actions a {
+    color: var(--color-primary);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-decoration: none;
+}
+
+.source-card p {
+    margin: 10px 0 0;
+
+    color: var(--color-text-muted);
+
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.detail-description {
+    grid-column: 1 / -1;
+
+    margin: 0;
+
+    color: var(--color-text-muted);
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* =========================
+   Edit form
+========================= */
+
+.boss-edit-form {
+    margin-top: 5px;
+}
+
+.boss-edit-form > h3 {
+    margin: 0 0 15px;
+
+    color: var(--color-text);
+
+    font-size: 15px;
+}
+
+.boss-edit-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+.boss-edit-field {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.boss-edit-field.full {
+    grid-column: 1 / -1;
+}
+
+.boss-edit-field label {
+    color: var(--color-text-muted);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.boss-edit-field input,
+.boss-edit-field select,
+.boss-edit-field textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--color-border);
+    border-radius: 9px;
+
+    outline: none;
+
+    background: var(--color-surface-soft);
+    color: var(--color-text);
+
+    font: inherit;
+}
+
+.boss-edit-field input,
+.boss-edit-field select {
+    height: 40px;
+
+    padding: 0 10px;
+}
+
+.boss-edit-field textarea {
+    min-height: 80px;
+
+    padding: 10px;
+
+    resize: vertical;
+}
+
+.boss-edit-field input:focus,
+.boss-edit-field select:focus,
+.boss-edit-field textarea:focus {
+    border-color: var(--color-primary);
+
+    box-shadow:
+        0 0 0 3px
+        var(--color-primary-soft);
+}
+
+.boss-edit-check {
+    grid-column: 1 / -1;
+
+    padding-top: 4px;
+}
+
+.boss-edit-check label {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: var(--color-text);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+/* =========================
+   Actions
+========================= */
+
+.boss-detail-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    margin-top: 24px;
+    padding-top: 18px;
+
+    border-top:
+        1px solid
+        var(--color-border);
+}
+
+.detail-edit-button,
+.detail-save-button,
+.detail-cancel-button,
+.detail-delete-button {
+    height: 40px;
+
+    padding: 0 16px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+.detail-edit-button {
+    border: 1px solid var(--color-primary);
+
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+}
+
+.detail-save-button {
+    border: 1px solid var(--color-primary);
+
+    background: var(--color-primary);
+    color: white;
+}
+
+.detail-cancel-button {
+    border: 1px solid var(--color-border);
+
+    background: var(--color-surface-soft);
+    color: var(--color-text);
+}
+
+.detail-delete-button {
+    border:
+        1px solid
+        rgba(229, 72, 77, 0.35);
+
+    background:
+        rgba(229, 72, 77, 0.08);
+
+    color: #e5484d;
+}
+
+.detail-delete-button:hover {
+    background:
+        rgba(229, 72, 77, 0.14);
+}
+
+.detail-edit-button:disabled,
+.detail-save-button:disabled,
+.detail-cancel-button:disabled,
+.detail-delete-button:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 800px) {
+
+    .boss-filter-card {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .boss-detail-grid,
+    .boss-edit-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .boss-edit-field.full,
+    .boss-edit-check {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 560px) {
+
+    .boss-list-page {
+        width: calc(100% - 24px);
+    }
+
+    .boss-list-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .boss-filter-card {
+        grid-template-columns: 1fr;
+    }
+
+    .boss-modal-backdrop {
+        padding:
+            20px 10px;
+    }
+
+    .boss-detail-modal {
+        padding: 17px;
+    }
+
+    .boss-detail-actions {
+        flex-wrap: wrap;
+    }
+
+    .detail-edit-button,
+    .detail-save-button,
+    .detail-cancel-button,
+    .detail-delete-button {
+        flex: 1;
+    }
+}

@@ -3,6 +3,7 @@ package com.mapleInfo.maple_info_backend.boss.controller;
 import com.mapleInfo.maple_info_backend.boss.dto.BossAttemptDetailResponse;
 import com.mapleInfo.maple_info_backend.boss.dto.BossAttemptRequest;
 import com.mapleInfo.maple_info_backend.boss.dto.BossAttemptResponse;
+import com.mapleInfo.maple_info_backend.boss.dto.BossAttemptUpdateRequest;
 import com.mapleInfo.maple_info_backend.boss.service.BossAttemptService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -105,5 +106,29 @@ public class BossAttemptController {
                         max
                 )
         );
+    }
+
+    @PutMapping("/{attemptId}")
+    public ResponseEntity<Void> updateAttempt(
+            @PathVariable Long attemptId,
+            @RequestBody BossAttemptUpdateRequest request
+    ) {
+
+        bossAttemptService.updateAttempt(
+                attemptId,
+                request
+        );
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{attemptId}")
+    public ResponseEntity<Void> deleteAttempt(
+            @PathVariable Long attemptId
+    ) {
+
+        bossAttemptService.deleteAttempt(attemptId);
+
+        return ResponseEntity.noContent().build();
     }
 }

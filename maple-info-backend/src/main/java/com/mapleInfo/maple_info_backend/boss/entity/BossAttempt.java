@@ -142,4 +142,27 @@ public class BossAttempt {
             updatable = false
     )
     private LocalDateTime createdAt = LocalDateTime.now();
+    public void update(
+            Boss boss,
+            String characterName,
+            String characterClass,
+            AttemptResult result,
+            Integer partySize,
+            Integer clearTimeSeconds,
+            BigDecimal observedBossRatio,
+            PlayerSkillLevel playerSkillLevel,
+            String gameVersion,
+            LocalDateTime recordedAt
+    ) {
+        this.boss = boss;
+        this.characterName = characterName;
+        this.characterClass = characterClass;
+        this.result = result;
+        this.partySize = partySize;
+        this.clearTimeSeconds = clearTimeSeconds;
+        this.observedBossRatio = observedBossRatio;
+        this.playerSkillLevel = playerSkillLevel;
+        this.gameVersion = gameVersion;
+        this.recordedAt = recordedAt;
+    }
 }

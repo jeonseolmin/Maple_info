@@ -122,4 +122,29 @@ public class BossSpecSnapshot {
      */
     @Column(name = "buff_description", columnDefinition = "TEXT")
     private String buffDescription;
+    public void update(
+            Integer characterLevel,
+            Long combatPower,
+            BigDecimal convertedStat,
+            BigDecimal bossDamage,
+            BigDecimal ignoreDefense,
+            BigDecimal criticalDamage,
+            Long mainStat,
+            Long attackPower,
+            BigDecimal hexaProgress,
+            String seedRing,
+            String buffDescription
+    ) {
+        this.characterLevel = characterLevel;
+        this.combatPower = combatPower;
+        this.convertedStat = convertedStat;
+        this.bossDamage = bossDamage;
+        this.ignoreDefense = ignoreDefense;
+        this.criticalDamage = criticalDamage;
+        this.mainStat = mainStat;
+        this.attackPower = attackPower;
+        this.hexaProgress = hexaProgress;
+        this.seedRing = seedRing;
+        this.buffDescription = buffDescription;
+    }
 }

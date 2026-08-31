@@ -110,4 +110,20 @@ public class SourceEvidence {
             updatable = false
     )
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    public void update(
+            SourceType sourceType,
+            String sourceUrl,
+            LocalDateTime publishedAt,
+            ConfidenceGrade confidenceGrade,
+            Boolean verified,
+            String note
+    ) {
+        this.sourceType = sourceType;
+        this.sourceUrl = sourceUrl;
+        this.publishedAt = publishedAt;
+        this.confidenceGrade = confidenceGrade;
+        this.verified = verified;
+        this.note = note;
+    }
 }

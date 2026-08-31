@@ -3,6 +3,7 @@ package com.mapleInfo.maple_info_backend.boss.service;
 import com.mapleInfo.maple_info_backend.boss.dto.BossAttemptDetailResponse;
 import com.mapleInfo.maple_info_backend.boss.dto.BossAttemptRequest;
 import com.mapleInfo.maple_info_backend.boss.dto.BossAttemptResponse;
+import com.mapleInfo.maple_info_backend.boss.dto.BossAttemptUpdateRequest;
 import com.mapleInfo.maple_info_backend.boss.entity.Boss;
 import com.mapleInfo.maple_info_backend.boss.entity.BossAttempt;
 import com.mapleInfo.maple_info_backend.boss.entity.BossSpecSnapshot;
@@ -30,7 +31,20 @@ public class BossAttemptService {
 
     @Transactional
     public BossAttemptResponse createAttempt(BossAttemptRequest request) {
+        if (request.getSourceUrl() == null
+                || request.getSourceUrl().isBlank()) {
+            throw new IllegalArgumentException(
+                    "출처 URL은 필수입니다."
+            );
+        }
 
+        String sourceUrl = request.getSourceUrl().trim();
+
+        if (sourceEvidenceRepository.existsBySourceUrl(sourceUrl)) {
+            throw new IllegalArgumentException(
+                    "이미 등록된 출처 URL입니다."
+            );
+        }
         Boss boss = bossRepository.findById(request.getBossId())
                 .orElseThrow(() ->
                         new IllegalArgumentException(
@@ -100,7 +114,7 @@ public class BossAttemptService {
                         .bossAttempt(savedAttempt)
 
                         .sourceType(request.getSourceType())
-                        .sourceUrl(request.getSourceUrl())
+                        .sourceUrl(sourceUrl)
 
                         .publishedAt(request.getPublishedAt())
 
@@ -126,6 +140,159 @@ public class BossAttemptService {
                 .specSnapshotId(savedSnapshot.getId())
                 .sourceEvidenceId(savedEvidence.getId())
                 .build();
+    }
+
+    @Transactional
+    public void updateAttempt(
+            Long attemptId,
+            BossAttemptUpdateRequest request
+    ) {
+
+        BossAttempt attempt =
+                bossAttemptRepository.findById(attemptId)
+                        .orElseThrow(() ->
+                                new IllegalArgumentException(
+                                        "존재하지 않는 보스 기록입니다. attemptId="
+                                                + attemptId
+                                )
+                        );
+
+        Boss boss =
+                bossRepository.findById(request.getBossId())
+                        .orElseThrow(() ->
+                                new IllegalArgumentException(
+                                        "존재하지 않는 보스입니다. bossId="
+                                                + request.getBossId()
+                                )
+                        );
+
+        Integer partySize =
+                request.getPartySize() == null
+                        ? 1
+                        : request.getPartySize();
+
+        BossAttempt.PlayerSkillLevel skillLevel =
+                request.getPlayerSkillLevel() == null
+                        ? BossAttempt.PlayerSkillLevel.UNKNOWN
+                        : request.getPlayerSkillLevel();
+
+        attempt.update(
+                boss,
+                request.getCharacterName(),
+                request.getCharacterClass(),
+                request.getResult(),
+                partySize,
+                request.getClearTimeSeconds(),
+                request.getObservedBossRatio(),
+                skillLevel,
+                request.getGameVersion(),
+                request.getRecordedAt()
+        );
+
+        BossSpecSnapshot snapshot =
+                bossSpecSnapshotRepository
+                        .findByBossAttemptId(attemptId)
+                        .orElseThrow(() ->
+                                new IllegalArgumentException(
+                                        "스펙 스냅샷이 존재하지 않습니다."
+                                )
+                        );
+
+        snapshot.update(
+                request.getCharacterLevel(),
+                request.getCombatPower(),
+                request.getConvertedStat(),
+                request.getBossDamage(),
+                request.getIgnoreDefense(),
+                request.getCriticalDamage(),
+                request.getMainStat(),
+                request.getAttackPower(),
+                request.getHexaProgress(),
+                request.getSeedRing(),
+                request.getBuffDescription()
+        );
+
+        SourceEvidence evidence;
+
+        if (request.getSourceId() != null) {
+
+            evidence =
+                    sourceEvidenceRepository
+                            .findById(request.getSourceId())
+                            .orElseThrow(() ->
+                                    new IllegalArgumentException(
+                                            "출처 정보가 존재하지 않습니다."
+                                    )
+                            );
+
+        } else {
+
+            evidence =
+                    sourceEvidenceRepository
+                            .findByBossAttemptId(attemptId)
+                            .stream()
+                            .findFirst()
+                            .orElseThrow(() ->
+                                    new IllegalArgumentException(
+                                            "출처 정보가 존재하지 않습니다."
+                                    )
+                            );
+        }
+
+        String newSourceUrl =
+                request.getSourceUrl() == null
+                        ? null
+                        : request.getSourceUrl().trim();
+
+        /*
+         * URL을 변경하려는 경우에만
+         * 다른 데이터에서 사용 중인지 확인합니다.
+         */
+        if (newSourceUrl != null
+                && !newSourceUrl.equals(evidence.getSourceUrl())
+                && sourceEvidenceRepository.existsBySourceUrl(newSourceUrl)) {
+
+            throw new IllegalArgumentException(
+                    "이미 등록된 출처 URL입니다."
+            );
+        }
+
+        evidence.update(
+                request.getSourceType(),
+                newSourceUrl,
+                request.getPublishedAt(),
+                request.getConfidenceGrade(),
+                Boolean.TRUE.equals(request.getVerified()),
+                request.getSourceNote()
+        );
+    }
+
+    @Transactional
+    public void deleteAttempt(Long attemptId) {
+
+        BossAttempt attempt =
+                bossAttemptRepository.findById(attemptId)
+                        .orElseThrow(() ->
+                                new IllegalArgumentException(
+                                        "존재하지 않는 보스 기록입니다. attemptId="
+                                                + attemptId
+                                )
+                        );
+
+        /*
+         * 현재 DB 관계에 cascade delete가 없으므로
+         * 자식 테이블부터 삭제합니다.
+         */
+
+        sourceEvidenceRepository
+                .findByBossAttemptId(attemptId)
+                .forEach(sourceEvidenceRepository::delete);
+
+        bossSpecSnapshotRepository
+                .findByBossAttemptId(attemptId)
+                .ifPresent(bossSpecSnapshotRepository::delete);
+
+        bossAttemptRepository.delete(attempt);
     }
 
     @Transactional(readOnly = true)
